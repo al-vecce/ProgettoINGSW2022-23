@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.uni.na.service.FieldCheckService;
 import it.uni.na.service.LoginService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
+// TODO LOGGER
 @Path("/login")
 public class LoginResource {
 
@@ -58,13 +60,12 @@ public class LoginResource {
             if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN/USERNAME encountered.", 400); }
             username = temp_node.asText();
 
-            result = LoginService.checkUsernameValidityService(username);
+            result = FieldCheckService.checkUsernameValidityService(username);
             //json_node = objectMapper.createObjectNode();
             newString = "{\"username\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
         }
-        //TODO add log service
         catch (JsonMappingException ex1){
             throw new WebApplicationException("JSON Mapping Error for LOGIN/USERNAME Encountered.", 500);
         }
@@ -84,7 +85,7 @@ public class LoginResource {
             temp_node = json_node.get("password");
             if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN/PASSWORD encountered.", 400); }
             password = temp_node.asText();
-            result = LoginService.checkPasswordValidityService(password);
+            result = FieldCheckService.checkPasswordValidityService(password);
             //json_node = objectMapper.createObjectNode();
             newString = "{\"password\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);

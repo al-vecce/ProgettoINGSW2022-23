@@ -1,10 +1,14 @@
 package it.uni.na.model;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "business")
-public class Business {
+public class Business extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Business_SEQ")
     @SequenceGenerator(name = "Business_SEQ")
@@ -36,6 +40,17 @@ public class Business {
     @Lob
     @Column(name = "business_qr")
     private Byte[] business_qr;
+
+    @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Employee> employees = new ArrayList<>();
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 
     public Byte[] getBusiness_qr() {
         return business_qr;

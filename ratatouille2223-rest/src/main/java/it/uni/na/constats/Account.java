@@ -1,4 +1,4 @@
-package it.uni.na.model;
+package it.uni.na.constats;
 
 public enum Account {
     AMMINISTRATORE, SUPERVISORE, ADDETTOSALA
