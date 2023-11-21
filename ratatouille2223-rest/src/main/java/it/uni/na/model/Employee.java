@@ -3,24 +3,25 @@ package it.uni.na.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotNull;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
-@Table(name = "user")
 @NamedQueries({
-        @NamedQuery(name = "User.getAllUsersOrderedByName", query = "select c from user c order by c.name")
-})
-public class User extends PanacheEntityBase {
+        @NamedQuery(name = "Employee.getEmployeeByName", query = "SELECT c FROM Employee c WHERE c.username = :username"),
+        @NamedQuery(name = "Employee.getAllEmployeesOrderedByName", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.username"),
+        @NamedQuery(name = "Employee.getAllEmployeesOrderedByEmployeeRole", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.employee_role, c.username"),
+        @NamedQuery(name = "Employee.getAllEmployeesOrderedByLastModified", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.last_modified, c.username"),
+        @NamedQuery(name = "Employee.getSignInRecord", query = "SELECT c.username, c.password FROM Employee c ORDER BY c.username"),
+        @NamedQuery(name = "Employee.getFirstLoginStatus", query = "SELECT c.username, c.first_login FROM Employee c WHERE ( c.username = :username AND c.first_login = :first_login )")})
+public class Employee extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "User_SEQ")
-    @SequenceGenerator(name = "User_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Employee_SEQ")
+    @SequenceGenerator(name = "Employee_SEQ")
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
@@ -28,22 +29,22 @@ public class User extends PanacheEntityBase {
     @Column(name = "password", nullable = false, length = 20)
     private String password;
     @Enumerated(EnumType.STRING)
-    @Column(name = "employeerole", nullable = false)
+    @Column(name = "employee_role", nullable = false)
     private Account employee_role;
-    @Column(name = "lastmodified")
+    @Column(name = "last_modified")
     private Date last_modified;
-    @Column(name = "firstlogin", nullable = false)
+    @Column(name = "first_login", nullable = false)
     private Boolean first_login;
 
     @Transient
     private static String json_authentication_key;
 
     @ManyToOne(cascade = CascadeType.REMOVE, optional = false)
-    @JoinColumn(name = "businessid", nullable = false)
+    @JoinColumn(name = "business_id", nullable = false)
     private Business business;
 
-    public User() {}
-    public User(String username, String password, Account account, Business business) {
+    public Employee() {}
+    public Employee(String username, String password, Account account, Business business) {
         this.username = username;
         this.password = password;
         this.employee_role = account;
@@ -113,9 +114,9 @@ public class User extends PanacheEntityBase {
     }
 
     @Transactional
-    public Boolean signIn(String username, String password) {
-        User user = User.find("name = ?1 and password = ?2", username, password).firstResult();
-        if(user != null) {
+    public static Boolean signIn(String username, String password) {
+        Object employee = Employee.find("#Employee.getSignInRecord").firstResult();
+        if(employee != null) {
             return true;
         }
         else {
@@ -127,19 +128,29 @@ public class User extends PanacheEntityBase {
 
     }*/
     @Transactional
-    public static PanacheQuery<PanacheEntity> findAllUsersOrderedByUsername() {
-        return User.find("#getAllUsersOrderedByUsername");
-    }
-    /*@Transactional
-    public List<User> findAllUsersOrderedByUsername() {
-
+    public static Employee findEmployeeByUsername(String username) {
+        return Employee.find("#Employee.getEmployeeByName", Parameters.with("username", username)).firstResult();
     }
     @Transactional
-    public List<User> findAllUsersOrderedByUsername() {
-
+    public static PanacheQuery<PanacheEntity> findAllEmployeesOrderedByUsername() {
+        return Employee.find("#Employee.getAllEmployeesOrderedByName");
     }
     @Transactional
-    public Boolean isFirstLogin() {
-
-    }*/
+    public static PanacheQuery<PanacheEntity> findAllEmployeesOrderedByEmployeeRole() {
+        return Employee.find("#Employee.getAllEmployeesOrderedByEmployeeRole");
+    }
+    @Transactional
+    public static PanacheQuery<PanacheEntity> findAllEmployeesOrderedByLastModified() {
+        return Employee.find("#Employee.getAllEmployeesOrderedByLastModified");
+    }
+    @Transactional
+    public static Boolean isFirstLogin(String username) {
+        Object employee = Employee.find("#Employee.getFirstLoginStatus", Parameters.with("username", username).and("first_login", true)).firstResult();
+        if(employee != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
