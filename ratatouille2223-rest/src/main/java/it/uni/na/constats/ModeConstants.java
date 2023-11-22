@@ -17,5 +17,5 @@ public class ModeConstants {
     public static final String BYPRICE              = "BYPRICE";
 
     public static final String BYTABLE              = "BYTABLE";
-    public static final String BYNUMBEROFELEMENTS   = "BYID";
+    public static final String BYNUMBEROFELEMENTS   = "BYNUMBEROFELEMENTS";
 }

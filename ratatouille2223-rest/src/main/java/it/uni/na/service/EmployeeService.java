@@ -1,11 +1,12 @@
 package it.uni.na.service;
 
-import it.uni.na.constats.Account;
+import it.uni.na.constats.AccountEnum;
 import it.uni.na.constats.ModeConstants;
 import it.uni.na.model.Employee;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class EmployeeService {
             page = 0;
         }
         switch (mode) {
-            case ModeConstants.BYID:
+            case ModeConstants.BYUSERNAME:
                 return_list = Employee.findAllEmployeesOrderedByUsername(page);
                 break;
             case ModeConstants.BYEMPLOYEEROLE:
@@ -28,7 +29,7 @@ public class EmployeeService {
                 return_list = Employee.findAllEmployeesOrderedByLastModified(page);
                 break;
             default:
-                return_list = null;
+                return_list = new ArrayList<>();
         }
         for (Employee e: return_list) {
             return_string_list.add(e.toString());
@@ -67,7 +68,7 @@ public class EmployeeService {
         }
         employee.setUsername(username);
         employee.setPassword(password);
-        employee.setAccount(Account.valueOf(employeerole));
+        employee.setAccount(AccountEnum.valueOf(employeerole));
         employee.setLast_modified(LocalDateTime.now());
         employee.persist();
         return true;
@@ -103,7 +104,7 @@ public class EmployeeService {
             return false;
         }
 
-        Employee employee = new Employee(username, password, Account.valueOf(employeerole));
+        Employee employee = new Employee(username, password, AccountEnum.valueOf(employeerole));
         if(employee == null) {
             return false;
         }

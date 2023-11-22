@@ -3,12 +3,10 @@ package it.uni.na.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
-import it.uni.na.constats.Account;
+import it.uni.na.constats.AccountEnum;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,7 +34,7 @@ public class Employee extends PanacheEntityBase {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "employee_role", nullable = false)
-    private Account employee_role;
+    private AccountEnum employee_role;
     @Column(name = "last_modified")
     private LocalDateTime last_modified;
     @Column(name = "first_login", nullable = false)
@@ -50,10 +48,10 @@ public class Employee extends PanacheEntityBase {
     private Business business;
 
     public Employee() {}
-    public Employee(String username, String password, Account account) {
+    public Employee(String username, String password, AccountEnum accountEnum) {
         this.username = username;
         this.password = password;
-        this.employee_role = account;
+        this.employee_role = accountEnum;
         this.last_modified = LocalDateTime.now();
         this.first_login = false;
         this.business = Business.find("SELECT b FROM Business b WHERE id = 1").firstResult();
@@ -103,12 +101,12 @@ public class Employee extends PanacheEntityBase {
         this.username = username;
     }
 
-    public Account getAccount() {
+    public AccountEnum getAccount() {
         return employee_role;
     }
 
-    public void setAccount(Account account) {
-        this.employee_role = account;
+    public void setAccount(AccountEnum accountEnum) {
+        this.employee_role = accountEnum;
     }
 
     public Long getId() {
@@ -171,10 +169,10 @@ public class Employee extends PanacheEntityBase {
 
     @Override
     public String toString() {
-        return "{" +
-                "\"username\": \"" + username + "\"," +
-                "\"employee_role\": \"" + employee_role + "\"," +
-                "\"last_modified\": \"" + last_modified + "\"" +
+        return "{\n" +
+                "\t\"username\": \"" + username + "\",\n" +
+                "\t\"employee_role\": \"" + employee_role + "\",\n" +
+                "\t\"last_modified\": \"" + last_modified + "\"\n" +
                 '}';
     }
 }

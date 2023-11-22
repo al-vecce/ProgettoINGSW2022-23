@@ -27,10 +27,10 @@ public class LoginResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("username");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in LOGIN/POST encountered.").status(400).build(); }
             username = temp_node.asText();
             temp_node = json_node.get("password");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in LOGIN/POST encountered.").status(400).build(); }
             password = temp_node.asText();
 
             result = LoginService.evaluateLoginFormService(username, password);
@@ -57,7 +57,7 @@ public class LoginResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("username");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN/USERNAME encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in LOGIN/USERNAME encountered.").status(400).build(); }
             username = temp_node.asText();
 
             result = FieldCheckService.checkUsernameValidityService(username);
@@ -83,7 +83,7 @@ public class LoginResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("password");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in LOGIN/PASSWORD encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in LOGIN/PASSWORD encountered.").status(400).build(); }
             password = temp_node.asText();
             result = FieldCheckService.checkPasswordValidityService(password);
             //json_node = objectMapper.createObjectNode();

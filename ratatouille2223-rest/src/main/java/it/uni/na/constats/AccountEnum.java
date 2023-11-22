@@ -1,5 +1,5 @@
 package it.uni.na.constats;
 
-public enum Account {
+public enum AccountEnum {
     AMMINISTRATORE, SUPERVISORE, ADDETTOSALA
 }

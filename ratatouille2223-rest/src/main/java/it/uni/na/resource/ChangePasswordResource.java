@@ -27,13 +27,13 @@ public class ChangePasswordResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("username");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in FIRSTLOGIN encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in FIRSTLOGIN/POST encountered.").status(400).build(); }
             username = temp_node.asText();
             temp_node = json_node.get("password");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in FIRSTLOGIN encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in FIRSTLOGIN/POST encountered.").status(400).build(); }
             password = temp_node.asText();
             temp_node = json_node.get("confirmation");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in FIRSTLOGIN encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in FIRSTLOGIN/POST encountered.").status(400).build(); }
             confirmation = temp_node.asText();
             result = ChangePasswordService.evaluateChangePasswordFormService(username, password, confirmation);
             newString = "{\"result\": \"" + result + "\" }";
@@ -41,10 +41,10 @@ public class ChangePasswordResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for FIRSTLOGIN encountered.", 500);
+            throw new WebApplicationException("JSON Mapping Error for FIRSTLOGIN/POST encountered.", 500);
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for FIRSTLOGIN encountered.", 500);
+            throw new WebApplicationException("JSON Parsing Error for FIRSTLOGIN/POST encountered.", 500);
         }
     }
     @POST
@@ -57,7 +57,7 @@ public class ChangePasswordResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("password");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in FIRSTLOGIN/PASSWORD encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in FIRSTLOGIN/PASSWORD encountered.").status(400).build(); }
             password = temp_node.asText();
             result = FieldCheckService.checkPasswordValidityService(password);
             newString = "{\"password\": \"" + result + "\" }";
@@ -81,7 +81,7 @@ public class ChangePasswordResource {
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("confirmation");
-            if(temp_node == null) { throw new WebApplicationException("Not enough arguments in FIRSTLOGIN/CONFIRMATION encountered.", 400); }
+            if(temp_node == null) { return Response.ok("Wrong arguments in FIRSTLOGIN/CONFIRMATION encountered.").status(400).build(); }
             password = temp_node.asText();
             result = FieldCheckService.checkPasswordValidityService(password);
             newString = "{\"confirmation\": \"" + result + "\" }";

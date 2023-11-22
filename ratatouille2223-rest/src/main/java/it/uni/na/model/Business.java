@@ -1,13 +1,18 @@
 package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
-@Table(name = "business")
+@NamedQueries(
+        @NamedQuery(name = "Business.getBusinessByID", query = "SELECT b.business_name FROM Business b WHERE b.id = :id")
+)
 public class Business extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Business_SEQ")
@@ -26,7 +31,7 @@ public class Business extends PanacheEntityBase {
 
     @Lob
     @Column(name = "business_logo")
-    private Byte[] business_logo;
+    private byte[] business_logo;
 
     @Transient
     private String business_logo_encoded;
@@ -39,10 +44,32 @@ public class Business extends PanacheEntityBase {
 
     @Lob
     @Column(name = "business_qr")
-    private Byte[] business_qr;
+    private byte[] business_qr;
+
+    @Column(name = "business_qr_type")
+    private String business_qr_type;
+
+    @Transient
+    private String business_qr_encoded;
 
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
+
+    public String getBusiness_qr_encoded() {
+        return business_qr_encoded;
+    }
+
+    public void setBusiness_qr_encoded(String business_qr_encoded) {
+        this.business_qr_encoded = business_qr_encoded;
+    }
+
+    public String getBusiness_qr_type() {
+        return business_qr_type;
+    }
+
+    public void setBusiness_qr_type(String business_qr_type) {
+        this.business_qr_type = business_qr_type;
+    }
 
     public List<Employee> getEmployees() {
         return employees;
@@ -52,11 +79,11 @@ public class Business extends PanacheEntityBase {
         this.employees = employees;
     }
 
-    public Byte[] getBusiness_qr() {
+    public byte[] getBusiness_qr() {
         return business_qr;
     }
 
-    public void setBusiness_qr(Byte[] business_qr) {
+    public void setBusiness_qr(byte[] business_qr) {
         this.business_qr = business_qr;
     }
 
@@ -84,11 +111,11 @@ public class Business extends PanacheEntityBase {
         this.business_logo_encoded = business_logo_encoded;
     }
 
-    public Byte[] getBusiness_logo() {
+    public byte[] getBusiness_logo() {
         return business_logo;
     }
 
-    public void setBusiness_logo(Byte[] business_logo) {
+    public void setBusiness_logo(byte[] business_logo) {
         this.business_logo = business_logo;
     }
 
@@ -124,4 +151,21 @@ public class Business extends PanacheEntityBase {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "{\n" +
+                "\t\"business_name\": \"" + business_name + "\",\n" +
+                "\t\"business_phone_number\": \"" + business_phone_number + "\",\n" +
+                "\t\"business_address\": \"" + business_address + "\",\n" +
+                "\t\"business_logo_encoded\": \"" + business_logo_encoded + "\",\n" +
+                "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
+                "\t\"business_logo_name\": \"" + business_logo_name + "\"\n" +
+                "}";
+    }
+
+    @Transactional
+    public static Business findPrimaryBusiness() {
+        //return Business.find("#Business.getBusinessByID", Parameters.with("id", 1)).firstResult();
+        return Business.find("id", 1).firstResult();
+    }
 }

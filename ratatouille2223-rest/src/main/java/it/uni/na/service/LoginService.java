@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 
 public class LoginService {
+    private LoginService() {}
     public static Boolean evaluateLoginFormService(String username, String password) {
         if(username == null || password == null) {
             return false;
