@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HomepageCheckService {
-    private HomepageCheckService() {}
-    public static List<String> findAllOpenChecksOrderedByModeService(String mode, Integer page) {
+public class CheckHistoryService {
+    public static List<String> findAllClosedChecksOrderedByModeService(String mode, Integer page) {
         List<RestaurantCheck> return_list;
         List<String> return_string_list = new LinkedList<>();
         if(page == null || page < 0) {
@@ -20,19 +19,19 @@ public class HomepageCheckService {
         }
         switch (mode) {
             case ModeConstants.BYID:
-                return_list = RestaurantCheck.findAllChecksOrderedById(page, true);
+                return_list = RestaurantCheck.findAllChecksOrderedById(page, false);
                 break;
             case ModeConstants.BYTABLE:
-                return_list = RestaurantCheck.findAllChecksOrderedByTable(page, true);
+                return_list = RestaurantCheck.findAllChecksOrderedByTable(page, false);
                 break;
             case ModeConstants.BYOPENINGDATE:
-                return_list = RestaurantCheck.findAllChecksOrderedByOpeningTime(page, true);
+                return_list = RestaurantCheck.findAllChecksOrderedByOpeningTime(page, false);
                 break;
             case ModeConstants.BYCLOSINGDATE:
-                return_list = RestaurantCheck.findAllChecksOrderedByClosingTime(page, true);
+                return_list = RestaurantCheck.findAllChecksOrderedByClosingTime(page, false);
                 break;
             case ModeConstants.BYTOTALCOST:
-                return_list = RestaurantCheck.findAllChecksOrderedByTotal(page, true);
+                return_list = RestaurantCheck.findAllChecksOrderedByTotal(page, false);
                 break;
             default:
                 return_list = new ArrayList<>();
@@ -43,7 +42,7 @@ public class HomepageCheckService {
         return return_string_list;
     }
 
-    public static List<String> findAllOpenChecksFilteredOrderedByModeService(String mode, String filterstart, String filterend, Integer page) {
+    public static List<String> findAllClosedChecksFilteredOrderedByModeService(String mode, String filterstart, String filterend, Integer page) {
         List<RestaurantCheck> return_list;
         List<String> return_string_list = new LinkedList<>();
         LocalDateTime start, end;
@@ -56,26 +55,26 @@ public class HomepageCheckService {
         start = LocalDateTime.parse(filterstart);
         if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
             filterend = LocalDateTime.now().toString();
-        }end = LocalDateTime.parse(filterend);
-
+        }
+        end = LocalDateTime.parse(filterend);
         if(filterstart.compareTo(filterend) >= 0) {
             mode = "invalid, don't return anything";
         }
         switch (mode) {
             case ModeConstants.BYID:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedById(page, start, end, true);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedById(page, start, end, false);
                 break;
             case ModeConstants.BYTABLE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTable(page, start, end, true);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTable(page, start, end, false);
                 break;
             case ModeConstants.BYOPENINGDATE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByOpeningTime(page, start, end, true);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedByOpeningTime(page, start, end, false);
                 break;
             case ModeConstants.BYCLOSINGDATE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByClosingTime(page, start, end, true);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedByClosingTime(page, start, end, false);
                 break;
             case ModeConstants.BYTOTALCOST:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTotal(page, start, end, true);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTotal(page, start, end, false);
                 break;
             default:
                 return_list = new ArrayList<>();
@@ -85,20 +84,8 @@ public class HomepageCheckService {
         }
         return return_string_list;
     }
-    public static Integer findNumberOfPagesOfOpenChecksService() {
-        return RestaurantCheck.findChecksPages(true);
-    }
-
-    @Transactional
-    public static Boolean evaluateCloseOpenCheckService(Long checkid) {
-        RestaurantCheck check = RestaurantCheck.findCheckById(checkid);
-        if(check == null) {
-            return false;
-        }
-        check.setCheck_status(false);
-        check.setClosing_date_time(LocalDateTime.now());
-        check.persist();
-        return true;
+    public static Integer findNumberOfPagesOfClosedChecksService() {
+        return RestaurantCheck.findChecksPages(false);
     }
 
     public static List<String> findAllOrdersOrderedByModeService(String mode, Long checkid) {
@@ -126,19 +113,12 @@ public class HomepageCheckService {
         return return_string_list;
     }
     @Transactional
-    public static Boolean evaluateOrderModificationService(Long orderid, Integer quantityoffset) {
-        int temp;
-        RestaurantOrder order = RestaurantOrder.findOrderById(orderid);
-        if(order == null) {
+    public static Boolean evaluateDeleteClosedCheckService(Long checkid) {
+        RestaurantCheck check = RestaurantCheck.findCheckById(checkid);
+        if(check == null) {
             return false;
         }
-        temp = order.getQuantity() - quantityoffset;
-        if(temp <= 0) {
-            order.setQuantity(0);
-        } else {
-            order.setQuantity(quantityoffset);
-        }
-        order.persist();
+        check.delete();
         return true;
     }
 }
