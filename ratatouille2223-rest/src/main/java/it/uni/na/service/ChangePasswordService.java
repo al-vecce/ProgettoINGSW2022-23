@@ -15,16 +15,19 @@ public class ChangePasswordService {
     public static Boolean evaluateChangePasswordFormService(String username, String password, String confirmation) {
         String tempString1, tempString2;
         tempString1 = FieldCheckService.checkPasswordValidityService(password);
-        if(!tempString1.contains("correct")) {
+        if(!tempString1.contains(FieldCheckService.CORRECT)) {
             return false;
         }
         tempString2 = FieldCheckService.checkPasswordValidityService(confirmation);
-        if(!tempString2.contains("correct")) {
+        if(!tempString2.contains(FieldCheckService.CORRECT)) {
             return false;
         } else if (!tempString1.equals(tempString2)) {
             return false;
         }
         Employee employee = Employee.findEmployeeByUsername(username);
+        if(employee == null) {
+            return false;
+        }
         if(employee.getPassword().equals(password)) {
             return false;
         }

@@ -41,6 +41,9 @@ public class BusinessInformationService {
             }
         }
         Business business = Business.findPrimaryBusiness();
+        if(business == null) {
+            return false;
+        }
         business.setBusiness_name(businessname);
         business.setBusiness_address(businessaddress);
         business.setBusiness_phone_number(businessphonenumber);

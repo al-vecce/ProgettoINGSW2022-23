@@ -162,6 +162,17 @@ public class Business extends PanacheEntityBase {
                 "\t\"business_logo_name\": \"" + business_logo_name + "\"\n" +
                 "}";
     }
+    public String toStringQR() {
+        return "{\n" +
+                "\t\"business_name\": \"" + business_name + "\",\n" +
+                "\t\"business_phone_number\": \"" + business_phone_number + "\",\n" +
+                "\t\"business_address\": \"" + business_address + "\",\n" +
+                "\t\"business_logo_encoded\": \"" + business_logo_encoded + "\",\n" +
+                "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
+                "\t\"business_logo_name\": \"" + business_logo_name + "\"\n" +
+                "\t\"business_qr_encoded\": \"" + business_logo_encoded + "\"\n" +
+                "}";
+    }
 
     @Transactional
     public static Business findPrimaryBusiness() {

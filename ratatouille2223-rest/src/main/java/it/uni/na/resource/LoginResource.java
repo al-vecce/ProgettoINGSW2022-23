@@ -4,11 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.smallrye.jwt.build.Jwt;
 import it.uni.na.service.FieldCheckService;
 import it.uni.na.service.LoginService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import java.util.Arrays;
+import java.util.HashSet;
 
 // TODO LOGGER
 @Path("/login")
@@ -17,13 +25,17 @@ public class LoginResource {
     @Inject
     ObjectMapper objectMapper;
 
+    @Inject
+    JsonWebToken jwt;
+
     @POST
+    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     public Response postLogin(String json_request) {
         JsonNode json_node = null, temp_node;
         String newString = null, username, password;
-        Boolean result;
+        String result;
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("username");
@@ -35,7 +47,7 @@ public class LoginResource {
 
             result = LoginService.evaluateLoginFormService(username, password);
             //json_node = objectMapper.createObjectNode();
-            newString = "{\"result\": \"" + result + "\", " +
+            newString = "{\"JWT Authentication Code\": \"" + result + "\", " +
                         "\"firstlogin\": \"" + LoginService.checkFirstLoginStatus(username) + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
@@ -48,6 +60,7 @@ public class LoginResource {
         }
     }
     @POST
+    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/username")
@@ -74,6 +87,7 @@ public class LoginResource {
         }
     }
     @POST
+    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/password")
