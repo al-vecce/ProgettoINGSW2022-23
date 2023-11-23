@@ -12,3 +12,23 @@ INSERT INTO Employee(id, username, password, employee_role, last_modified, first
 INSERT INTO Employee(id, username, password, employee_role, last_modified, first_login, business_id) VALUES (3, 'Utente02', 'Password&2', 'ADDETTOSALA', '06/06/2023', false, 1);
 INSERT INTO Employee(id, username, password, employee_role, last_modified, first_login, business_id) VALUES (4, 'Utente03', 'Password&3', 'ADDETTOSALA', '07/07/2023', false, 1);
 ALTER sequence Employee_SEQ restart WITH 5;
+
+INSERT INTO MenuCategory(id) VALUES(1);
+INSERT INTO MenuCategory(id) VALUES(2);
+INSERT INTO MenuCategory(id) VALUES(3);
+ALTER sequence MenuElement_SEQ restart WITH 4;
+
+INSERT INTO MenuElement(id, menu_category_id) VALUES(1, 1);
+INSERT INTO MenuElement(id, menu_category_id) VALUES(2, 1);
+INSERT INTO MenuElement(id, menu_category_id) VALUES(3, 1);
+ALTER sequence MenuElement_SEQ restart WITH 4;
+
+INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(1, true, 0.0, '2023/08/08', 6);
+INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(2, true, 0.0, '2023/07/07', 2);
+INSERT INTO RestaurantCheck(id, check_status, check_total, closing_date_time, opening_date_time, check_table) VALUES(3, false, 0.0, '2023/06/06', '2023/05/05', 1);
+ALTER sequence Check_SEQ restart WITH 4;
+
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(1, 5, 0.0, 2.0, 1, 1);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(2, 20, 0.0, 3.0, 1, 2);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(3, 4, 0.0, 1.0, 1, 3);
+ALTER sequence Order_SEQ restart WITH 4;

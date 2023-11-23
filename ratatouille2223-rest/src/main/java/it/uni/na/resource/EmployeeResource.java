@@ -87,10 +87,10 @@ public class EmployeeResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for UPDATEMPLOYEE encountered.", 500);
+            throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/UPDATE encountered.", 500);
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for UPDATEMPLOYEE encountered.", 500);
+            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/UPDATE encountered.", 500);
         }
     }
     @PUT
@@ -118,7 +118,7 @@ public class EmployeeResource {
             throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/CREATE encountered.", 500);
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for UPDATEMPLOYEE encountered.", 500);
+            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/CREATE encountered.", 500);
         }
     }
     @DELETE

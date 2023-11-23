@@ -15,7 +15,7 @@ public class MenuElement extends PanacheEntityBase {
     private Long id;
 
     @OneToMany(mappedBy = "menuElement")
-    private Set<Order> orders = new LinkedHashSet<>();
+    private Set<RestaurantOrder> restaurantOrders = new LinkedHashSet<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "menu_category_id", nullable = false)
@@ -29,12 +29,12 @@ public class MenuElement extends PanacheEntityBase {
         this.menuCategory = menuCategory;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public Set<RestaurantOrder> getOrders() {
+        return restaurantOrders;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
+    public void setOrders(Set<RestaurantOrder> restaurantOrders) {
+        this.restaurantOrders = restaurantOrders;
     }
 
     public Long getId() {
