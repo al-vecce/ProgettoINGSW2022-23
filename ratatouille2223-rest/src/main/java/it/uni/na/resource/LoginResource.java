@@ -20,6 +20,7 @@ import java.util.HashSet;
 
 // TODO LOGGER
 @Path("/login")
+@PermitAll
 public class LoginResource {
 
     @Inject
@@ -29,7 +30,6 @@ public class LoginResource {
     JsonWebToken jwt;
 
     @POST
-    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     public Response postLogin(String json_request) {
@@ -60,7 +60,6 @@ public class LoginResource {
         }
     }
     @POST
-    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/username")
@@ -87,7 +86,6 @@ public class LoginResource {
         }
     }
     @POST
-    @PermitAll
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/password")

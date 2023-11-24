@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.uni.na.service.HomepageCheckService;
+import it.uni.na.service.HomepageService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -28,7 +28,7 @@ public class HomepageResource {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETCHECKS encountered.").status(400).build();
         }
 
-        List<String> list = HomepageCheckService.findAllOpenChecksOrderedByModeService(mode, page);
+        List<String> list = HomepageService.findAllOpenChecksOrderedByModeService(mode, page);
         if(list.isEmpty()) {
             return Response.ok("{ \"openchecks\": \"null\" }").build();
         }
@@ -63,7 +63,7 @@ public class HomepageResource {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
 
-        List<String> list = HomepageCheckService.findAllOpenChecksFilteredOrderedByModeService(mode, filterstart, filterend, page);
+        List<String> list = HomepageService.findAllOpenChecksFilteredOrderedByModeService(mode, filterstart, filterend, page);
 
         if(list.isEmpty()) {
             return Response.ok("{ \"openchecks\": \"null\" }").build();
@@ -97,7 +97,7 @@ public class HomepageResource {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
 
-        List<String> list = HomepageCheckService.findAllOrdersOrderedByModeService(mode, checkid);
+        List<String> list = HomepageService.findAllOrdersOrderedByModeService(mode, checkid);
 
         if(list.isEmpty()) {
             return Response.ok("{ \"orders\": \"null\" }").build();
@@ -125,7 +125,7 @@ public class HomepageResource {
     @Produces("application/json")
     @Path("/pages")
     public Response getNumberOfPages() {
-        Integer value = HomepageCheckService.findNumberOfPagesOfOpenChecksService();
+        Integer value = HomepageService.findNumberOfPagesOfOpenChecksService();
         return Response.ok(value).build();
     }
     @POST
@@ -143,7 +143,7 @@ public class HomepageResource {
         String newString;
         Boolean result;
         try {
-            result = HomepageCheckService.evaluateOrderModificationService(orderid, quantityoffset);
+            result = HomepageService.evaluateOrderModificationService(orderid, quantityoffset);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
@@ -158,7 +158,7 @@ public class HomepageResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("/closeorder")
+    @Path("/closecheck")
     public Response postCloseOpenCheckById(@QueryParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/CLOSECHECK encountered.").status(400).build();
@@ -168,7 +168,7 @@ public class HomepageResource {
         String newString;
         Boolean result;
         try {
-            result = HomepageCheckService.evaluateCloseOpenCheckService(checkid);
+            result = HomepageService.evaluateCloseOpenCheckService(checkid);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();

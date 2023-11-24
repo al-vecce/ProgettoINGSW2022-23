@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.CheckHistoryService;
-import it.uni.na.service.HomepageCheckService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -16,6 +15,7 @@ import java.util.List;
 @Path("/history")
 @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class CheckHistoryResource {
+
     @Inject
     ObjectMapper objectMapper;
 
@@ -131,7 +131,7 @@ public class CheckHistoryResource {
     @DELETE
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("/closeorder")
+    @Path("/deletecheck")
     public Response deleteCloseOpenCheckById(@QueryParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/CLOSECHECK encountered.").status(400).build();

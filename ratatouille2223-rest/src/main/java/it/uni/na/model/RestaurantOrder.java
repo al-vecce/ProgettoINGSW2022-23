@@ -1,7 +1,6 @@
 package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.panache.common.Page;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
@@ -123,8 +122,21 @@ public class RestaurantOrder extends PanacheEntityBase {
         return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY o.order_total", checkid).list();
     }
 
-    @PostUpdate
-    public void postUpdate() {
-        this.order_total = quantity * current_price;
+    @PostLoad
+    public void PostLoad() {
+        this.setOrder_total(quantity * current_price);
+        this.persist();
+    }
+    @PrePersist
+    public void PostPersist() {
+        this.setOrder_total(quantity * current_price);
+    }
+    @PreUpdate
+    public void preUpdate() {
+        if(this.quantity <= 0) {
+            this.delete();
+        } else {
+            this.setOrder_total(quantity * current_price);
+        }
     }
 }

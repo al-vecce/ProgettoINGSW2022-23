@@ -160,11 +160,23 @@ public class RestaurantCheck extends PanacheEntityBase {
         return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.id", checkstatus).page(Page.ofSize(10)).pageCount();
     }
 
-    @PostUpdate
-    public void postUpdate() {
+    @PostLoad
+    public void postLoad() {
         for(RestaurantOrder o: this.restaurantOrders) {
-            this.check_total += o.getOrder_total();
+            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
         }
         this.persist();
+    }
+    @PrePersist
+    public void postPersist() {
+        for(RestaurantOrder o: this.restaurantOrders) {
+            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
+        }
+    }
+    @PreUpdate
+    public void preUpdate() {
+        for(RestaurantOrder o: this.restaurantOrders) {
+            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
+        }
     }
 }

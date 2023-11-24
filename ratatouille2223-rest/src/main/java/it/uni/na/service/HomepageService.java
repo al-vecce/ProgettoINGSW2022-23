@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class HomepageCheckService {
-    private HomepageCheckService() {}
+public class HomepageService {
+    private HomepageService() {}
     public static List<String> findAllOpenChecksOrderedByModeService(String mode, Integer page) {
         List<RestaurantCheck> return_list;
         List<String> return_string_list = new LinkedList<>();
@@ -132,13 +132,14 @@ public class HomepageCheckService {
         if(order == null) {
             return false;
         }
-        temp = order.getQuantity() - quantityoffset;
+        temp = order.getQuantity() + quantityoffset;
         if(temp <= 0) {
             order.setQuantity(0);
         } else {
-            order.setQuantity(quantityoffset);
+            order.setQuantity(temp);
         }
         order.persist();
+        boolean tmp = false;
         return true;
     }
 }
