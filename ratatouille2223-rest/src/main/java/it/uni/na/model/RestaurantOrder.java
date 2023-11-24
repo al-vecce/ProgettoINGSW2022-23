@@ -128,4 +128,14 @@ public class RestaurantOrder extends PanacheEntityBase {
             this.setOrder_total(quantity * current_price);
         }
     }
+    public RestaurantOrder() {}
+    public RestaurantOrder(Integer quantity, Float current_price) {
+        this.quantity = quantity;
+        this.current_price = current_price;
+    }
+    public RestaurantOrder(Integer quantity, Float current_price, String description) {
+        this.quantity = quantity;
+        this.current_price = current_price;
+        this.description = description;
+    }
 }

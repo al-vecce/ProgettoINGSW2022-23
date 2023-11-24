@@ -88,10 +88,9 @@ public class HomepageResource {
     }
     @GET
     @Produces("application/json")
-    @Path("/orders")
-    //@Path("?mode={mode}&page={page}")
+    @Path("/{check}/orders")
     public Response getAllOpenChecksOrdersOrderedByMode(@QueryParam("mode") String mode,
-                                                        @QueryParam("checkid") Long checkid) {
+                                                        @PathParam("check") Long checkid) {
         if(mode == null || checkid == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
@@ -130,7 +129,7 @@ public class HomepageResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("{order}")
+    @Path("/orders/{order}")
     public Response postUpdateOrderWithOrderId(@PathParam("order") Long orderid,
                                                String json_request) {
         if(orderid == null || json_request == null || json_request.isBlank()) {

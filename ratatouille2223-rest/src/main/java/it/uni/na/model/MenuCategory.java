@@ -140,4 +140,10 @@ public class MenuCategory extends PanacheEntityBase {
     public static Integer findCategoryPages() {
         return RestaurantCheck.find("SELECT c FROM MenuCategory c").page(Page.ofSize(10)).pageCount();
     }
+
+    public MenuCategory() {}
+    public MenuCategory(String name, LocalDateTime lastmodified) {
+        this.name = name;
+        last_modified = lastmodified;
+    }
 }

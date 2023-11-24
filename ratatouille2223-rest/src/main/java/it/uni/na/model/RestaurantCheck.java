@@ -144,4 +144,11 @@ public class RestaurantCheck extends PanacheEntityBase {
             this.setCheck_total(this.getCheck_total() + o.getOrder_total());
         }
     }
+
+    public RestaurantCheck() {}
+    public RestaurantCheck(LocalDateTime openingtime, Integer table) {
+        check_status = false;
+        opening_date_time = openingtime;
+        check_table = table;
+    }
 }
