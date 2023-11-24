@@ -23,7 +23,7 @@ public class CheckHistoryResource {
     @Produces("application/json")
     //@Path("?mode={mode}&page={page}")
     public Response getAllClosedChecksOrderedByMode(@QueryParam("mode") String mode,
-                                                  @QueryParam("page") Integer page) {
+                                                    @QueryParam("page") Integer page) {
         if(mode == null || page == null) {
             return Response.ok("Inaccurate arguments in HISTORY/GETCHECKS encountered.").status(400).build();
         }
@@ -56,9 +56,9 @@ public class CheckHistoryResource {
     @Path("/filter")
     //@Path("?mode={mode}&filterstart={filterstart}&filterend={filterend}&page={page}")
     public Response getAllClosedChecksFilteredOrderedByMode(@QueryParam("mode") String mode,
-                                                          @QueryParam("filterstart") String filterstart,
-                                                          @QueryParam("filterend") String filterend,
-                                                          @QueryParam("page") Integer page) {
+                                                            @QueryParam("filterstart") String filterstart,
+                                                            @QueryParam("filterend") String filterend,
+                                                            @QueryParam("page") Integer page) {
         if(mode == null || page == null || filterstart == null || filterend == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
@@ -92,7 +92,7 @@ public class CheckHistoryResource {
     @Path("/orders")
     //@Path("?mode={mode}&page={page}")
     public Response getAllClosedChecksOrdersOrderedByMode(@QueryParam("mode") String mode,
-                                                        @QueryParam("checkid") Long checkid) {
+                                                          @QueryParam("checkid") Long checkid) {
         if(mode == null || checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/GETORDERS encountered.").status(400).build();
         }

@@ -21,6 +21,17 @@ public class MenuElement extends PanacheEntityBase {
     @JoinColumn(name = "menu_category_id", nullable = false)
     private MenuCategory menuCategory;
 
+    @Column(name = "price")
+    private Float price;
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
     public MenuCategory getMenuCategory() {
         return menuCategory;
     }

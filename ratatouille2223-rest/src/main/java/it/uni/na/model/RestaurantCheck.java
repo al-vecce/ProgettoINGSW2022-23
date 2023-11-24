@@ -157,7 +157,7 @@ public class RestaurantCheck extends PanacheEntityBase {
     }
     @Transactional
     public static Integer findChecksPages(Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.id", checkstatus).page(Page.ofSize(10)).pageCount();
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", checkstatus).page(Page.ofSize(10)).pageCount();
     }
 
     @PostLoad
