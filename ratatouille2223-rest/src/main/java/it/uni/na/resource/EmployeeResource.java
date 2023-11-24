@@ -22,12 +22,36 @@ public class EmployeeResource {
     ObjectMapper objectMapper;
 
     @GET
-    //@Path("?mode={mode}&page={page}")
-    public Response getAllEmployeesOrderedByMode(@QueryParam("mode") String mode, @QueryParam("page") Integer page) {
+    @Produces("application/json")
+    public Response getAllEmployees() {
 
-        /*if(!BusinessInformationService.existsBusiness(businessname)) {
-            return Response.status(401).build();
-        }*/
+        List<String> list = EmployeeService.findAllEmployeesOrderedByModeService("BYUSERNAME", 0);
+
+        if(list.isEmpty()) {
+            return Response.ok("{ \"employees\": \"null\" }").build();
+        }
+
+        JsonNode json_node;
+        String newString;
+        try {
+            newString = "{ \"employees\": [";
+            for (String s: list) {
+                newString = newString + s + ",";
+            }
+            newString = newString.substring(0, newString.length() - 1) + "]}";
+            json_node = objectMapper.readTree(newString);
+        }
+        catch (JsonMappingException ex1){
+            return Response.ok("JSON Mapping Error for EMPLOYEES/GET Encountered.").status(500).build();
+        }
+        catch (JsonProcessingException ex2){
+            return Response.ok("JSON Parsing Error for EMPLOYEES/GET Encountered.").status(500).build();
+        }
+        return Response.ok(json_node.toPrettyString()).build();
+    }
+    @GET
+    @Produces("application/json")
+    public Response getAllEmployeesOrderedByMode(@QueryParam("mode") String mode, @QueryParam("page") Integer page) {
 
         List<String> list = EmployeeService.findAllEmployeesOrderedByModeService(mode, page);
 
@@ -46,20 +70,23 @@ public class EmployeeResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/GET Encountered.", 500);
+            return Response.ok("JSON Mapping Error for EMPLOYEES/GET Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/GET Encountered.", 500);
+            return Response.ok("JSON Parsing Error for EMPLOYEES/GET Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
     @GET
     @Path("/pages")
+    @Produces("application/json")
     public Response getNumberOfPages() {
         Integer value = EmployeeService.findNumberOfPagesOfEmployeesService();
         return Response.ok(value).build();
     }
     @POST
+    @Consumes("application/json")
+    @Produces("application/json")
     public Response postUpdateEmployeeByUsername(String json_request) {
         JsonNode json_node, temp_node;
         String newString, oldusername, employeerole, username, password, confirmation;
@@ -87,13 +114,15 @@ public class EmployeeResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/UPDATE encountered.", 500);
+            return Response.ok("JSON Mapping Error for EMPLOYEES/UPDATE encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/UPDATE encountered.", 500);
+            return Response.ok("JSON Parsing Error for EMPLOYEES/UPDATE encountered.").status(500).build();
         }
     }
     @PUT
+    @Consumes("application/json")
+    @Produces("application/json")
     public Response putEmployeeByUsername(String json_request) {
         JsonNode json_node, temp_node;
         String newString, employeerole, username, password;
@@ -115,13 +144,15 @@ public class EmployeeResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/CREATE encountered.", 500);
+            return Response.ok("JSON Mapping Error for EMPLOYEES/CREATE encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/CREATE encountered.", 500);
+            return Response.ok("JSON Parsing Error for EMPLOYEES/CREATE encountered.").status(500).build();
         }
     }
     @DELETE
+    @Consumes("application/json")
+    @Produces("application/json")
     public Response deleteEmployeeByUsername(String json_request) {
         JsonNode json_node, temp_node;
         String newString, username;
@@ -137,10 +168,10 @@ public class EmployeeResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for EMPLOYEES/DELETE encountered.", 500);
+            return Response.ok("JSON Mapping Error for EMPLOYEES/DELETE encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for EMPLOYEES/DELETE encountered.", 500);
+            return Response.ok("JSON Parsing Error for EMPLOYEES/DELETE encountered.").status(500).build();
         }
     }
 }

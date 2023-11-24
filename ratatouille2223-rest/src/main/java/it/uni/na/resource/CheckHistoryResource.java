@@ -21,10 +21,37 @@ public class CheckHistoryResource {
 
     @GET
     @Produces("application/json")
-    //@Path("?mode={mode}&page={page}")
+    public Response getAllClosedChecksOrderedByMode() {
+
+        List<String> list = CheckHistoryService.findAllClosedChecksOrderedByModeService("BYID", 0);
+        if(list.isEmpty()) {
+            return Response.ok("{ \"closedchecks\": \"null\" }").build();
+        }
+
+        JsonNode json_node;
+        String newString;
+        try {
+            newString = "{ \"closedchecks\": [";
+            for (String s: list) {
+                newString = newString + s + ",";
+            }
+            newString = newString.substring(0, newString.length() - 1) + "]}";
+            json_node = objectMapper.readTree(newString);
+        }
+        catch (JsonMappingException ex1){
+            return Response.ok("JSON Mapping Error for HISTORY/GETCHECKS Encountered.").status(500).build();
+        }
+        catch (JsonProcessingException ex2){
+            return Response.ok("JSON Parsing Error for HISTORY/GETCHECKS Encountered.").status(500).build();
+        }
+        return Response.ok(json_node.toPrettyString()).build();
+    }
+
+    @GET
+    @Produces("application/json")
     public Response getAllClosedChecksOrderedByMode(@QueryParam("mode") String mode,
                                                     @QueryParam("page") Integer page) {
-        if(mode == null || page == null) {
+        if(mode == null || mode.isBlank() || page == null) {
             return Response.ok("Inaccurate arguments in HISTORY/GETCHECKS encountered.").status(400).build();
         }
 
@@ -44,22 +71,22 @@ public class CheckHistoryResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HISTORY/GETCHECKS Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HISTORY/GETCHECKS Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HISTORY/GETCHECKS Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HISTORY/GETCHECKS Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
     @GET
     @Produces("application/json")
     @Path("/filter")
-    //@Path("?mode={mode}&filterstart={filterstart}&filterend={filterend}&page={page}")
     public Response getAllClosedChecksFilteredOrderedByMode(@QueryParam("mode") String mode,
                                                             @QueryParam("filterstart") String filterstart,
                                                             @QueryParam("filterend") String filterend,
                                                             @QueryParam("page") Integer page) {
-        if(mode == null || page == null || filterstart == null || filterend == null) {
+        if(mode == null || page == null || filterstart == null || filterend == null ||
+                mode.isBlank() || filterstart.isBlank() || filterend.isBlank()) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
 
@@ -80,20 +107,19 @@ public class CheckHistoryResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HISTORY/GETCHECKSFILTERED Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HISTORY/GETCHECKSFILTERED Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HISTORY/GETCHECKSFILTERED Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HISTORY/GETCHECKSFILTERED Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
     @GET
     @Produces("application/json")
-    @Path("/orders")
-    //@Path("?mode={mode}&page={page}")
+    @Path("/{checkid}/orders")
     public Response getAllClosedChecksOrdersOrderedByMode(@QueryParam("mode") String mode,
-                                                          @QueryParam("checkid") Long checkid) {
-        if(mode == null || checkid == null) {
+                                                          @PathParam("checkid") Long checkid) {
+        if(mode == null || mode.isBlank() || checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/GETORDERS encountered.").status(400).build();
         }
 
@@ -114,10 +140,10 @@ public class CheckHistoryResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HISTORY/GETORDERS Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HISTORY/GETORDERS Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HISTORY/GETORDERS Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HISTORY/GETORDERS Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
@@ -131,7 +157,7 @@ public class CheckHistoryResource {
     @DELETE
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("/deletecheck")
+    @Path("{check}")
     public Response deleteCloseOpenCheckById(@QueryParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/CLOSECHECK encountered.").status(400).build();
@@ -147,10 +173,10 @@ public class CheckHistoryResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HISTORY/CLOSECHECK encountered.", 500);
+            return Response.ok("JSON Mapping Error for HISTORY/CLOSECHECK encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HISTORY/CLOSECHECK encountered.", 500);
+            return Response.ok("JSON Parsing Error for HISTORY/CLOSECHECK encountered.").status(500).build();
         }
     }
 }

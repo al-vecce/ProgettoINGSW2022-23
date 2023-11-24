@@ -45,10 +45,10 @@ public class QRGenerationResource {
             return Response.ok(newString).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for BUSINESS-INFORMATION/QR-GENERATION/POST Encountered.", 500);
+            return Response.ok("JSON Mapping Error for BUSINESS-INFORMATION/QR-GENERATION/POST Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for BUSINESS-INFORMATION/QR-GENERATION/POST Encountered.", 500);
+            return Response.ok("JSON Parsing Error for BUSINESS-INFORMATION/QR-GENERATION/POST Encountered.").status(500).build();
         }
     }
 }

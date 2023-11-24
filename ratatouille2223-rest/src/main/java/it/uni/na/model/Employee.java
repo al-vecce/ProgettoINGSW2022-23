@@ -11,17 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Employee.getEmployeeByName", query = "SELECT c FROM Employee c WHERE c.username = :username"),
-        //@NamedQuery(name = "Employee.getAllEmployeesOrderedByName", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.username"),
-        //@NamedQuery(name = "Employee.getAllEmployeesOrderedByEmployeeRole", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.employee_role, c.username"),
-        //@NamedQuery(name = "Employee.getAllEmployeesOrderedByLastModified", query = "SELECT c.username, c.password, c.employee_role, c.last_modified, c.first_login FROM Employee c ORDER BY c.last_modified, c.username"),
-        @NamedQuery(name = "Employee.getAllEmployeesOrderedByName", query = "SELECT c FROM Employee c ORDER BY c.username"),
-        @NamedQuery(name = "Employee.getAllEmployeesOrderedByEmployeeRole", query = "SELECT c FROM Employee c ORDER BY c.employee_role, c.username"),
-        @NamedQuery(name = "Employee.getAllEmployeesOrderedByLastModified", query = "SELECT c FROM Employee c ORDER BY c.last_modified, c.username"),
-        @NamedQuery(name = "Employee.getSignInRecord", query = "SELECT c.username, c.password FROM Employee c ORDER BY c.username"),
-        @NamedQuery(name = "Employee.getFirstLoginStatus", query = "SELECT c.username, c.first_login FROM Employee c WHERE ( c.username = :username AND c.first_login = :first_login )")
-})
 public class Employee extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Employee_SEQ")
@@ -119,7 +108,8 @@ public class Employee extends PanacheEntityBase {
 
     @Transactional
     public static Boolean signIn(String username, String password) {
-        Object employee = Employee.find("#Employee.getSignInRecord").firstResult();
+        Object employee = Employee.find("SELECT c FROM Employee c WHERE c.username = ?1 AND c.password = ?2"
+                , username, password).firstResult();
         if(employee != null) {
             return true;
         }
@@ -134,30 +124,20 @@ public class Employee extends PanacheEntityBase {
     // TODO sostituire 10 con una costante
     @Transactional
     public static Employee findEmployeeByUsername(String username) {
-        return Employee.find("#Employee.getEmployeeByName", Parameters.with("username", username)).firstResult();
+        return Employee.find("SELECT e FROM Employee e WHERE e.username = ?1", username).firstResult();
     }
     @Transactional
-    public static List<Employee> findAllEmployeesOrderedByUsername(Integer page) {
-        List<Employee> list = Employee.find("#Employee.getAllEmployeesOrderedByName").page(Page.of(page,10)).list();
-        return list;
-    }
-    @Transactional
-    public static List<Employee> findAllEmployeesOrderedByEmployeeRole(Integer page) {
-        List<Employee> list = Employee.find("#Employee.getAllEmployeesOrderedByEmployeeRole").page(Page.of(page,10)).list();
-        return list;
-    }
-    @Transactional
-    public static List<Employee> findAllEmployeesOrderedByLastModified(Integer page) {
-        List<Employee> list = Employee.find("#Employee.getAllEmployeesOrderedByLastModified").page(Page.of(page,10)).list();
-        return list;
+    public static List<Employee> findAllEmployeesOrderedBy(Integer page, String order) {
+        return Employee.find("SELECT e FROM Employee e ORDER BY ?1", order).page(Page.of(page,10)).list();
     }
     @Transactional
     public static Integer findEmployeesPages() {
-        return Employee.find("#Employee.getAllEmployeesOrderedByName").page(Page.ofSize(10)).pageCount();
+        return Employee.find("SELECT e FROM Employee e").page(Page.ofSize(10)).pageCount();
     }
     @Transactional
     public static Boolean isFirstLogin(String username) {
-        Object employee = Employee.find("#Employee.getFirstLoginStatus", Parameters.with("username", username).and("first_login", true)).firstResult();
+        Object employee = Employee.find("SELECT c.username, c.first_login FROM Employee c WHERE ( c.username = ?1 AND c.first_login = ?2 )"
+                , username, true).firstResult();
         if(employee != null) {
             return true;
         }
@@ -165,7 +145,6 @@ public class Employee extends PanacheEntityBase {
             return false;
         }
     }
-
 
     @Override
     public String toString() {

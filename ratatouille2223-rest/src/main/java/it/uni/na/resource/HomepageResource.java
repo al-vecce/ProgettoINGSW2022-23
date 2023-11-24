@@ -44,17 +44,16 @@ public class HomepageResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HOMEPAGE/GETCHECKS Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HOMEPAGE/GETCHECKS Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HOMEPAGE/GETCHECKS Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HOMEPAGE/GETCHECKS Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
     @GET
     @Produces("application/json")
     @Path("/filter")
-    //@Path("?mode={mode}&filterstart={filterstart}&filterend={filterend}&page={page}")
     public Response getAllOpenChecksFilteredOrderedByMode(@QueryParam("mode") String mode,
                                                           @QueryParam("filterstart") String filterstart,
                                                           @QueryParam("filterend") String filterend,
@@ -80,10 +79,10 @@ public class HomepageResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HOMEPAGE/GETCHECKSFILTERED Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HOMEPAGE/GETCHECKSFILTERED Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HOMEPAGE/GETCHECKSFILTERED Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HOMEPAGE/GETCHECKSFILTERED Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
@@ -114,10 +113,10 @@ public class HomepageResource {
             json_node = objectMapper.readTree(newString);
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HOMEPAGE/GETORDERS Encountered.", 500);
+            return Response.ok("JSON Mapping Error for HOMEPAGE/GETORDERS Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HOMEPAGE/GETORDERS Encountered.", 500);
+            return Response.ok("JSON Parsing Error for HOMEPAGE/GETORDERS Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
@@ -131,35 +130,40 @@ public class HomepageResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("/updateorder")
-    //@Path("?check={check}&order={order}&value={value}")
-    public Response postUpdateOrderWithOrderId(@QueryParam("order") Long orderid,
-                                               @QueryParam("value") Integer quantityoffset) {
-        if(orderid == null || quantityoffset == null) {
+    @Path("{order}")
+    public Response postUpdateOrderWithOrderId(@PathParam("order") Long orderid,
+                                               String json_request) {
+        if(orderid == null || json_request == null || json_request.isBlank()) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/UPDATEORDER encountered.").status(400).build();
         }
 
-        JsonNode json_node;
+        JsonNode json_node, temp_node;
         String newString;
+        Integer quantityoffset;
         Boolean result;
         try {
+            json_node = objectMapper.readTree(json_request);
+            temp_node = json_node.get("quantityoffset");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            quantityoffset = temp_node.asInt();
+
             result = HomepageService.evaluateOrderModificationService(orderid, quantityoffset);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HOMEPAGE/UPDATEORDER encountered.", 500);
+            return Response.ok("JSON Mapping Error for HOMEPAGE/UPDATEORDER encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HOMEPAGE/UPDATEORDER encountered.", 500);
+            return Response.ok("JSON Parsing Error for HOMEPAGE/UPDATEORDER encountered.").status(500).build();
         }
     }
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    @Path("/closecheck")
-    public Response postCloseOpenCheckById(@QueryParam("check") Long checkid) {
+    @Path("{check}")
+    public Response postCloseOpenCheckById(@PathParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/CLOSECHECK encountered.").status(400).build();
         }
@@ -174,10 +178,10 @@ public class HomepageResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for HOMEPAGE/CLOSECHECK encountered.", 500);
+            return Response.ok("JSON Mapping Error for HOMEPAGE/CLOSECHECK encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for HOMEPAGE/CLOSECHECK encountered.", 500);
+            return Response.ok("JSON Parsing Error for HOMEPAGE/CLOSECHECK encountered.").status(500).build();
         }
     }
 }

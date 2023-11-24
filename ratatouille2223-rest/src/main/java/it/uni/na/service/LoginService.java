@@ -14,7 +14,7 @@ public class LoginService {
     public static String evaluateLoginFormService(String username, String password) {
         String token;
         if(username == null || password == null) {
-            return "false";
+            return "null";
         }
         if(Employee.signIn(username, password)) {
             Employee e = Employee.findEmployeeByUsername(username);
@@ -24,7 +24,7 @@ public class LoginService {
                         .sign();
             return token;
         }
-        return "false";
+        return "null";
     }
     public static Boolean checkFirstLoginStatus(String username) {
         if(username == null) {

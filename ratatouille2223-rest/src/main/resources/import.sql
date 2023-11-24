@@ -13,10 +13,8 @@ INSERT INTO Employee(id, username, password, employee_role, last_modified, first
 INSERT INTO Employee(id, username, password, employee_role, last_modified, first_login, business_id) VALUES (4, 'Utente03', 'Password&3', 'ADDETTOSALA', '07/07/2023', false, 1);
 ALTER sequence Employee_SEQ restart WITH 5;
 
-INSERT INTO MenuCategory(id) VALUES(1);
-INSERT INTO MenuCategory(id) VALUES(2);
-INSERT INTO MenuCategory(id) VALUES(3);
-ALTER sequence MenuElement_SEQ restart WITH 4;
+INSERT INTO MenuCategory(id, average_cost, element_number, last_modified, name) VALUES(1, 0.0, 0, '2023/06/06', 'Primi');
+ALTER sequence MenuCategory_SEQ restart WITH 2;
 
 INSERT INTO MenuElement(id, menu_category_id) VALUES(1, 1);
 INSERT INTO MenuElement(id, menu_category_id) VALUES(2, 1);
@@ -33,5 +31,4 @@ INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, 
 INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(3, 4, 0.0, 1.0, 1, 3);
 ALTER sequence Order_SEQ restart WITH 4;
 
-INSERT INTO MenuCategory(id, average_cost, element_number, last_modified, name) VALUES(1, 0.0, 0, '2023/06/06', 'Primi');
-ALTER sequence MenuCategory_SEQ restart WITH 2;
+

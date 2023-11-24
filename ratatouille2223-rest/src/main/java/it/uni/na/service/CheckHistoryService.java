@@ -19,19 +19,19 @@ public class CheckHistoryService {
         }
         switch (mode) {
             case ModeConstants.BYID:
-                return_list = RestaurantCheck.findAllChecksOrderedById(page, false);
+                return_list = RestaurantCheck.findAllChecksOrderedBy(page, false, "id");
                 break;
             case ModeConstants.BYTABLE:
-                return_list = RestaurantCheck.findAllChecksOrderedByTable(page, false);
+                return_list = RestaurantCheck.findAllChecksOrderedBy(page, false, "check_table");
                 break;
             case ModeConstants.BYOPENINGDATE:
-                return_list = RestaurantCheck.findAllChecksOrderedByOpeningTime(page, false);
+                return_list = RestaurantCheck.findAllChecksOrderedBy(page, false, "opening_date_time");
                 break;
             case ModeConstants.BYCLOSINGDATE:
-                return_list = RestaurantCheck.findAllChecksOrderedByClosingTime(page, false);
+                return_list = RestaurantCheck.findAllChecksOrderedBy(page, false, "closing_date_time");
                 break;
             case ModeConstants.BYTOTALCOST:
-                return_list = RestaurantCheck.findAllChecksOrderedByTotal(page, false);
+                return_list = RestaurantCheck.findAllChecksOrderedBy(page, false, "check_total");
                 break;
             default:
                 return_list = new ArrayList<>();
@@ -62,19 +62,19 @@ public class CheckHistoryService {
         }
         switch (mode) {
             case ModeConstants.BYID:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedById(page, start, end, false);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedBy(page, start, end, false, "id");
                 break;
             case ModeConstants.BYTABLE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTable(page, start, end, false);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedBy(page, start, end, false, "check_table");
                 break;
             case ModeConstants.BYOPENINGDATE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByOpeningTime(page, start, end, false);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedBy(page, start, end, false, "opening_date_time");
                 break;
             case ModeConstants.BYCLOSINGDATE:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByClosingTime(page, start, end, false);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedBy(page, start, end, false, "closing_date_time");
                 break;
             case ModeConstants.BYTOTALCOST:
-                return_list = RestaurantCheck.findAllChecksFilteredOrderedByTotal(page, start, end, false);
+                return_list = RestaurantCheck.findAllChecksFilteredOrderedBy(page, start, end, false, "check_total");
                 break;
             default:
                 return_list = new ArrayList<>();
@@ -93,16 +93,16 @@ public class CheckHistoryService {
         List<String> return_string_list = new LinkedList<>();
         switch (mode) {
             case ModeConstants.BYID:
-                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderById(checkid);
+                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderBy(checkid, "id");
                 break;
             case ModeConstants.BYPRICE:
-                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderByCurrentPrice(checkid);
+                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderBy(checkid, "current_price");
                 break;
             case ModeConstants.BYQUANTITY:
-                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderByQuantity(checkid);
+                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderBy(checkid, "quantity");
                 break;
             case ModeConstants.BYTOTALCOST:
-                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderByOrderTotal(checkid);
+                return_list = RestaurantOrder.findAllOrdersForCheckIdOrderBy(checkid, "order_total");
                 break;
             default:
                 return_list = new ArrayList<>();

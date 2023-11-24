@@ -10,9 +10,6 @@ import java.util.List;
 
 
 @Entity
-@NamedQueries(
-        @NamedQuery(name = "Business.getBusinessByID", query = "SELECT b.business_name FROM Business b WHERE b.id = :id")
-)
 public class Business extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Business_SEQ")
@@ -177,7 +174,6 @@ public class Business extends PanacheEntityBase {
 
     @Transactional
     public static Business findPrimaryBusiness() {
-        //return Business.find("#Business.getBusinessByID", Parameters.with("id", 1)).firstResult();
         return Business.find("id", 1).firstResult();
     }
 }

@@ -70,10 +70,10 @@ public class BusinessInformationResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for BUSINESS/POST encountered.", 500);
+            return Response.ok("JSON Mapping Error for BUSINESS/POST encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for BUSINESS/POST encountered.", 500);
+            return Response.ok("JSON Parsing Error for BUSINESS/POST encountered.").status(500).build();
         }
     }
 
@@ -97,16 +97,15 @@ public class BusinessInformationResource {
             businesslogoname = temp_node.asText();
 
             result = BusinessInformationService.checkBusinesslogoValidityService(businesslogoencoded, businesslogotype, businesslogoname);
-            //json_node = objectMapper.createObjectNode();
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for BUSINESS/LOGO Encountered.", 500);
+            return Response.ok("JSON Mapping Error for BUSINESS/LOGO Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for BUSINESS/LOGO Encountered.", 500);
+            return Response.ok("JSON Parsing Error for BUSINESS/LOGO Encountered.").status(500).build();
         }
     }
 }

@@ -20,13 +20,13 @@ public class EmployeeService {
         }
         switch (mode) {
             case ModeConstants.BYUSERNAME:
-                return_list = Employee.findAllEmployeesOrderedByUsername(page);
+                return_list = Employee.findAllEmployeesOrderedBy(page, "username");
                 break;
             case ModeConstants.BYEMPLOYEEROLE:
-                return_list = Employee.findAllEmployeesOrderedByEmployeeRole(page);
+                return_list = Employee.findAllEmployeesOrderedBy(page, "employee_role");
                 break;
             case ModeConstants.BYLASTMODIFIED:
-                return_list = Employee.findAllEmployeesOrderedByLastModified(page);
+                return_list = Employee.findAllEmployeesOrderedBy(page, "last_modified");
                 break;
             default:
                 return_list = new ArrayList<>();

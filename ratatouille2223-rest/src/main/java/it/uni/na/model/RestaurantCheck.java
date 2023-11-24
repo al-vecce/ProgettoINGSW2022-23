@@ -110,50 +110,15 @@ public class RestaurantCheck extends PanacheEntityBase {
         return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE c.id = ?1", checkid).firstResult();
     }
     @Transactional
-    public static List<RestaurantCheck> findAllChecksOrderedById(Integer page, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.id", checkstatus).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksOrderedByTable(Integer page, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.check_table", checkstatus).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksOrderedByClosingTime(Integer page, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.closing_date_time", checkstatus).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksOrderedByOpeningTime(Integer page, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.opening_date_time", checkstatus).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksOrderedByTotal(Integer page, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY c.check_total", checkstatus).page(Page.of(page,10)).list();
+    public static List<RestaurantCheck> findAllChecksOrderedBy(Integer page, Boolean checkstatus, String order) {
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY ?2"
+                , checkstatus, order).page(Page.of(page,10)).list();
     }
 
     @Transactional
-    public static List<RestaurantCheck> findAllChecksFilteredOrderedById(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY c.id",
-                checkstatus, filterstart, filterend).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksFilteredOrderedByTable(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY c.check_table",
-                checkstatus, filterstart, filterend).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksFilteredOrderedByClosingTime(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY c.closing_date_time",
-                checkstatus, filterstart, filterend).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksFilteredOrderedByOpeningTime(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY c.opening_date_time",
-                checkstatus, filterstart, filterend).page(Page.of(page,10)).list();
-    }
-    @Transactional
-    public static List<RestaurantCheck> findAllChecksFilteredOrderedByTotal(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY c.check_total",
-                checkstatus, filterstart, filterend).page(Page.of(page,10)).list();
+    public static List<RestaurantCheck> findAllChecksFilteredOrderedBy(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus, String order) {
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY ?4"
+                , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
     }
     @Transactional
     public static Integer findChecksPages(Boolean checkstatus) {

@@ -106,20 +106,9 @@ public class RestaurantOrder extends PanacheEntityBase {
         return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE id = ?1", orderid).firstResult();
     }
     @Transactional
-    public static List<RestaurantOrder> findAllOrdersForCheckIdOrderById(Long checkid) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o").list();
-    }
-    @Transactional
-    public static List<RestaurantOrder> findAllOrdersForCheckIdOrderByCurrentPrice(Long checkid) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY o.current_price", checkid).list();
-    }
-    @Transactional
-    public static List<RestaurantOrder> findAllOrdersForCheckIdOrderByQuantity(Long checkid) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder c WHERE o.check_id = ?1 ORDER BY o.quantity", checkid).list();
-    }
-    @Transactional
-    public static List<RestaurantOrder> findAllOrdersForCheckIdOrderByOrderTotal(Long checkid) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY o.order_total", checkid).list();
+    public static List<RestaurantOrder> findAllOrdersForCheckIdOrderBy(Long checkid, String order) {
+        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY order"
+                , order).list();
     }
 
     @PostLoad

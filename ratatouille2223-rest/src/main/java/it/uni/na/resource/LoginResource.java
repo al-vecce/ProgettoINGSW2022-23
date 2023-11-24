@@ -26,15 +26,12 @@ public class LoginResource {
     @Inject
     ObjectMapper objectMapper;
 
-    @Inject
-    JsonWebToken jwt;
-
     @POST
     @Produces("application/json")
     @Consumes("application/json")
     public Response postLogin(String json_request) {
-        JsonNode json_node = null, temp_node;
-        String newString = null, username, password;
+        JsonNode json_node, temp_node;
+        String newString, username, password;
         String result;
         try {
             json_node = objectMapper.readTree(json_request);
@@ -46,7 +43,6 @@ public class LoginResource {
             password = temp_node.asText();
 
             result = LoginService.evaluateLoginFormService(username, password);
-            //json_node = objectMapper.createObjectNode();
             newString = "{\"JWT Authentication Code\": \"" + result + "\", " +
                         "\"firstlogin\": \"" + LoginService.checkFirstLoginStatus(username) + "\" }";
             json_node = objectMapper.readTree(newString);
@@ -73,7 +69,6 @@ public class LoginResource {
             username = temp_node.asText();
 
             result = FieldCheckService.checkUsernameValidityService(username);
-            //json_node = objectMapper.createObjectNode();
             newString = "{\"username\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
@@ -90,15 +85,14 @@ public class LoginResource {
     @Consumes("application/json")
     @Path("/password")
     public Response postPassword(String json_request) {
-        JsonNode json_node = null, temp_node;
-        String newString = null, password, result;
+        JsonNode json_node, temp_node;
+        String newString, password, result;
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("password");
             if(temp_node == null) { return Response.ok("Inaccurate arguments in LOGIN/PASSWORD encountered.").status(400).build(); }
             password = temp_node.asText();
             result = FieldCheckService.checkPasswordValidityService(password);
-            //json_node = objectMapper.createObjectNode();
             newString = "{\"password\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();

@@ -43,10 +43,10 @@ public class ChangePasswordResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for FIRSTLOGIN/POST encountered.", 500);
+            return Response.ok("JSON Mapping Error for FIRSTLOGIN/POST encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for FIRSTLOGIN/POST encountered.", 500);
+            return Response.ok("JSON Parsing Error for FIRSTLOGIN/POST encountered.").status(500).build();
         }
     }
     @POST
@@ -67,10 +67,10 @@ public class ChangePasswordResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for FIRSTLOGIN/PASSWORD Encountered.", 500);
+            return Response.ok("JSON Mapping Error for FIRSTLOGIN/PASSWORD Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for FIRSTLOGIN/PASSWORD Encountered.", 500);
+            return Response.ok("JSON Parsing Error for FIRSTLOGIN/PASSWORD Encountered.").status(500).build();
         }
     }
     @POST
@@ -91,10 +91,10 @@ public class ChangePasswordResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for FIRSTLOGIN/CONFIRMATION Encountered.", 500);
+            return Response.ok("JSON Mapping Error for FIRSTLOGIN/CONFIRMATION Encountered.").status(500).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for FIRSTLOGIN/CONFIRMATION Encountered.", 500);
+            return Response.ok("JSON Parsing Error for FIRSTLOGIN/CONFIRMATION Encountered.").status(500).build();
         }
     }
 }
