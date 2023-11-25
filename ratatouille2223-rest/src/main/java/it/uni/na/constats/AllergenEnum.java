@@ -1,5 +1,5 @@
 package it.uni.na.constats;
 
 public enum AllergenEnum {
-    Glutine, Latte, Soia, Uova, FruttaGuscio, Pesce, Molluschi, Crostacei, Sedano, Lupini
+    GLUTINE, LATTE, SOIA, UOVA, FRUTTAGUSCIO, PESCE, MOLLUSCHI, CROSTACEI, SEDANO, LUPINI
 }

@@ -120,10 +120,10 @@ public class MenuCategory extends PanacheEntityBase {
     @Override
     public String toString() {
         return "{\n" +
-                "\t\"name\":            \"" + name + "\",\n" +
-                "\t\"last_modified\":   \"" + last_modified + "\",\n" +
-                "\t\"average_cost\":    \"" + average_cost + "\",\n" +
-                "\t\"element_number\":  \"" + element_number + "\"\n" +
+                "\t\"name\": \"" + name + "\",\n" +
+                "\t\"last_modified\": \"" + last_modified + "\",\n" +
+                "\t\"average_cost\": \"" + average_cost + "\",\n" +
+                "\t\"element_number\": \"" + element_number + "\"\n" +
                 "}";
     }
     @Transactional

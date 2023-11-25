@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/history")
-@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class CheckHistoryResource {
 
     @Inject
@@ -21,7 +21,7 @@ public class CheckHistoryResource {
 
     @GET
     @Produces("application/json")
-    public Response getAllClosedChecksOrderedByMode() {
+    public Response getAllClosedChecks() {
 
         List<String> list = CheckHistoryService.findAllClosedChecksOrderedByModeService("BYID", 0);
         if(list.isEmpty()) {
@@ -114,11 +114,12 @@ public class CheckHistoryResource {
         }
         return Response.ok(json_node.toPrettyString()).build();
     }
+
     @GET
     @Produces("application/json")
-    @Path("/{checkid}/orders")
+    @Path("/{check}/orders")
     public Response getAllClosedChecksOrdersOrderedByMode(@QueryParam("mode") String mode,
-                                                          @PathParam("checkid") Long checkid) {
+                                                          @PathParam("check") Long checkid) {
         if(mode == null || mode.isBlank() || checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/GETORDERS encountered.").status(400).build();
         }

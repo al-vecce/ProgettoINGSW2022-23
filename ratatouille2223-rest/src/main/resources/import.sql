@@ -16,9 +16,9 @@ ALTER sequence Employee_SEQ restart WITH 5;
 INSERT INTO MenuCategory(id, average_cost, element_number, last_modified, name) VALUES(1, 0.0, 0, '2023/06/06', 'Primi');
 ALTER sequence MenuCategory_SEQ restart WITH 2;
 
-INSERT INTO MenuElement(id, menu_category_id) VALUES(1, 1);
-INSERT INTO MenuElement(id, menu_category_id) VALUES(2, 1);
-INSERT INTO MenuElement(id, menu_category_id) VALUES(3, 1);
+INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(1, 1, 'Pasta-alla-Genovese', 15, false);
+INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(2, 1, 'Cotoletta-di-Pollo', 10, false);
+INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(3, 1, 'CocaCola-Light', 2, true);
 ALTER sequence MenuElement_SEQ restart WITH 4;
 
 INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(1, true, 0.0, '2023/08/08', 6);
@@ -26,9 +26,9 @@ INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, ch
 INSERT INTO RestaurantCheck(id, check_status, check_total, closing_date_time, opening_date_time, check_table) VALUES(3, false, 0.0, '2023/06/06', '2023/05/05', 1);
 ALTER sequence Check_SEQ restart WITH 4;
 
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(1, 5, 0.0, 2.0, 1, 1);
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(2, 20, 0.0, 3.0, 1, 2);
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(3, 4, 0.0, 1.0, 1, 3);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(1, 5, 75, 15, 1, 1);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(2, 20, 200, 10, 1, 2);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(3, 4, 8, 2, 1, 3);
 ALTER sequence Order_SEQ restart WITH 4;
 
 

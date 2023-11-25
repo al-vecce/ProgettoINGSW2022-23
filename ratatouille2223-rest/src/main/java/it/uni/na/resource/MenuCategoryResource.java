@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/menu/category")
-//@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class MenuCategoryResource {
 
     @Inject
@@ -88,6 +88,35 @@ public class MenuCategoryResource {
         try {
             result = MenuCategoryService.findNumberOfPages();
             newString = "{\"pages\": \"" + result + "\" }";
+            json_node = objectMapper.readTree(newString);
+            return Response.ok(json_node.toPrettyString()).build();
+        }
+        catch (JsonMappingException ex1){
+            return Response.ok("JSON Mapping Error for MENU/CATEGORY/POSTUPDATE encountered.").status(500).build();
+        }
+        catch (JsonProcessingException ex2){
+            return Response.ok("JSON Parsing Error for MENU/CATEGORY/POSTUPDATE encountered.").status(500).build();
+        }
+    }
+
+    @POST
+    @Path("/name")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response postCategoryName(String json_request) {
+        if(json_request == null || json_request.isBlank()) {
+            return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build();
+        }
+        JsonNode json_node,temp_node;
+        String newString, name, result;
+        try {
+            json_node = objectMapper.readTree(json_request);
+            temp_node = json_node.get("name");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            name = temp_node.asText();
+
+            result = MenuCategoryService.checkCategoryNameValidityService(name);
+            newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
         }

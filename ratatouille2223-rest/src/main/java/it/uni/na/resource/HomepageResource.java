@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.HomepageService;
+import it.uni.na.service.MenuCategoryService;
+import it.uni.na.service.MenuElementService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -13,7 +15,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/homepage")
-@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class HomepageResource {
 
     @Inject
@@ -24,7 +26,7 @@ public class HomepageResource {
     //@Path("?mode={mode}&page={page}")
     public Response getAllOpenChecksOrderedByMode(@QueryParam("mode") String mode,
                                                   @QueryParam("page") Integer page) {
-        if(mode == null || page == null) {
+        if(mode == null || mode.isEmpty() || page == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETCHECKS encountered.").status(400).build();
         }
 
@@ -58,7 +60,7 @@ public class HomepageResource {
                                                           @QueryParam("filterstart") String filterstart,
                                                           @QueryParam("filterend") String filterend,
                                                           @QueryParam("page") Integer page) {
-        if(mode == null || page == null || filterstart == null || filterend == null) {
+        if(mode == null || mode.isEmpty() || page == null || filterstart == null || filterstart.isEmpty() || filterend == null || filterend.isEmpty()) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
 
@@ -91,7 +93,7 @@ public class HomepageResource {
     @Path("/{check}/orders")
     public Response getAllOpenChecksOrdersOrderedByMode(@QueryParam("mode") String mode,
                                                         @PathParam("check") Long checkid) {
-        if(mode == null || checkid == null) {
+        if(mode == null || mode.isEmpty() || checkid == null) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETORDERS encountered.").status(400).build();
         }
 
