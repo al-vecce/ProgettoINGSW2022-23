@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.uni.na.service.BusinessInformationService;
 import it.uni.na.service.EmployeeService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -15,7 +13,7 @@ import java.util.List;
 
 // TODO LOGGER
 @Path("/employees")
-@RolesAllowed("AMMINISTRATORE")
+//TODO @RolesAllowed("AMMINISTRATORE")
 public class EmployeeResource {
 
     @Inject

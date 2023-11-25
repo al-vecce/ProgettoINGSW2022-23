@@ -107,8 +107,8 @@ public class RestaurantOrder extends PanacheEntityBase {
     }
     @Transactional
     public static List<RestaurantOrder> findAllOrdersForCheckIdOrderBy(Long checkid, String order) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY order"
-                , order).list();
+        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY ?2"
+                ,checkid, order).list();
     }
 
     @PostLoad

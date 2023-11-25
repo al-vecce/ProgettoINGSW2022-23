@@ -150,7 +150,11 @@ public class MenuElement extends PanacheEntityBase {
 
     public MenuElement() {}
     public MenuElement(String name, Float price, Boolean openfoodfacts, String openfoodfacts_identifier, LocalDateTime last_modified) {
-
+        this.name = name;
+        this.price = price;
+        this.openfoodfacts = openfoodfacts;
+        this.openfoodfacts_identifier = openfoodfacts_identifier;
+        this.last_modified = last_modified;
     }
     public MenuElement(String name, Float price, String ingredients, String allergens, String second_name, String second_ingredients,
                        Boolean openfoodfacts, String openfoodfacts_identifier, LocalDateTime last_modified) {

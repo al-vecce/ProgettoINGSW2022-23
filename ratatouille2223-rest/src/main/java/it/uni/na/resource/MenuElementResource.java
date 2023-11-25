@@ -12,7 +12,6 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/menu/categories")
-//
 //TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class MenuElementResource {
 

@@ -133,13 +133,8 @@ public class HomepageService {
             return false;
         }
         temp = order.getQuantity() + quantityoffset;
-        if(temp <= 0) {
-            order.setQuantity(0);
-        } else {
-            order.setQuantity(temp);
-        }
+        order.setQuantity(Math.max(temp, 0));
         order.persist();
-        boolean tmp = false;
         return true;
     }
 }

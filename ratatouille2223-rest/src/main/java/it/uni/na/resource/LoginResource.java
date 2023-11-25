@@ -4,19 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.smallrye.jwt.build.Jwt;
 import it.uni.na.service.FieldCheckService;
 import it.uni.na.service.LoginService;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 // TODO LOGGER
 @Path("/login")
@@ -60,8 +53,8 @@ public class LoginResource {
     @Consumes("application/json")
     @Path("/username")
     public Response postUsername(String json_request) {
-        JsonNode json_node = null, temp_node;
-        String newString = null, username, result;
+        JsonNode json_node, temp_node;
+        String newString, username, result;
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("username");

@@ -1,7 +1,6 @@
 package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import io.quarkus.panache.common.Parameters;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 

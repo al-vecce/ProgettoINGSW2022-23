@@ -2,9 +2,7 @@ package it.uni.na.service;
 
 import it.uni.na.constats.ModeConstants;
 import it.uni.na.model.MenuCategory;
-import it.uni.na.model.RestaurantCheck;
 import jakarta.transaction.Transactional;
-import jdk.jfr.Category;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

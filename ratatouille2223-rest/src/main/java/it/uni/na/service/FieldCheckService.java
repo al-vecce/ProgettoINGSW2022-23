@@ -34,7 +34,7 @@ public class FieldCheckService {
     public static final String CORRECT              = "CORRECT";
 
     public static String checkUsernameValidityService(String username) {
-        String result = "username-";
+        String result;
         if(username == null || username.contains("null")) {
             result = NULLVALUE;
         } else if (username.isBlank()) {
@@ -53,14 +53,15 @@ public class FieldCheckService {
     public static String checkEmployeeRoleValidityService(String employeerole) {
         String result = INVALIDROLE;
         for(AccountEnum a: AccountEnum.values()) {
-            if(a.name().equals(employeerole)) {
+            if (a.name().equals(employeerole)) {
                 result = CORRECT;
+                break;
             }
         }
         return result;
     }
     public static String checkPasswordValidityService(String password) {
-        String result = "password-";
+        String result;
         if(password == null || password.contains("null")) {
             result = NULLVALUE;
         } else if (password.isBlank()) {

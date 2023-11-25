@@ -75,7 +75,7 @@ public class EmployeeService {
     }
     @Transactional
     public static Boolean evaluateDeleteEmployeeService(String username) {
-        String tempString1, tempString2;
+        String tempString1;
         tempString1 = FieldCheckService.checkUsernameValidityService(username);
         if(!tempString1.contains(FieldCheckService.CORRECT)) {
             return false;
@@ -90,7 +90,7 @@ public class EmployeeService {
     }
     @Transactional
     public static Boolean evaluateCreateEmployeeService(String username, String employeerole, String password) {
-        String tempString1, tempString2;
+        String tempString1;
         tempString1 = FieldCheckService.checkUsernameValidityService(username);
         if(!tempString1.contains(FieldCheckService.CORRECT)) {
             return false;
@@ -105,9 +105,6 @@ public class EmployeeService {
         }
 
         Employee employee = new Employee(username, password, AccountEnum.valueOf(employeerole));
-        if(employee == null) {
-            return false;
-        }
         employee.persist();
         return true;
     }

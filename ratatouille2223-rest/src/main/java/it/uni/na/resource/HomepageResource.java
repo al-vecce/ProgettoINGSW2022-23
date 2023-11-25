@@ -5,9 +5,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.HomepageService;
-import it.uni.na.service.MenuCategoryService;
-import it.uni.na.service.MenuElementService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -140,8 +137,8 @@ public class HomepageResource {
 
         JsonNode json_node, temp_node;
         String newString;
-        Integer quantityoffset;
-        Boolean result;
+        int quantityoffset;
+        boolean result;
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("quantityoffset");

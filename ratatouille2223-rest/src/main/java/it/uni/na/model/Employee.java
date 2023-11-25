@@ -2,7 +2,6 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
-import io.quarkus.panache.common.Parameters;
 import it.uni.na.constats.AccountEnum;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -110,12 +109,7 @@ public class Employee extends PanacheEntityBase {
     public static Boolean signIn(String username, String password) {
         Object employee = Employee.find("SELECT c FROM Employee c WHERE c.username = ?1 AND c.password = ?2"
                 , username, password).firstResult();
-        if(employee != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return employee != null;
     }
     /*@Transactional
     public Boolean signUp(String username, String password) {
@@ -138,12 +132,7 @@ public class Employee extends PanacheEntityBase {
     public static Boolean isFirstLogin(String username) {
         Object employee = Employee.find("SELECT c.username, c.first_login FROM Employee c WHERE ( c.username = ?1 AND c.first_login = ?2 )"
                 , username, true).firstResult();
-        if(employee != null) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return employee != null;
     }
 
     @Override

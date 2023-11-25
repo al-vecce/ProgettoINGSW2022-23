@@ -5,16 +5,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.BusinessInformationService;
-import it.uni.na.service.ChangePasswordService;
-import it.uni.na.service.FieldCheckService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 // TODO LOGGER
 @Path("/business-information")
-@RolesAllowed("AMMINISTRATORE")
+//TODO @RolesAllowed("AMMINISTRATORE")
 public class BusinessInformationResource {
 
     // TODO
