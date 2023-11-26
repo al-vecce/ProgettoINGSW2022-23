@@ -109,10 +109,10 @@ public class RestaurantCheck extends PanacheEntityBase {
         return "{\n" +
                 "\t\"check_id\":            \"" + id + "\",\n" +
                 "\t\"check_status\":        \"" + check_status + "\",\n" +
-                "\t\"check_total\":         \"" + check_table + "\",\n" +
+                "\t\"check_total\":         \"" + check_total + "\",\n" +
                 "\t\"closing_date_time\":   \"" + closing_date_time + "\",\n" +
                 "\t\"opening_date_time\":   \"" + opening_date_time + "\",\n" +
-                "\t\"check_table\":         \"" + check_total + "\"\n" +
+                "\t\"check_table\":         \"" + check_table + "\"\n" +
                 "}";
     }
 
