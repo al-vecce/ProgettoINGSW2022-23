@@ -134,7 +134,10 @@ public class HomepageService {
         }
         temp = order.getQuantity() + quantityoffset;
         order.setQuantity(Math.max(temp, 0));
-        order.persist();
+        if(order.getQuantity() == 0) {
+            order.delete();
+        }
+        else { order.persist(); }
         return true;
     }
 }

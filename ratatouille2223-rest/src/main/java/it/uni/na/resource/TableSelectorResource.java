@@ -30,6 +30,7 @@ public class TableSelectorResource {
 
     @GET
     @Produces("application/json")
+    @Path("/business")
     public Response getBusinessInformation() {
         String result = TableSelectorService.findBusinessInformationService();
         if(result == null) {
@@ -43,7 +44,7 @@ public class TableSelectorResource {
     @Path("/{table}")
     public Response postVerifyTableStatus(@PathParam("table") Integer table) {
         if (table == null || table <= 0) {
-            return Response.ok("Inaccurate arguments in MENU/ELEMENTS/GETALLORDERED encountered.").status(400).build();
+            return Response.ok("Inaccurate arguments in TABLE-SELECTOR/POSTSTATUS encountered.").status(400).build();
         }
 
         String newString = TableSelectorService.findOpenCheckByTableService(table);
@@ -55,9 +56,9 @@ public class TableSelectorResource {
         try {
             json_node = objectMapper.readTree(newString);
         } catch (JsonMappingException ex1) {
-            return Response.ok("JSON Mapping Error for MENU/ELEMENTS/GETALLORDERED Encountered.").status(400).build();
+            return Response.ok("JSON Mapping Error for TABLE-SELECTOR/POSTSTATUS Encountered.").status(400).build();
         } catch (JsonProcessingException ex2) {
-            return Response.ok("JSON Parsing Error for MENU/ELEMENTS/GETALLORDERED Encountered.").status(400).build();
+            return Response.ok("JSON Parsing Error for TABLE-SELECTOR/POSTSTATUS Encountered.").status(400).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
     }

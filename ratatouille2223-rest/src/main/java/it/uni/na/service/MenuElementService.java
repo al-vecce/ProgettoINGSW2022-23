@@ -42,7 +42,7 @@ public class MenuElementService {
     public static Integer findNumberOfPagesOfElementsService(String category) {
         MenuCategory c = MenuCategory.findCategoryByName(category);
         if(c == null) {
-            return null;
+            return 0;
         }
         Long categoryid = c.getId();
         return MenuElement.findElementPages(categoryid);

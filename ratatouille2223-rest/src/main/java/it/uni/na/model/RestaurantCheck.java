@@ -110,6 +110,7 @@ public class RestaurantCheck extends PanacheEntityBase {
                 "\t\"check_id\":            \"" + id + "\",\n" +
                 "\t\"check_status\":        \"" + check_status + "\",\n" +
                 "\t\"check_total\":         \"" + check_total + "\",\n" +
+                "\t\"check_average\":         \"" + check_average + "\",\n" +
                 "\t\"closing_date_time\":   \"" + closing_date_time + "\",\n" +
                 "\t\"opening_date_time\":   \"" + opening_date_time + "\",\n" +
                 "\t\"check_table\":         \"" + check_table + "\"\n" +
@@ -153,26 +154,31 @@ public class RestaurantCheck extends PanacheEntityBase {
     }
 
     @PostLoad
-    public void postLoad() {
+    /*public void postLoad() {
+        float tmp = Float.parseFloat("0");
         for(RestaurantOrder o: this.restaurantOrders) {
-            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
+            tmp = tmp + o.getOrder_total();
         }
-        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
-        this.persist();
+        this.setCheck_total(tmp);
+        this.setCheck_average(tmp / this.getOrders().size());
     }
     @PrePersist
     public void postPersist() {
+        float tmp = Float.parseFloat("0");
         for(RestaurantOrder o: this.restaurantOrders) {
-            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
+            tmp = tmp + o.getOrder_total();
         }
-        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
-    }
+        this.setCheck_total(tmp);
+        this.setCheck_average(tmp / this.getOrders().size());
+    }*/
     @PreUpdate
     public void preUpdate() {
+        float tmp = Float.parseFloat("0");
         for(RestaurantOrder o: this.restaurantOrders) {
-            this.setCheck_total(this.getCheck_total() + o.getOrder_total());
+            tmp = tmp + o.getOrder_total();
         }
-        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
+        this.setCheck_total(tmp);
+        this.setCheck_average(tmp / this.getOrders().size());
     }
 
     public RestaurantCheck() {}
