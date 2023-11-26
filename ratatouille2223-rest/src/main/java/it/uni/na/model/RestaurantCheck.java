@@ -37,6 +37,17 @@ public class RestaurantCheck extends PanacheEntityBase {
     @OneToMany(mappedBy = "restaurantCheck", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<RestaurantOrder> restaurantOrders = new ArrayList<>();
 
+    @Column(name = "check_average")
+    private Float check_average;
+
+    public Float getCheck_average() {
+        return check_average;
+    }
+
+    public void setCheck_average(Float check_average) {
+        this.check_average = check_average;
+    }
+
     public List<RestaurantOrder> getOrders() {
         return restaurantOrders;
     }
@@ -117,9 +128,25 @@ public class RestaurantCheck extends PanacheEntityBase {
 
     @Transactional
     public static List<RestaurantCheck> findAllChecksFilteredOrderedBy(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus, String order) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY ?4"
-                , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
+        if(checkstatus) {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY ?4"
+                    , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
+        } else {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY ?4"
+                    , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
+        }
     }
+    @Transactional
+    public static List<RestaurantCheck> findAllChecksUnpaged(Boolean checkstatus) {
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY opening_date_time"
+                , checkstatus).list();
+    }
+    @Transactional
+    public static List<RestaurantCheck> findAllFilteredChecksUnpaged(LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY opening_date_time"
+                , checkstatus, filterstart, filterend).list();
+    }
+
     @Transactional
     public static Integer findChecksPages(Boolean checkstatus) {
         return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", checkstatus).page(Page.ofSize(10)).pageCount();
@@ -130,6 +157,7 @@ public class RestaurantCheck extends PanacheEntityBase {
         for(RestaurantOrder o: this.restaurantOrders) {
             this.setCheck_total(this.getCheck_total() + o.getOrder_total());
         }
+        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
         this.persist();
     }
     @PrePersist
@@ -137,12 +165,14 @@ public class RestaurantCheck extends PanacheEntityBase {
         for(RestaurantOrder o: this.restaurantOrders) {
             this.setCheck_total(this.getCheck_total() + o.getOrder_total());
         }
+        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
     }
     @PreUpdate
     public void preUpdate() {
         for(RestaurantOrder o: this.restaurantOrders) {
             this.setCheck_total(this.getCheck_total() + o.getOrder_total());
         }
+        this.setCheck_average(this.getCheck_total() / this.getOrders().size());
     }
 
     public RestaurantCheck() {}

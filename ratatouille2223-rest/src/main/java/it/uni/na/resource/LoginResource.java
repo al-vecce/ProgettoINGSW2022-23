@@ -42,10 +42,10 @@ public class LoginResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for LOGIN encountered.", 500);
+            return Response.ok("JSON Mapping Error for LOGIN encountered.").status(400).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for LOGIN encountered.", 500);
+            return Response.ok("JSON Parsing Error for LOGIN encountered.").status(400).build();
         }
     }
     @POST
@@ -67,10 +67,10 @@ public class LoginResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for LOGIN/USERNAME Encountered.", 500);
+            return Response.ok("JSON Mapping Error for LOGIN/USERNAME Encountered.").status(400).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for LOGIN/USERNAME Encountered.", 500);
+            return Response.ok("JSON Parsing Error for LOGIN/USERNAME Encountered.").status(400).build();
         }
     }
     @POST
@@ -91,10 +91,10 @@ public class LoginResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            throw new WebApplicationException("JSON Mapping Error for LOGIN/PASSWORD Encountered.", 500);
+            return Response.ok("JSON Mapping Error for LOGIN/PASSWORD Encountered.").status(400).build();
         }
         catch (JsonProcessingException ex2){
-            throw new WebApplicationException("JSON Parsing Error for LOGIN/PASSWORD Encountered.", 500);
+            return Response.ok("JSON Parsing Error for LOGIN/PASSWORD Encountered.").status(400).build();
         }
     }
 }

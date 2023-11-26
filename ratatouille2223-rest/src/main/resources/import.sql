@@ -23,8 +23,10 @@ ALTER sequence MenuElement_SEQ restart WITH 4;
 
 INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(1, true, 0.0, '2023/08/08', 6);
 INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(2, true, 0.0, '2023/07/07', 2);
-INSERT INTO RestaurantCheck(id, check_status, check_total, closing_date_time, opening_date_time, check_table) VALUES(3, false, 0.0, '2023/06/06', '2023/05/05', 1);
-ALTER sequence Check_SEQ restart WITH 4;
+INSERT INTO RestaurantCheck(id, check_status, check_total, check_average, closing_date_time, opening_date_time, check_table) VALUES(3, false, 20, 2, '2023/06/06', '2023/05/05', 1);
+INSERT INTO RestaurantCheck(id, check_status, check_total, check_average, closing_date_time, opening_date_time, check_table) VALUES(4, false, 50, 10, '2023/07/07', '2023/01/01', 8);
+INSERT INTO RestaurantCheck(id, check_status, check_total, check_average, closing_date_time, opening_date_time, check_table) VALUES(5, false, 60, 30, '2024/06/06', '2023/06/06', 8);
+ALTER sequence Check_SEQ restart WITH 6;
 
 INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(1, 5, 75, 15, 1, 1);
 INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(2, 20, 200, 10, 1, 2);
