@@ -12,7 +12,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 // TODO LOGGER
-@Path("/login")
+@Path("login")
 @PermitAll
 public class LoginResource {
 
