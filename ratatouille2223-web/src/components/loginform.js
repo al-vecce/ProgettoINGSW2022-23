@@ -3,7 +3,7 @@
 import { Button, Label, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import loginService from '@/services/loginService';
 
 export default function LoginForm(){
 
@@ -12,31 +12,17 @@ export default function LoginForm(){
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
+
   const router = useRouter();
-  let data = null
 
   async function tryLogin(e){
     e.preventDefault();
-    const url = "http://localhost:8080/login"
-    try{
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password,
-        }),
-      }
-      )
-    data = await response.json();
-    }catch(error){
-      console.error(error);
-    };
-    (data ? console.log("Login success!") : console.log("Error with login!"));
-    (data ? router.push('/Homepage') : router.push('/'));
-    console.log(data);
+    const logger = new loginService();
+    const data = logger.postLogin(username,password);
+    console.log(JSON.stringify(data));
+    (data.JWTAuthenticationCode ? console.log("Login success!") : console.log("Error with login!"));
+    (data.JWTAuthenticationCode ? router.push('/Homepage') : router.push('/'));
+
   }
 
   return (

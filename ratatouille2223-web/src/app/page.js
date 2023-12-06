@@ -1,5 +1,7 @@
+'use client'
 import Image from 'next/image'
 import LoginForm from '@/components/loginform'
+
 
 export default function Home() {
   return (
