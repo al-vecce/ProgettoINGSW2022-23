@@ -71,7 +71,7 @@ public class OnlineMenuResource {
 
     @GET
     @Produces("application/json")
-    @Path("/categories/{category}/elements")
+    @Path("/categories/{category}")
     public Response getAllElements(@PathParam("category") String category) {
         if(category == null || category.isEmpty()) {
             return Response.ok("Inaccurate arguments in REVIEW/CATEGORY/GETALL encountered.").status(400).build();
@@ -84,7 +84,7 @@ public class OnlineMenuResource {
         }
         pages--;
         for(int i = 0; i <= pages; i++) {
-            list.addAll(MenuElementService.findAllElementsOrderedByModeService("BYNAME", i));
+            list.addAll(MenuElementService.findAllElementsOrderedByModeService(category, "BYNAME", i));
         }
 
         JsonNode json_node;

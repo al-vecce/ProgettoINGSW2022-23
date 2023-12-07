@@ -151,10 +151,10 @@ public class HomepageResource {
             return Response.ok(json_node.toPrettyString()).build();
         }
         catch (JsonMappingException ex1){
-            return Response.ok("JSON Mapping Error for HOMEPAGE/UPDATEORDER encountered.").status(500).build();
+            return Response.ok("JSON Mapping Error for HOMEPAGE/UPDATEORDER encountered.").status(400).build();
         }
         catch (JsonProcessingException ex2){
-            return Response.ok("JSON Parsing Error for HOMEPAGE/UPDATEORDER encountered.").status(500).build();
+            return Response.ok("JSON Parsing Error for HOMEPAGE/UPDATEORDER encountered.").status(400).build();
         }
     }
     @POST

@@ -103,8 +103,11 @@ public class EmployeeService {
         if(!tempString1.contains(FieldCheckService.CORRECT)) {
             return false;
         }
-
-        Employee employee = new Employee(username, password, AccountEnum.valueOf(employeerole));
+        Employee employee = Employee.findEmployeeByUsername(username);
+        if(employee != null) {
+            return false;
+        }
+        employee = new Employee(username, password, AccountEnum.valueOf(employeerole));
         employee.persist();
         return true;
     }

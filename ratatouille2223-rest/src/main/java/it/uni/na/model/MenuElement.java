@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -189,9 +190,16 @@ public class MenuElement extends PanacheEntityBase {
                 name).firstResult();
     }
     @Transactional
-    public static List<MenuElement> findAllElementsOrderedBy(Integer page, String order) {
-        return MenuElement.find("SELECT e FROM MenuElement e ORDER BY ?1",
+    public static List<MenuElement> findAllElementsOrderedBy(MenuCategory category, Integer page, String order) {
+        List<MenuElement> list1 = MenuElement.find("SELECT e FROM MenuElement e ORDER BY ?1",
                 order).page(Page.of(page,10)).list();
+        List<MenuElement> list2 = new ArrayList<>();
+        for(MenuElement e: list1) {
+            if(e.getMenuCategory().getName().equals(category.getName())) {
+                list2.add(e);
+            }
+        }
+        return list2;
     }
     @Transactional
     public static Integer findElementPages(Long categoryid) {

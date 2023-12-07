@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HomepageService {
-    private HomepageService() {}
+    //private HomepageService() {}
     public static List<String> findAllOpenChecksOrderedByModeService(String mode, Integer page) {
         List<RestaurantCheck> return_list;
         List<String> return_string_list = new LinkedList<>();

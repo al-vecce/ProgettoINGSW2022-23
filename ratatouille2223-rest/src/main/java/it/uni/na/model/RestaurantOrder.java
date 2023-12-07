@@ -24,7 +24,7 @@ public class RestaurantOrder extends PanacheEntityBase {
     private Float order_total;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "check_id", nullable = false)
+    @JoinColumn(name = "restaurantCheck", nullable = false)
     private RestaurantCheck restaurantCheck;
 
     @ManyToOne(optional = false)
@@ -94,6 +94,7 @@ public class RestaurantOrder extends PanacheEntityBase {
     public String toString() {
         return "{\n" +
                 "\t\"order_id\":            \"" + id + "\",\n" +
+                "\t\"element_name\":        \"" + menuElement.getName() + "\",\n" +
                 "\t\"quantity\":            \"" + quantity + "\",\n" +
                 "\t\"order_total\":         \"" + order_total + "\",\n" +
                 "\t\"current_price\":       \"" + current_price + "\",\n" +
@@ -107,7 +108,7 @@ public class RestaurantOrder extends PanacheEntityBase {
     }
     @Transactional
     public static List<RestaurantOrder> findAllOrdersForCheckIdOrderBy(Long checkid, String order) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.check_id = ?1 ORDER BY ?2"
+        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.restaurantCheck.id = ?1 ORDER BY ?2"
                 ,checkid, order).list();
     }
 

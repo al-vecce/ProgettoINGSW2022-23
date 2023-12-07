@@ -79,7 +79,7 @@ public class ReviewResource {
         }
         pages--;
         for(int i = 0; i <= pages; i++) {
-            list.addAll(MenuElementService.findAllElementsOrderedByModeService("BYNAME", i));
+            list.addAll(MenuElementService.findAllElementsOrderedByModeService(category, "BYNAME", i));
         }
 
         JsonNode json_node;

@@ -11,7 +11,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/menu/categories")
+@Path("/menu/editor/categories")
 //TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class MenuElementResource {
 
@@ -20,12 +20,13 @@ public class MenuElementResource {
 
     @GET
     @Produces("application/json")
-    public Response getAllElementsOrderedByMode(@QueryParam("mode") String mode, @QueryParam("page") Integer page) {
-        if(mode == null || mode.isEmpty() || page == null) {
+    @Path("/{category}")
+    public Response getAllElementsOrderedByMode(@PathParam("category") String category, @QueryParam("mode") String mode, @QueryParam("page") Integer page) {
+        if(category == null || category.isEmpty() || mode == null || mode.isEmpty() || page == null) {
             return Response.ok("Inaccurate arguments in MENU/ELEMENTS/GETALLORDERED encountered.").status(400).build();
         }
 
-        List<String> list = MenuElementService.findAllElementsOrderedByModeService(mode, page);
+        List<String> list = MenuElementService.findAllElementsOrderedByModeService(category, mode, page);
         if(list.isEmpty()) {
             return Response.ok("{ \"elements\": \"null\" }").build();
         }
@@ -168,7 +169,7 @@ public class MenuElementResource {
     @Path("/{category}/{oldname}")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response postUpdateCategoryByName(@PathParam("category") String category,
+    public Response postUpdateElementByName(@PathParam("category") String category,
                                              @PathParam("oldname") String oldname,
                                              String json_request) {
         if(oldname == null || oldname.isBlank() || json_request == null || json_request.isBlank() ||
@@ -227,7 +228,7 @@ public class MenuElementResource {
 
     @DELETE
     @Path("/{category}/{name}")
-    public Response deleteCategoryByName(@PathParam("category") String category,
+    public Response deleteElementByName(@PathParam("category") String category,
                                          @PathParam("name") String name) {
         if(name == null || name.isBlank() || category == null || category.isEmpty()) {
             return Response.ok("Inaccurate arguments in MENU/ELEMENTS/DELETE encountered.").status(400).build();
@@ -254,7 +255,7 @@ public class MenuElementResource {
 
     @PUT
     @Path("/{category}/{name}")
-    public Response putCategoriesByName(@PathParam("category") String category,
+    public Response putElementByName(@PathParam("category") String category,
                                         @PathParam("name") String name,
                                         String json_request) {
         if(name == null || name.isBlank() || category == null || category.isEmpty() || json_request == null || json_request.isEmpty()) {

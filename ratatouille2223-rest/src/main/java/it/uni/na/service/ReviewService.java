@@ -118,6 +118,7 @@ public class ReviewService {
         for (RestaurantOrder o : check.getOrders()) {
             if (o.getMenuElement().equals(e)) {
                 temp_order = o;
+                break;
             }
         }
         if (temp_order != null) {

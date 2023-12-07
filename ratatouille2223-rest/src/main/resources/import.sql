@@ -28,9 +28,9 @@ INSERT INTO RestaurantCheck(id, check_status, check_total, check_average, closin
 INSERT INTO RestaurantCheck(id, check_status, check_total, check_average, closing_date_time, opening_date_time, check_table) VALUES(5, false, 60, 30, '2024/06/06', '2023/06/06', 8);
 ALTER sequence Check_SEQ restart WITH 6;
 
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(1, 5, 75, 15, 1, 1);
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(2, 20, 200, 10, 1, 2);
-INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, check_id, menu_element_id) VALUES(3, 4, 8, 2, 1, 3);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, restaurantCheck, menu_element_id) VALUES(1, 5, 75, 15, 1, 1);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, restaurantCheck, menu_element_id) VALUES(2, 20, 200, 10, 1, 2);
+INSERT INTO RestaurantOrder(id, quantity, order_total, current_price, restaurantCheck, menu_element_id) VALUES(3, 4, 8, 2, 1, 3);
 ALTER sequence Order_SEQ restart WITH 4;
 
 

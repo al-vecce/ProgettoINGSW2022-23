@@ -4,6 +4,7 @@ import it.uni.na.constats.AllergenEnum;
 import it.uni.na.constats.ModeConstants;
 import it.uni.na.model.MenuCategory;
 import it.uni.na.model.MenuElement;
+import it.uni.na.model.RestaurantOrder;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,11 @@ public class MenuElementService {
     private MenuElementService() {}
 
     public static final String UNKNOWNALLERGEN = "UNKNOWNALLERGEN";
-    public static List<String> findAllElementsOrderedByModeService(String mode, Integer page) {
+    public static List<String> findAllElementsOrderedByModeService(String category, String mode, Integer page) {
+        MenuCategory c = MenuCategory.findCategoryByName(category);
+        if(c == null) {
+            mode = "Ignore, please skip";
+        }
         List<MenuElement> return_list;
         List<String> return_string_list = new LinkedList<>();
         if(page == null || page < 0) {
@@ -23,13 +28,13 @@ public class MenuElementService {
         }
         switch (mode) {
             case ModeConstants.BYNAME:
-                return_list = MenuElement.findAllElementsOrderedBy(page, "name");
+                return_list = MenuElement.findAllElementsOrderedBy(c, page, "name");
                 break;
             case ModeConstants.BYPRICE:
-                return_list = MenuElement.findAllElementsOrderedBy(page, "price");
+                return_list = MenuElement.findAllElementsOrderedBy(c, page, "price");
                 break;
             case ModeConstants.BYCLOSINGDATE:
-                return_list = MenuElement.findAllElementsOrderedBy(page, "last_modified");
+                return_list = MenuElement.findAllElementsOrderedBy(c, page, "last_modified");
                 break;
             default:
                 return_list = new ArrayList<>();
