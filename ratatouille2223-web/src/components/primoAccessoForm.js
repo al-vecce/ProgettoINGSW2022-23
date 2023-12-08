@@ -3,7 +3,7 @@
 import { Button, Label, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import loginService from '../services/loginService';
+import loginService from '@/services/loginService';
 
 import { FaLock, FaUser } from "react-icons/fa";
 import { Flowbite } from 'flowbite-react';
@@ -33,15 +33,15 @@ const customTextInputTheme = {
         info: "bg-gray-50 border-transparent text-gray-900 focus:border-transparent focus:ring-transparent",
       },
       withAddon: {
-        on: "rounded-r-lg",
-        off: "rounded-r-lg"
+        on: "rounded-lg",
+        off: "rounded-lg"
       },
     },
     
   }
 };
 
-export default function LoginForm(){
+export default function PrimoAccessoForm(){
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -64,18 +64,10 @@ export default function LoginForm(){
   return (
     <form className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       <div class="inline-flex gap-2" role="group">
-        <div class="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
-        style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <FaUser fill='#393945' />
-        </div>
-        <TextInput theme={customTextInputTheme} placeholder="Username" id="username" addon="" type="email" onChange={handleUsernameChange} required />
+        <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handleUsernameChange} required />
       </div>
       <div class="inline-flex gap-2" role="group">
-        <div class="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
-        style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <FaLock fill='#393945' />
-        </div>
-        <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required/>
+        <TextInput theme={customTextInputTheme} placeholder="Conferma" id="conferma" addon="" type="password" onChange={handlePasswordChange} required/>
       </div>
       <Flowbite theme={{ theme: customTheme }}>
         <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={tryLogin}>Submit</Button>
@@ -83,5 +75,3 @@ export default function LoginForm(){
     </form>
   );
 }
-
-
