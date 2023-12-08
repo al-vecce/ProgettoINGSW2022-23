@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.MenuCategoryService;
+import it.uni.na.service.MenuElementService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -127,6 +128,38 @@ public class MenuCategoryResource {
     }
 
     @POST
+    @Path("/{name}/priority")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response postUpdatePriority(@PathParam("name") String name,
+                                       String json_request) {
+        if(name == null || name.isBlank() || json_request == null || json_request.isBlank()) {
+            return Response.ok("Inaccurate arguments in MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+        JsonNode json_node,temp_node;
+        String newString;
+        int priority;
+        boolean result;
+        try {
+            json_node = objectMapper.readTree(json_request);
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATEPRIORITY encountered.").status(400).build(); }
+            priority = temp_node.asInt();
+
+            result = MenuCategoryService.evaluateUpdatePriorityService(name, priority);
+            newString = "{\"result\": \"" + result + "\" }";
+            json_node = objectMapper.readTree(newString);
+            return Response.ok(json_node.toPrettyString()).build();
+        }
+        catch (JsonMappingException ex1){
+            return Response.ok("JSON Mapping Error for MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+        catch (JsonProcessingException ex2){
+            return Response.ok("JSON Parsing Error for MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+    }
+
+    @POST
     @Path("{oldname}")
     @Produces("application/json")
     @Consumes("application/json")
@@ -136,14 +169,18 @@ public class MenuCategoryResource {
         }
         JsonNode json_node,temp_node;
         String newString, name;
+        int priority;
         Boolean result;
         try {
             json_node = objectMapper.readTree(json_request);
             temp_node = json_node.get("name");
             if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
             name = temp_node.asText();
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            priority = temp_node.asInt();
 
-            result = MenuCategoryService.evaluateUpdateCategoryService(oldname, name);
+            result = MenuCategoryService.evaluateUpdateCategoryService(oldname, name, priority);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
@@ -158,14 +195,15 @@ public class MenuCategoryResource {
 
     @DELETE
     @Path("{name}")
-    public Response deleteCategoryByName(@PathParam("name") String name) {
-        if(name == null || name.isBlank()) {
+    public Response deleteCategoryByName(@PathParam("name") String name, String json_request) {
+        if(name == null || name.isBlank() || json_request == null || json_request.isBlank()) {
             return Response.ok("Inaccurate arguments in MENU/CATEGORY/DELETE encountered.").status(400).build();
         }
         JsonNode json_node;
         String newString;
         Boolean result;
         try {
+
             result = MenuCategoryService.evaluateDeleteCategoryService(name);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
@@ -181,15 +219,21 @@ public class MenuCategoryResource {
 
     @PUT
     @Path("{name}")
-    public Response putCategoriesByName(@PathParam("name") String name) {
+    public Response putCategoriesByName(@PathParam("name") String name, String json_request) {
         if(name == null || name.isBlank()) {
             return Response.ok("Inaccurate arguments in MENU/CATEGORY/PUT encountered.").status(400).build();
         }
-        JsonNode json_node;
+        JsonNode json_node,temp_node;
         String newString;
+        int priority;
         Boolean result;
         try {
-            result = MenuCategoryService.evaluateCreateCategoryService(name);
+            json_node = objectMapper.readTree(json_request);
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            priority = temp_node.asInt();
+
+            result = MenuCategoryService.evaluateCreateCategoryService(name, priority);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();

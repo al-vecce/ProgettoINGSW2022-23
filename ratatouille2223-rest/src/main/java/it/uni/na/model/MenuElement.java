@@ -2,6 +2,7 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
+import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
@@ -13,14 +14,15 @@ import java.util.Set;
 
 @Entity
 public class MenuElement extends PanacheEntityBase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MenuElement_GEN")
     @SequenceGenerator(name = "MenuElement_GEN", sequenceName = "MenuElement_SEQ")
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @OneToMany(mappedBy = "menuElement")
-    private Set<RestaurantOrder> restaurantOrders = new LinkedHashSet<>();
+    //@OneToMany(mappedBy = "menuElement")
+    //private Set<RestaurantOrder> restaurantOrders = new LinkedHashSet<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "menu_category_id", nullable = false)
@@ -52,6 +54,28 @@ public class MenuElement extends PanacheEntityBase {
 
     @Column(name = "last_modified")
     private LocalDateTime last_modified;
+
+    @OneToMany(mappedBy = "menuElement")
+    private List<RestaurantOrder> restaurantOrders = new ArrayList<>();
+
+    @Column(name = "priority")
+    private Integer priority;
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public List<RestaurantOrder> getRestaurantOrders() {
+        return restaurantOrders;
+    }
+
+    public void setRestaurantOrders(List<RestaurantOrder> restaurantOrders) {
+        this.restaurantOrders = restaurantOrders;
+    }
 
     public LocalDateTime getLast_modified() {
         return last_modified;
@@ -133,11 +157,11 @@ public class MenuElement extends PanacheEntityBase {
         this.menuCategory = menuCategory;
     }
 
-    public Set<RestaurantOrder> getOrders() {
+    public List<RestaurantOrder> getOrders() {
         return restaurantOrders;
     }
 
-    public void setOrders(Set<RestaurantOrder> restaurantOrders) {
+    public void setOrders(List<RestaurantOrder> restaurantOrders) {
         this.restaurantOrders = restaurantOrders;
     }
 
@@ -173,6 +197,7 @@ public class MenuElement extends PanacheEntityBase {
     @Override
     public String toString() {
         return "{\n" +
+                "\t\"priority\": \"" + priority + "\",\n" +
                 "\t\"name\": \"" + name + "\",\n" +
                 "\t\"last_modified\": \"" + last_modified + "\",\n" +
                 "\t\"price\": \"" + price + "\",\n" +
@@ -208,5 +233,14 @@ public class MenuElement extends PanacheEntityBase {
             return 1;
         }
         return c.getElement_number() / 10;
+    }
+
+
+    @PreRemove
+    public void preRemove() {
+        for(RestaurantOrder o: this.restaurantOrders) {
+            o.setMenuElement(null);
+            o.persist();
+        }
     }
 }

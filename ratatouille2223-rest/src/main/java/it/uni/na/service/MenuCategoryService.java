@@ -2,10 +2,12 @@ package it.uni.na.service;
 
 import it.uni.na.constats.ModeConstants;
 import it.uni.na.model.MenuCategory;
+import it.uni.na.model.MenuElement;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,6 +21,10 @@ public class MenuCategoryService {
             page = 0;
         }
         switch (mode) {
+            case ModeConstants.BYPRIORITY:
+                return_list = MenuCategory.findAllCategoriesOrderedBy(page, "priority");
+                return_list.sort(Comparator.comparing(MenuCategory::getPriority));
+                break;
             case ModeConstants.BYNAME:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "name");
                 break;
@@ -42,8 +48,19 @@ public class MenuCategoryService {
     public static Integer findNumberOfPages() {
         return MenuCategory.findCategoryPages();
     }
+
     @Transactional
-    public static Boolean evaluateUpdateCategoryService(String oldname, String name) {
+    public static Boolean evaluateUpdatePriorityService(String category, Integer priority) {
+        MenuCategory c = MenuCategory.findCategoryByName(category);
+        if(c == null) {
+            return false;
+        }
+        c.setPriority(priority);
+        c.persist();
+        return true;
+    }
+    @Transactional
+    public static Boolean evaluateUpdateCategoryService(String oldname, String name, Integer priority) {
         if(!checkCategoryNameValidityService(name).contains(FieldCheckService.CORRECT)) {
             return false;
         }
@@ -51,6 +68,7 @@ public class MenuCategoryService {
         if(category == null) {
             return false;
         }
+        category.setPriority(priority);
         category.setName(name);
         category.setLast_modified(LocalDateTime.now());
         category.persist();
@@ -66,7 +84,7 @@ public class MenuCategoryService {
         return true;
     }
     @Transactional
-    public static Boolean evaluateCreateCategoryService(String name) {
+    public static Boolean evaluateCreateCategoryService(String name, Integer priority) {
         if(!checkCategoryNameValidityService(name).contains(FieldCheckService.CORRECT)) {
             return false;
         }
@@ -75,6 +93,7 @@ public class MenuCategoryService {
             return false;
         }
         category = new MenuCategory();
+        category.setPriority(priority);
         category.setName(name);
         category.setLast_modified(LocalDateTime.now());
         category.persist();

@@ -158,7 +158,7 @@ public class CheckHistoryResource {
     @Produces("application/json")
     @Consumes("application/json")
     @Path("{check}")
-    public Response deleteCloseOpenCheckById(@QueryParam("check") Long checkid) {
+    public Response deleteCloseOpenCheckById(@PathParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/CLOSECHECK encountered.").status(400).build();
         }

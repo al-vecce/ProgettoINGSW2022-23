@@ -13,12 +13,12 @@ INSERT INTO Employee(id, username, password, employee_role, last_modified, first
 INSERT INTO Employee(id, username, password, employee_role, last_modified, first_login, business_id) VALUES (4, 'Utente03', 'Password&3', 'ADDETTOSALA', '07/07/2023', false, 1);
 ALTER sequence Employee_SEQ restart WITH 5;
 
-INSERT INTO MenuCategory(id, average_cost, element_number, last_modified, name) VALUES(1, 0.0, 0, '2023/06/06', 'Primi');
+INSERT INTO MenuCategory(priority, id, average_cost, element_number, last_modified, name) VALUES(1, 1, 0.0, 0, '2023/06/06', 'Primi');
 ALTER sequence MenuCategory_SEQ restart WITH 2;
 
-INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(1, 1, 'Pasta-alla-Genovese', 15, false);
-INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(2, 1, 'Cotoletta-di-Pollo', 10, false);
-INSERT INTO MenuElement(id, menu_category_id, name, price, openfoodfacts) VALUES(3, 1, 'CocaCola-Light', 2, true);
+INSERT INTO MenuElement(priority, id, menu_category_id, name, price, openfoodfacts) VALUES(2, 1, 1, 'Pasta-alla-Genovese', 15, false);
+INSERT INTO MenuElement(priority, id, menu_category_id, name, price, openfoodfacts) VALUES(3, 2, 1, 'Cotoletta-di-Pollo', 10, false);
+INSERT INTO MenuElement(priority, id, menu_category_id, name, price, openfoodfacts) VALUES(1, 3, 1, 'CocaCola-Light', 2, true);
 ALTER sequence MenuElement_SEQ restart WITH 4;
 
 INSERT INTO RestaurantCheck(id, check_status, check_total, opening_date_time, check_table) VALUES(1, true, 0.0, '2023/08/08', 6);

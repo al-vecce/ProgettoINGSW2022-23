@@ -166,6 +166,43 @@ public class MenuElementResource {
     }
 
     @POST
+    @Path("/{category}/{name}/priority")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response postUpdatePriority(@PathParam("category") String category,
+                                            @PathParam("name") String name,
+                                            String json_request) {
+        if(name == null || name.isBlank() || json_request == null || json_request.isBlank() ||
+            category == null || category.isEmpty()) {
+            return Response.ok("Inaccurate arguments in MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+        if(!MenuElementService.isElementOfCategory(category, name)) {
+            return Response.ok("Element is not part of category.").status(400).build();
+        }
+        JsonNode json_node,temp_node;
+        String newString;
+        int priority;
+        boolean result;
+        try {
+            json_node = objectMapper.readTree(json_request);
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATEPRIORITY encountered.").status(400).build(); }
+            priority = temp_node.asInt();
+
+            result = MenuElementService.evaluateUpdatePriorityService(name, priority);
+            newString = "{\"result\": \"" + result + "\" }";
+            json_node = objectMapper.readTree(newString);
+            return Response.ok(json_node.toPrettyString()).build();
+        }
+        catch (JsonMappingException ex1){
+            return Response.ok("JSON Mapping Error for MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+        catch (JsonProcessingException ex2){
+            return Response.ok("JSON Parsing Error for MENU/ELEMENTS/POSTUPDATEPRIORITY encountered.").status(400).build();
+        }
+    }
+
+    @POST
     @Path("/{category}/{oldname}")
     @Produces("application/json")
     @Consumes("application/json")
@@ -177,11 +214,12 @@ public class MenuElementResource {
             return Response.ok("Inaccurate arguments in MENU/ELEMENTS/POSTUPDATE encountered.").status(400).build();
         }
         if(!MenuElementService.isElementOfCategory(category, oldname)) {
-            return Response.ok("Category does not exist.").status(400).build();
+            return Response.ok("Element is not part of the selected category.").status(400).build();
         }
         JsonNode json_node,temp_node;
         String newString, name, ingredients, allergens, second_name, second_ingredients, openfoodfacts_identifier;
         float price;
+        int priority;
         boolean result, openfoodfacts;
         try {
             json_node = objectMapper.readTree(json_request);
@@ -211,9 +249,12 @@ public class MenuElementResource {
             temp_node = json_node.get("openfoodfacts_identifier");
             if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/ELEMENTS/POSTUPDATE encountered.").status(400).build(); }
             openfoodfacts_identifier = temp_node.asText();
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            priority = temp_node.asInt();
 
             result = MenuElementService.evaluateUpdateElementService(oldname, name, price, ingredients, allergens,
-                    second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier);
+                    second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier, priority);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();
@@ -234,7 +275,7 @@ public class MenuElementResource {
             return Response.ok("Inaccurate arguments in MENU/ELEMENTS/DELETE encountered.").status(400).build();
         }
         if(!MenuElementService.isElementOfCategory(category, name)) {
-            return Response.ok("Category does not exist.").status(400).build();
+            return Response.ok("Element is not part of category.").status(400).build();
         }
         JsonNode json_node;
         String newString;
@@ -262,11 +303,12 @@ public class MenuElementResource {
             return Response.ok("Inaccurate arguments in MENU/ELEMENTS/PUT encountered.").status(400).build();
         }
         if(MenuElementService.isElementOfCategory(category, name)) {
-            return Response.ok("Category already exists").status(400).build();
+            return Response.ok("Element is already part of category.").status(400).build();
         }
         JsonNode json_node, temp_node;
         String newString, ingredients, allergens, second_name, second_ingredients, openfoodfacts_identifier;
         float price;
+        int priority;
         boolean result, openfoodfacts;
         try {
             json_node = objectMapper.readTree(json_request);
@@ -291,9 +333,12 @@ public class MenuElementResource {
             temp_node = json_node.get("openfoodfacts_identifier");
             if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/ELEMENTS/PUT encountered.").status(400).build(); }
             openfoodfacts_identifier = temp_node.asText();
+            temp_node = json_node.get("priority");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in MENU/CATEGORY/POSTUPDATE encountered.").status(400).build(); }
+            priority = temp_node.asInt();
 
             result = MenuElementService.evaluateCreateElementService(name, price, ingredients, allergens,
-                    second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier);
+                    second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier, priority, category);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();

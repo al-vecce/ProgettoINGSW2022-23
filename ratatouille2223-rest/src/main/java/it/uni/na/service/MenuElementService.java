@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,6 +28,10 @@ public class MenuElementService {
             page = 0;
         }
         switch (mode) {
+            case ModeConstants.BYPRIORITY:
+                return_list = MenuElement.findAllElementsOrderedBy(c, page, "priority");
+                return_list.sort(Comparator.comparing(MenuElement::getPriority));
+                break;
             case ModeConstants.BYNAME:
                 return_list = MenuElement.findAllElementsOrderedBy(c, page, "name");
                 break;
@@ -53,17 +58,41 @@ public class MenuElementService {
         return MenuElement.findElementPages(categoryid);
     }
     @Transactional
+    public static Boolean evaluateUpdatePriorityService(String element, Integer priority) {
+        MenuElement c = MenuElement.findElementByName(element);
+        if(c == null) {
+            return false;
+        }
+        c.setPriority(priority);
+        c.persist();
+        return true;
+    }
+    @Transactional
     public static Boolean evaluateUpdateElementService(String oldname, String name, Float price,
                                                        String ingredients, String allergens,
                                                        String second_name, String second_ingredients,
-                                                       Boolean openfoodfacts, String openfoodfacts_identifier) {
+                                                       Boolean openfoodfacts, String openfoodfacts_identifier,
+                                                       Integer priority) {
+
+        String name_result, ingredients_result, allergens_result, allergens_off_result, second_name_result, second_ingredients_result;
+        name_result                 = checkElementNameValidityService(name);
+        ingredients_result          = checkIngredientsValidityService(ingredients);
+        allergens_result            = checkAllergensValidityService(allergens);
+        allergens_off_result        = checkIngredientsValidityService(allergens);
+        second_name_result          = checkElementNameValidityService(second_name);
+        second_ingredients_result   = checkIngredientsValidityService(second_ingredients);
+
+        boolean ingredients_bool = ingredients_result.equals(FieldCheckService.CORRECT) || ingredients_result.equals(FieldCheckService.BLANKVALUE);
+
         if(openfoodfacts){
-            if(checkElementNameValidityService(name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(ingredients).equals(FieldCheckService.CORRECT) &&
-                    checkElementNameValidityService(second_name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(allergens).equals(FieldCheckService.CORRECT)) {
+            if(name_result.equals(FieldCheckService.CORRECT) &&
+                    ingredients_bool &&
+                    (allergens_off_result.equals(FieldCheckService.CORRECT) || allergens_off_result.equals(FieldCheckService.BLANKVALUE))) {
                 MenuElement element = MenuElement.findElementByName(oldname);
                 if(element == null) {
                     return false;
                 }
+                element.setPriority(priority);
                 element.setName(name);
                 element.setLast_modified(LocalDateTime.now());
                 element.setPrice(price);
@@ -78,13 +107,16 @@ public class MenuElementService {
             }
         }
         else {
-            if(checkElementNameValidityService(name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(ingredients).equals(FieldCheckService.CORRECT) &&
-                        checkElementNameValidityService(second_name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(second_ingredients).equals(FieldCheckService.CORRECT) &&
-                        checkAllergensValidityService(allergens).equals(FieldCheckService.CORRECT)) {
+            if(name_result.equals(FieldCheckService.CORRECT) &&
+                    ingredients_bool &&
+                    (allergens_result.equals(FieldCheckService.CORRECT) || allergens_result.equals(FieldCheckService.BLANKVALUE)) &&
+                    (second_name_result.equals(FieldCheckService.CORRECT) || second_name_result.equals(FieldCheckService.BLANKVALUE)) &&
+                    (second_ingredients_result.equals(FieldCheckService.CORRECT) || second_ingredients_result.equals("Ordinal[0] is " + FieldCheckService.BLANKVALUE))) {
                 MenuElement element = MenuElement.findElementByName(oldname);
                 if(element == null) {
                     return false;
                 }
+                element.setPriority(priority);
                 element.setName(name);
                 element.setLast_modified(LocalDateTime.now());
                 element.setPrice(price);
@@ -103,26 +135,41 @@ public class MenuElementService {
     }
     @Transactional
     public static Boolean evaluateDeleteElementService(String name) {
-        MenuElement category = MenuElement.findElementByName(name);
-        if(category == null) {
+        MenuElement element = MenuElement.findElementByName(name);
+        if(element == null) {
             return false;
         }
-        category.delete();
+        element.delete();
         return true;
     }
     @Transactional
     public static Boolean evaluateCreateElementService(String name, Float price,
                                                        String ingredients, String allergens,
                                                        String second_name, String second_ingredients,
-                                                       Boolean openfoodfacts, String openfoodfacts_identifier) {
+                                                       Boolean openfoodfacts, String openfoodfacts_identifier,
+                                                       Integer priority, String category) {
+        String name_result, ingredients_result, allergens_result, allergens_off_result, second_name_result, second_ingredients_result;
+        name_result                 = checkElementNameValidityService(name);
+        ingredients_result          = checkIngredientsValidityService(ingredients);
+        allergens_result            = checkAllergensValidityService(allergens);
+        allergens_off_result        = checkIngredientsValidityService(allergens);
+        second_name_result          = checkElementNameValidityService(second_name);
+        second_ingredients_result   = checkIngredientsValidityService(second_ingredients);
+
+        boolean ingredients_bool = ingredients_result.equals(FieldCheckService.CORRECT) || ingredients_result.equals(FieldCheckService.BLANKVALUE);
+
+        MenuCategory category1 = MenuCategory.findCategoryByName(category);
+
         if(openfoodfacts){
-            if(checkElementNameValidityService(name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(ingredients).equals(FieldCheckService.CORRECT) &&
-                    checkElementNameValidityService(second_name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(allergens).equals(FieldCheckService.CORRECT)) {
+            if(name_result.equals(FieldCheckService.CORRECT) &&
+                    ingredients_bool &&
+                    (allergens_off_result.equals(FieldCheckService.CORRECT) || allergens_off_result.equals(FieldCheckService.BLANKVALUE))) {
                 MenuElement element = MenuElement.findElementByName(name);
                 if(element != null) {
                     return false;
                 }
                 element = new MenuElement();
+                element.setPriority(priority);
                 element.setName(name);
                 element.setLast_modified(LocalDateTime.now());
                 element.setPrice(price);
@@ -132,19 +179,23 @@ public class MenuElementService {
                 element.setSecond_ingredients(second_ingredients);
                 element.setOpenfoodfacts(openfoodfacts);
                 element.setOpenfoodfacts_identifier(openfoodfacts_identifier);
+                element.setMenuCategory(category1);
                 element.persist();
                 return true;
             }
         }
         else {
-            if(checkElementNameValidityService(name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(ingredients).equals(FieldCheckService.CORRECT) &&
-                    checkElementNameValidityService(second_name).equals(FieldCheckService.CORRECT) && checkIngredientsValidityService(second_ingredients).equals(FieldCheckService.CORRECT) &&
-                    checkAllergensValidityService(allergens).equals(FieldCheckService.CORRECT)) {
+            if(name_result.equals(FieldCheckService.CORRECT) &&
+                    ingredients_bool &&
+                    (allergens_result.equals(FieldCheckService.CORRECT) || allergens_result.equals(FieldCheckService.BLANKVALUE)) &&
+                    (second_name_result.equals(FieldCheckService.CORRECT) || second_name_result.equals(FieldCheckService.BLANKVALUE)) &&
+                    (second_ingredients_result.equals(FieldCheckService.CORRECT) || second_ingredients_result.equals("Ordinal[0] is " + FieldCheckService.BLANKVALUE))) {
                 MenuElement element = MenuElement.findElementByName(name);
                 if(element != null) {
                     return false;
                 }
                 element = new MenuElement();
+                element.setPriority(priority);
                 element.setName(name);
                 element.setLast_modified(LocalDateTime.now());
                 element.setPrice(price);
@@ -154,6 +205,7 @@ public class MenuElementService {
                 element.setSecond_ingredients(second_ingredients);
                 element.setOpenfoodfacts(openfoodfacts);
                 element.setOpenfoodfacts_identifier(openfoodfacts_identifier);
+                element.setMenuCategory(category1);
                 element.persist();
                 return true;
             }

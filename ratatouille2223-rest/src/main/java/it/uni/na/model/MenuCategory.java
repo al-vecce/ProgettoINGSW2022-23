@@ -32,6 +32,17 @@ public class MenuCategory extends PanacheEntityBase {
     @Column(name = "element_number")
     private Integer element_number;
 
+    @Column(name = "priority")
+    private Integer priority;
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
     public Integer getElement_number() {
         return element_number;
     }
@@ -120,6 +131,7 @@ public class MenuCategory extends PanacheEntityBase {
     @Override
     public String toString() {
         return "{\n" +
+                "\t\"priority\": \"" + priority + "\",\n" +
                 "\t\"name\": \"" + name + "\",\n" +
                 "\t\"last_modified\": \"" + last_modified + "\",\n" +
                 "\t\"average_cost\": \"" + average_cost + "\",\n" +

@@ -23,16 +23,20 @@ public class RestaurantOrder extends PanacheEntityBase {
     @Column(name = "order_total")
     private Float order_total;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
     @JoinColumn(name = "restaurantCheck", nullable = false)
     private RestaurantCheck restaurantCheck;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "menu_element_id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "menu_element_id")
     private MenuElement menuElement;
 
     @Column(name = "current_price")
     private Float current_price;
+
+    public RestaurantCheck getRestaurantCheck() {
+        return restaurantCheck;
+    }
 
     public Float getCurrent_price() {
         return current_price;
@@ -92,14 +96,17 @@ public class RestaurantOrder extends PanacheEntityBase {
 
     @Override
     public String toString() {
-        return "{\n" +
-                "\t\"order_id\":            \"" + id + "\",\n" +
-                "\t\"element_name\":        \"" + menuElement.getName() + "\",\n" +
-                "\t\"quantity\":            \"" + quantity + "\",\n" +
+        String return_string = "{\n" +
+                "\t\"order_id\":            \"" + id + "\",\n";
+        if(menuElement != null) {
+            return_string = return_string + "\t\"element_name\":        \"" + menuElement.getName() + "\",\n";
+        }
+        return_string = return_string + "\t\"quantity\":            \"" + quantity + "\",\n" +
                 "\t\"order_total\":         \"" + order_total + "\",\n" +
                 "\t\"current_price\":       \"" + current_price + "\",\n" +
                 "\t\"description\":         \"" + description + "\"\n" +
                 "}";
+        return return_string;
     }
 
     @Transactional
