@@ -4,12 +4,12 @@ import { Table } from 'flowbite-react';
 import useSWR from 'swr'
 import React from 'react';
 import { Button } from 'flowbite-react';
-import ButtonPDF from './buttonPDF';
-import ButtonMore from './buttonMore';
-import Confirm from './confirm';
+import ButtonPDF from './buttons/buttonPDF';
+import ButtonMore from './buttons/buttonMore';
+import Confirm from './buttons/buttonConferma';
 import {contiAttiviService, getContiAttiviOrdinatiPerTavolo} from '@/services/contiAttiviService';
 import { useState } from 'react';
-import TabellaElementi from './tabellaElementi';
+import TabellaElementi from './tabellaElementiConto';
 import { useElementiConto } from '@/hooks/useElementiConto';
 import { Accordion } from 'flowbite-react';
 

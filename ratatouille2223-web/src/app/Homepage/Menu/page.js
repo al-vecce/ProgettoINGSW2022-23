@@ -1,7 +1,11 @@
 import React from 'react'
 
+import TabelleCategorie from '@/components/tabellaCategorie'
+
 export default function page() {
   return (
-    <div><h1>MenuCategorie</h1></div>
+    <>
+    <TabelleCategorie/>
+    </>
   )
 }

@@ -3,10 +3,10 @@
 import { Button } from 'flowbite-react';
 import { FaAngleDown } from "react-icons/fa";
 
-export default function ButtonMore({onClickAction}) {
+export default function ButtonMore() {
   return (
     <div>
-      <Button color='dark' onClick={onClickAction}>
+      <Button color='dark'>
         <FaAngleDown />
       </Button>
     </div>

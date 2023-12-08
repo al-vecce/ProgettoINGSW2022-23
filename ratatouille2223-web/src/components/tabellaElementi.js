@@ -1,75 +1,60 @@
 'use client';
+
 import React from 'react';
-import { useElementiConto } from '@/hooks/useElementiConto';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import ButtonPDF from './buttonPDF';
-import ButtonMore from './buttonMore';
-import Confirm from './confirm';
+import ButtonMore from './buttons/buttonMore';
+import Pager from './pager';
+import ButtonRefresh from './buttons/buttonRefresh';
+import ButtonConfermaDelete from './buttons/buttonConferma';
+import ModificaElemento from './modificaElemento';
+import { FaLanguage } from "react-icons/fa";
+import TopElementi from './topElementi';
+import { IoTrashOutline } from "react-icons/io5";
+import useSWR from 'swr';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import elementiService from '@/services/elementiService';
+import ListaElementi from './listaElementi';
 
-export default function TabellaElementi({conto}) {
-  const listaElementi = useElementiConto(conto);
-  let data = listaElementi.data;
-  const isLoading = listaElementi.isLoading;
-  const error = listaElementi.error;
+export default function TabellaElementi({name}) {
 
-  if(!data){
-    data = null;
-    data = {orders : null}
+  const [alertSuccessState, setAlertSuccessState] = useState(false);
+  const [ page, setPage ] = useState(0);
+  const alertsControl = {setAlertSuccessState};
+  const router = useRouter();
+  const elementiServ = new elementiService();
+  const { data, error, isLoading, mutate } = useSWR({name , page}, elementiServ.getElementiCategoriaOrdinatiPerNome);
+  const useUpdateData = () =>{
+    mutate({name , page}, elementiServ.getElementiCategoriaOrdinatiPerNome);
   }
-  if(!Array.isArray(data.orders)){
-    if(!Array.isArray(data.orders)){
-      data.orders = null;
-    }
-  }
-  
- if(isLoading) 
-      return ( 
-        <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-        <Table.Cell>Caricamento...</Table.Cell>
-        </Table.Row>
-      );
-  if(!data || error){
-  return ( 
-    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-    <Table.Cell>Errore con il caricamento!</Table.Cell>
-    </Table.Row>)
-  }
+
   return (
-    <React.Fragment>
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell>Nome</Table.Cell>
-            <Table.Cell>Quantità</Table.Cell>
-            <Table.Cell>Costo</Table.Cell>
-            <Table.Cell>Costo</Table.Cell>
-      </Table.Row>
-      {data.orders ? 
-      data.orders.map(({
-        order_id, order_total, quantity, current_price,
-      }) => (
-        <React.Fragment key={order_id}>
-          <Table.Row key={order_id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell >{order_id}</Table.Cell>
-                <Table.Cell>{quantity}</Table.Cell>
-                <Table.Cell>{current_price}</Table.Cell>
-                <Table.Cell>{order_total}</Table.Cell>
-                <Table.Cell><span className="sr-only"></span></Table.Cell>
-                <Table.Cell>
-                  <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  <Button.Group>
-                    <ButtonPDF/>
-                    <Confirm/>
-                    <ButtonMore /> 
-                  </Button.Group>
-                  </a>
-                  </Table.Cell>
-          </Table.Row>
-        </React.Fragment>
-      )) : 
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <Table.Cell>Errore con il caricamento!</Table.Cell>
-      </Table.Row>
-      }
-    </React.Fragment>
-  );
+    <div className="overflow-x-auto">
+    <TopElementi/>
+    <Table hoverable>
+      <Table.Head>
+      <Table.HeadCell>Nome</Table.HeadCell>
+        <Table.HeadCell className='px-20'><span className="sr-only"></span></Table.HeadCell>
+        <Table.HeadCell><span className="sr-only"></span></Table.HeadCell>
+        <Table.HeadCell>Prezzo</Table.HeadCell>
+        <Table.HeadCell>Ultima Modifica</Table.HeadCell>
+        <Table.HeadCell className='px-0'> 
+          <Pager/> 
+        </Table.HeadCell>
+        <Table.HeadCell> 
+          <Button.Group>
+            <ButtonRefresh/>
+          </Button.Group>
+        </Table.HeadCell>
+      </Table.Head>
+      <Table.Body>
+        <ListaElementi data={data} isLoading={isLoading} error={error} updateAction={useUpdateData}/>
+      </Table.Body>
+    </Table>
+    <div className='flex justify-center p-2'>
+      <ModificaElemento />
+    </div>
+  </div>
+  )
 }

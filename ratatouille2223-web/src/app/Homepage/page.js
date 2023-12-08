@@ -4,7 +4,7 @@ import Tabelleconti from '@/components/tabelleconti'
 
 export default function page() {
   return (
-    <div><h1>Conti Attivi</h1>
+    <div>
       <Top2/>
       <Tabelleconti/>
     </div>

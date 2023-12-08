@@ -4,10 +4,10 @@ import { Button } from 'flowbite-react';
 import { FiRefreshCcw } from "react-icons/fi";
 
 
-export default function ButtonRefresh() {
+export default function ButtonRefresh({onClickAction}) {
   return (
     <div>
-      <Button color='dark'>
+      <Button onClick={onClickAction} color='dark'>
         <FiRefreshCcw />
       </Button>
     </div>

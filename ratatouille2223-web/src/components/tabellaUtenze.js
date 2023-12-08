@@ -3,9 +3,9 @@ import React from 'react';
 import { Table } from 'flowbite-react';
 import Pager from './pager';
 import { Button } from 'flowbite-react';
-import ButtonFilter from './buttonFilter';
-import ButtonRefresh from './buttonRefresh';
-import ButtonAddUser from './buttonAddUser';
+import ButtonFilter from './buttons/buttonFilter';
+import ButtonRefresh from './buttons/buttonRefresh';
+import ButtonAddUser from './buttons/buttonAddUser';
 
 export default function TabellaUtenze() {
   return (

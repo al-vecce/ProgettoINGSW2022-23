@@ -3,13 +3,13 @@ import useSWR from 'swr'
 import React from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import ButtonPDF from './buttonPDF';
-import ButtonMore from './buttonMore';
-import ButtonClose from './buttonClose';
+import ButtonPDF from './buttons/buttonPDF';
+import ButtonMore from './buttons/buttonMore';
+import ButtonClose from './buttons/buttonClose';
 import Pager from './pager';
-import ButtonFilter from './buttonFilter';
-import ButtonRefresh from './buttonRefresh';
-import Confirm from './confirm';
+import ButtonFilter from './buttons/buttonFilter';
+import ButtonRefresh from './buttons/buttonRefresh';
+import Confirm from './buttons/buttonConferma';
 import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
 
@@ -21,7 +21,7 @@ export default function TabelleConti() {
 
   return (
     <div className="overflow-x-auto">
-    <Table hoverable key={crypto.randomUUID()}>
+    <Table hoverable >
       <Table.Head>
       <Table.HeadCell>Conto</Table.HeadCell>
         <Table.HeadCell>Tavolo</Table.HeadCell>
@@ -38,7 +38,7 @@ export default function TabelleConti() {
         </Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
-        <ListaContiAttivi key={crypto.randomUUID()} page={contiCurrentPage}/>
+        <ListaContiAttivi page={contiCurrentPage}/>
       </Table.Body>
     </Table>
   </div>
