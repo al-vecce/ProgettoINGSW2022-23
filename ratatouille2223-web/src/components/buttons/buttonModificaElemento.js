@@ -10,17 +10,17 @@ import { LuWheat } from "react-icons/lu";
 import React from 'react';
 import PriceForm from '../priceForm';
 
-export default function AggiungiElemento() {
+export default function ModificaElemento({oldAllergens, oldIngredients, oldName, oldPrice}) {
   const [openModal, setOpenModal] = useState(false);
-  const [nomeElemento, setNomeElemento] = useState('');
-  const [prezzo, setPrezzo] = useState('');
-  const [ allergenEgg, setEggAllergen] = useState(false);
-  const [ allergenShrimp, setShrimpAllergen] = useState(false);
-  const [ allergenCow, setCowAllergen] = useState(false);
-  const [ allergenWheat, setWheatAllergen] = useState(false);
-  const [ allergenFish, setFishAllergen] = useState(false);
-  const [ ingredienti, setIngrediente ] = useState({1:""});
-  const [ elementsRowCounter, setElemRowCounter] = useState(0);
+  const [nomeElemento, setNomeElemento] = useState(oldName);
+  const [prezzo, setPrezzo] = useState(oldPrice);
+  const [ allergenEgg, setEggAllergen] = useState(oldAllergens.egg);
+  const [ allergenShrimp, setShrimpAllergen] = useState(oldAllergens.shrimp);
+  const [ allergenCow, setCowAllergen] = useState(oldAllergens.cow);
+  const [ allergenWheat, setWheatAllergen] = useState(oldAllergens.wheat);
+  const [ allergenFish, setFishAllergen] = useState(oldAllergens.fish);
+  const [ ingredienti, setIngrediente ] = useState(oldIngredients);
+  const [ elementsRowCounter, setElemRowCounter] = useState();
 
   let counter = 0;
 

@@ -18,7 +18,6 @@ export default function TabelleConti() {
 
   const [ contiCurrentPage, setContiCurrentPage ] = useState(0);
 
-
   return (
     <div className="overflow-x-auto">
     <Table hoverable >
@@ -28,12 +27,12 @@ export default function TabelleConti() {
         <Table.HeadCell>Orario di apertura</Table.HeadCell>
         <Table.HeadCell>Costo totale</Table.HeadCell>
         <Table.HeadCell> 
-          <Pager/> 
+          <Pager /> 
         </Table.HeadCell>
         <Table.HeadCell> 
           <Button.Group>
             <ButtonFilter/>
-            <ButtonRefresh/>
+            <ButtonRefresh />
           </Button.Group>
         </Table.HeadCell>
       </Table.Head>

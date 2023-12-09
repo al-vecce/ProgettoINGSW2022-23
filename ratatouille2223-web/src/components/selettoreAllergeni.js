@@ -9,7 +9,7 @@ import { LuWheat } from "react-icons/lu";
 import { FaShrimp } from "react-icons/fa6"
 import { FaPlus } from "react-icons/fa";
 
-export default function SelettoreAllergeni({allergens}) {
+export default function SelettoreAllergeni({allergens, setterAllergeni}) {
   const [openModal, setOpenModal] = useState(false);
   const [ eggOutline, setEggOutline] = useState(!allergens.egg);
   const [ shrimpOutline, setShrimpOutline] = useState(!allergens.shrimp);
@@ -36,15 +36,16 @@ export default function SelettoreAllergeni({allergens}) {
     setOpenModal(false);
   }
   function onSubmit(){
-    allergens.cow = !cowOutline;
-    allergens.egg = !eggOutline;
-    allergens.fish = !fishOutline;
-    allergens.wheat = !wheatOutline;
-    allergens.shrimp = !shrimpOutline;
+    setterAllergeni.setCowAllergen(!cowOutline);
+    setterAllergeni.setEggAllergen(!eggOutline);
+    setterAllergeni.setFishAllergen(!fishOutline);
+    setterAllergeni.setWheatAllergen(!wheatOutline);
+    setterAllergeni.setShrimpAllergen(!shrimpOutline);
+    setOpenModal(false);
   }
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color='gray' outline pill><FaPlus /></Button>
+      <Button onClick={() => setOpenModal(true)} color='gray' size="sm" outline pill><FaPlus /></Button>
       <Modal dismissible size="md" show={openModal} onClose={onCloseAction}>
         <Modal.Header>
         <div className="space-y-6">
@@ -62,7 +63,7 @@ export default function SelettoreAllergeni({allergens}) {
               <Button onClick={onWheatClick} color='dark' size="xl" outline={wheatOutline} pill><LuWheat/></Button>
               <Button onClick={onShrimpClick} color='dark' size="xl" outline={shrimpOutline} pill><FaShrimp/></Button>
             </div>
-            <Button color='success' onClick={() => setOpenModal(false)}>Conferma</Button>
+            <Button color='success' onClick={onSubmit}>Conferma</Button>
           </div>
         </Modal.Body>
       </Modal>

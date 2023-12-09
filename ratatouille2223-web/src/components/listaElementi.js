@@ -4,7 +4,7 @@ import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import ButtonPDF from './buttons/buttonPDF';
 import ButtonMore from './buttons/buttonMore';
-import ButtonModificaCategoria from './buttons/buttonModificaCategoria';
+import ButtonModificaElemento from './buttons/buttonModificaElemento';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { IoTrashOutline } from "react-icons/io5";
 import { FaLanguage } from "react-icons/fa";
@@ -40,7 +40,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            name, last_modified, price
+            name, last_modified, price, allergens
         }) => (
             <React.Fragment key={name}>
             <Table.Row key={name} className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -56,7 +56,12 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             <FaLanguage /> 
                         </Button>
                         <ButtonMore/>
-                        <ButtonModificaCategoria refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
+                        <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
+                            oldName={name} 
+                            oldPrice={price} 
+                            oldAllergens={} 
+                            oldIngredients={null} 
+                        />
                         <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>
