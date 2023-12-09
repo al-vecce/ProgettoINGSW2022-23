@@ -6,17 +6,17 @@ import { useState } from 'react';
 export default function Pager() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  //const onPageChange = (page: number) => setCurrentPage(page);
+  const onPageChange = (page) => setCurrentPage(page);
 
   return (
     <div className="flex overflow-x-auto sm:justify-center">
       <Pagination
         layout="navigation"
         currentPage={currentPage}
-        totalPages={100}
-        //onPageChange={onPageChange}
+        totalPages={10}
+        onPageChange={onPageChange}
         showIcons
-      />
+      ></Pagination>
     </div>
   );
 }

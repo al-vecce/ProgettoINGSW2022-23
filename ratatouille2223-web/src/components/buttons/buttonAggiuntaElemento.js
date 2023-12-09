@@ -2,18 +2,26 @@
 
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import { useState } from 'react';
-import SelettoreAllergeni from './selettoreAllergeni';
+import SelettoreAllergeni from '../selettoreAllergeni';
 import { FaPlus } from "react-icons/fa";
-import ModificaElementoSecondaLingua from './modificaElementoSecondaLingua';
+import ModificaElementoSecondaLingua from '../modificaElementoSecondaLingua';
 
-export default function ModificaElemento() {
+export default function AggiungiElemento() {
   const [openModal, setOpenModal] = useState(false);
-  const [NomeElemento, setNomeElemento] = useState('');
-  const [Prezzo, setPrezzo] = useState('');
+  const [nomeElemento, setNomeElemento] = useState('');
+  const [prezzo, setPrezzo] = useState('');
 
+  const allergens ={
+    wheat: false,
+    egg: false,
+    cow: false,
+    shrimp: false,
+    fish: false,
+  }
 
   function onCloseModal() {
     setOpenModal(false);
+    allergens.cow = allergens.wheat = allergens.fish = allergens.egg = allergens.shrimp = false;
     setNomeElemento('');
   }
 
@@ -39,7 +47,7 @@ export default function ModificaElemento() {
               <TextInput
                 id="NomeElemento"
                 placeholder="Nome Elemento"
-                value={NomeElemento}
+                value={nomeElemento}
                 onChange={(event) => setNomeElemento(event.target.value)}
                 required
               />
@@ -51,27 +59,27 @@ export default function ModificaElemento() {
               <TextInput
                 id="Prezzo"
                 placeholder="Prezzo"
-                value={Prezzo}
+                value={prezzo}
                 onChange={(event) => setPrezzo(event.target.value)}
                 required
               />
             </div>
             <div className="mb-2 block">
               <Label htmlFor="Allergeni" value="Allergeni:" />
-              <SelettoreAllergeni>
+              <SelettoreAllergeni allergens={allergens}>
               </SelettoreAllergeni>
             </div>
           </div>
         </Modal.Body>
         <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
           <Label htmlFor="Ingredienti" value="Ingredienti:" />
-        <div className="mb-2 block">
-        <TextInput id="small" type="text" sizing="sm" />
-        </div>
-        <div className=" mb-2 block flex justify-center p-2">
+          <div className="mb-2 block">
+          <TextInput id="small" type="text" sizing="sm" />
+          </div>
+        </Modal.Footer>
+        <div className="flex justify-center p-2">
               <Button color='success'>Conferma</Button>
         </div>
-        </Modal.Footer>
       </Modal>
     </>
   );

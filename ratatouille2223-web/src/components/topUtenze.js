@@ -2,15 +2,20 @@
 
 import { Button } from 'flowbite-react';
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import HpSidebar from './hpsidebar';
-import { useState } from 'react';
-import { CgDetailsMore } from 'react-icons/cg';
+import { IoIosArrowBack } from "react-icons/io";
+import { useRouter } from 'next/navigation';
 
 export default function TopUtenze() {
+  const router = useRouter();
+  function goBackToHomepage(){
+    router.push("/Homepage");
+  }
   return (
     <Navbar className='bg-green-600' fluid rounded>
       <Navbar.Brand>
-      <HpSidebar/>
+        <Button onClick={goBackToHomepage} color='gray'>
+          <IoIosArrowBack /> 
+        </Button>
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Dropdown

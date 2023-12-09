@@ -7,7 +7,7 @@ import ButtonMore from './buttons/buttonMore';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import ButtonConfermaDelete from './buttons/buttonConferma';
-import ModificaElemento from './modificaElemento';
+import AggiungiElementoButton from './buttons/buttonAggiuntaElemento';
 import { FaLanguage } from "react-icons/fa";
 import TopElementi from './topElementi';
 import { IoTrashOutline } from "react-icons/io5";
@@ -49,11 +49,11 @@ export default function TabellaElementi({name}) {
         </Table.HeadCell>
       </Table.Head>
       <Table.Body>
-        <ListaElementi data={data} isLoading={isLoading} error={error} updateAction={useUpdateData}/>
+        <ListaElementi categoria={name} data={data} isLoading={isLoading} error={error} updateAction={useUpdateData}/>
       </Table.Body>
     </Table>
     <div className='flex justify-center p-2'>
-      <ModificaElemento />
+      <AggiungiElementoButton />
     </div>
   </div>
   )
