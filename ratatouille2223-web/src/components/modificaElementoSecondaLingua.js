@@ -7,8 +7,8 @@ import { FaLanguage } from "react-icons/fa";
 
 export default function ModificaElementoSecondaLingua() {
   const [openModal, setOpenModal] = useState(false);
-  const [NomeElemento, setNomeElemento] = useState('');
-  const [Prezzo, setPrezzo] = useState('');
+  const [nomeElemento, setNomeElemento] = useState('');
+  const [prezzo, setPrezzo] = useState('');
 
 
   function onCloseModal() {
@@ -24,7 +24,7 @@ export default function ModificaElementoSecondaLingua() {
           
         <div className="flex flex-wrap gap-14">
           <Button onClick={() => setOpenModal(true)} color='white' size='sl'><FaLanguage /></Button>
-          <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Inserimento Elemento</h1>
+          <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Seconda lingua</h1>
         </div>
         
         </Modal.Header>
@@ -38,27 +38,10 @@ export default function ModificaElementoSecondaLingua() {
               <TextInput
                 id="NomeElemento"
                 placeholder="Nome Elemento"
-                value={NomeElemento}
+                value={nomeElemento}
                 onChange={(event) => setNomeElemento(event.target.value)}
                 required
               />
-            </div>
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="Prezzo" value="Prezzo" />
-              </div>
-              <TextInput
-                id="Prezzo"
-                placeholder="Prezzo"
-                value={Prezzo}
-                onChange={(event) => setPrezzo(event.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-2 block">
-              <Label htmlFor="Allergeni" value="Allergeni:" />
-              <SelettoreAllergeni>
-              </SelettoreAllergeni>
             </div>
           </div>
         </Modal.Body>

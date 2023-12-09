@@ -8,7 +8,7 @@ export class categorieService{
         },
         }
         ).then((res) => res.json());
-    postCategoriaPerNome = (vecchioNome, nuovoNome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/category/" + vecchioNome, {
+    postCategoriaPerNome = (vecchioNome, nuovoNome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + vecchioNome, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -18,7 +18,7 @@ export class categorieService{
         })
         }
         ).then((res) => res.json());
-    putCategoriaPerNome = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/category/" + nome, {
+    putCategoriaPerNome = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nome, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -28,7 +28,7 @@ export class categorieService{
         })
         }
         ).then((res) => res.json());
-    deleteCategoriaPerNome = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/category/" + nome, {
+    deleteCategoriaPerNome = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nome, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"

@@ -1,16 +1,19 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import Link from 'next/link';
 import ButtonMore from './buttons/buttonMore';
 import ButtonModificaCategoria from './buttons/buttonModificaCategoria';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { IoTrashOutline } from "react-icons/io5";
 import { categorieService } from '@/services/categorieService';
-
+import { useRouter } from 'next/navigation';
 
 export default function listaCategorie({alertsControl, data, error, isLoading, updateAction}) {
+    const router = useRouter();
+    function goToElement(){
+        router
+    }
     async function deleteCategoria(args){
         const nome = args;
         const categorieServ = new categorieService();
@@ -50,9 +53,11 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
                     <Table.Cell><span className="sr-only"></span></Table.Cell>
                     <Table.Cell>
                     <Button.Group className='gap-3'>
-                        <Link href={process.env.NEXT_PUBLIC_NEXTJSAPPHOSTNAME + "/Homepage/Menu/Categoria?name=" + name}><ButtonMore /></Link>
+                        <ButtonMore onClickAction={()=>{router.push("/Homepage/Menu/Categoria?name=" + name);}} />
                         <ButtonModificaCategoria refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<IoTrashOutline />}/>
+                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<IoTrashOutline />}>
+                            Vuoi eliminare la seguente categoria e tutti gli elementi all'interno?
+                        </ButtonConfirmElimina>
                     </Button.Group>
                     </Table.Cell>
             </Table.Row>

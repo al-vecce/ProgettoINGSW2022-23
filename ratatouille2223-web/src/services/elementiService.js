@@ -7,4 +7,12 @@ export default class elementiService{
         },
         }
         ).then((res) => res.json());
+    deleteElementoPerNome = (nomeCategoria, nomeElemento) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nomeCategoria + "/" + nomeElemento, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+
+        },
+        }
+        ).then((res) => res.json());
 }

@@ -6,20 +6,19 @@ import { useState } from 'react';
 import { utenzeService } from '@/services/utenzeService';
 import { Select } from 'flowbite-react';
 
-export default function buttonAddUser({alertsControl, refreshAction}) {
+export default function buttonModificaUtente({alertsControl, refreshAction, old_username, old_ruolo}) {
   const utenzeServ = new utenzeService();
   const [openModal, setOpenModal] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [ruolo, setRuolo] = useState('ADDETTOSALA');
+  const [username, setUsername] = useState(old_username);
+  const [ruolo, setRuolo] = useState(old_ruolo);
+
   function onCloseModal() {
     setOpenModal(false);
-    setUsername('');
-    setRuolo('ADDETTOSALA');
-    setPassword('');
+    setUsername(old_username);
+    setRuolo(old_ruolo);
   }
-  async function aggiungiUtente(){
-    const res = await utenzeServ.putUtentePerUsername(username,password,ruolo);
+  async function modificaUtente(){
+    const res = await utenzeServ.postUtentePerUsername(old_username,username, ruolo);
     if(res){
       (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
     }else{
@@ -27,7 +26,6 @@ export default function buttonAddUser({alertsControl, refreshAction}) {
     }
     refreshAction();
     setUsername('');
-    setPassword('');
     setRuolo('ADDETTOSALA');
     setOpenModal(false);
   }
@@ -37,14 +35,11 @@ export default function buttonAddUser({alertsControl, refreshAction}) {
       <Button onClick={() => setOpenModal(true)} color='gray' outline><FaPlus /></Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
         <Modal.Header>
-          
         <div className="flex flex-wrap gap-14">
-          <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Nuovo utente</h1>
+          <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Modifica utente</h1>
         </div>
-        
         </Modal.Header>
         <Modal.Body>  
-        
               <div className='space-y-4'>
                 <div className="mb-2 block">
                   <Label htmlFor="Username" value="Username" />
@@ -54,16 +49,6 @@ export default function buttonAddUser({alertsControl, refreshAction}) {
                   placeholder="username"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
-                  required
-                />
-                <div className="mb-2 block">
-                  <Label htmlFor="Password" value="Password" />
-                </div>
-                <TextInput
-                  id="Password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
                   required
                 />
                 <div className="mb-2 block">
@@ -77,7 +62,7 @@ export default function buttonAddUser({alertsControl, refreshAction}) {
               </div>
         </Modal.Body>
         <div className="flex justify-center p-2">
-              <Button onClick={aggiungiUtente} color='success'>Conferma</Button>
+              <Button onClick={modificaUtente} color='success'>Conferma</Button>
         </div>
       </Modal>
     </>

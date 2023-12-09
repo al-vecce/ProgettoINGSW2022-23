@@ -3,16 +3,18 @@
 import { Button } from 'flowbite-react';
 import { Navbar } from 'flowbite-react';
 import { IoIosArrowBack } from "react-icons/io";
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 export default function TopCategoria() {
+  const router = useRouter();
+  function goBackToHomepage(){
+    router.push("/Homepage");
+  }
   return (
     <Navbar className='bg-green-600' fluid rounded>
       <Navbar.Brand>
-        <Link href={process.env.NEXT_PUBLIC_NEXTJSAPPHOSTNAME + "/Homepage"}>
-          <Button  color='gray'> 
+          <Button onClick={goBackToHomepage} color='gray'>
             <IoIosArrowBack /> 
           </Button>
-      </Link>
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Navbar.Toggle />

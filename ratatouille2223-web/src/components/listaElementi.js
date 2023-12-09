@@ -8,17 +8,17 @@ import ButtonModificaCategoria from './buttons/buttonModificaCategoria';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { IoTrashOutline } from "react-icons/io5";
 import { FaLanguage } from "react-icons/fa";
-import { categorieService } from '@/services/categorieService';
+import elementiService from '@/services/elementiService';
 
-export default function ListaElementi({alertsControl, data, error, isLoading, updateAction}) {
+export default function ListaElementi({alertsControl, data, error, isLoading, updateAction, categoria}) {
 
     async function deleteElemento(args){
-        // const nome = args;
-        // const categorieServ = new categorieService();
-        // const res = await categorieServ.deleteCategoriaPerNome(nome);
-        // if(res){
-        //     (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
-        // }
+        const nomeElemento = args;
+        const elementiServ = new elementiService();
+        const res = await elementiServ.deleteElementoPerNome(categoria,nomeElemento);
+        if(res){
+            (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+        }
     }
     if(isLoading) 
         return ( 
@@ -57,7 +57,9 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         </Button>
                         <ButtonMore/>
                         <ButtonModificaCategoria refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}/>
+                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}>
+                            Eliminare l'elemento selezionato?
+                        </ButtonConfirmElimina>
                     </Button.Group>
                     </Table.Cell>
             </Table.Row>

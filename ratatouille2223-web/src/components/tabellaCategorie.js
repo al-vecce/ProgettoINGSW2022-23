@@ -22,7 +22,7 @@ export default function TabelleCategorie() {
     const { data, error, isLoading, mutate } = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
     const useUpdateData = () =>{
         mutate(dud, categorieServ.getCategoriePerNome);
-    }
+    };
   /* {(alertSuccessState ? 
         <Toast>
         <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">

@@ -4,7 +4,7 @@ import { Button, Modal } from 'flowbite-react';
 import { useState } from 'react';
 import ButtonClose from './buttonClose';
 
-export default function Confirm({icona, refreshAction, clickConfermaAction, argsConfermaAction, clickAnnullaAction}) {
+export default function Confirm({icona, refreshAction, clickConfermaAction, argsConfermaAction, clickAnnullaAction, children}) {
   const [openModal, setOpenModal] = useState(false);
 
   
@@ -22,7 +22,7 @@ export default function Confirm({icona, refreshAction, clickConfermaAction, args
         <Modal.Body>
           <div className="text-center">
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Vuoi eliminare la seguente categoria e tutti gli elementi all'interno?
+              {children}
             </h3>
             <div className="flex justify-center gap-4">
               <Button color="failure" onClick={confermaAction}>

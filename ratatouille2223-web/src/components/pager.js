@@ -10,6 +10,8 @@ export default function Pager() {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPages, setMaxPages] = useState(1);
 
+  const onPageChange = (page) => setCurrentPage(page);
+
   return (
     <div className="flex flew-col w-48 gap-2 items-center justify-center text-inherit
     bg-white rounded-lg">
@@ -27,14 +29,3 @@ export default function Pager() {
     </div>
   );
 }
-/*
-<Pagination
-        layout="navigation"
-        currentPage={currentPage}
-        totalPages={100}
-        //onPageChange={onPageChange}
-        showIcons
-      >
-        <div className='box'></div>
-      </Pagination>
-      */
