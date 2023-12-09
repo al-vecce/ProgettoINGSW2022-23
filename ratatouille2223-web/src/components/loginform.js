@@ -7,7 +7,7 @@ import loginService from '../services/loginService';
 
 import { FaLock, FaUser } from "react-icons/fa";
 import { Flowbite } from 'flowbite-react';
-const customTheme = {
+const customButtonTheme = {
   base: "rounded-none",
   button: {
     color: {
@@ -77,7 +77,7 @@ export default function LoginForm(){
         </div>
         <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required/>
       </div>
-      <Flowbite theme={{ theme: customTheme }}>
+      <Flowbite theme={{ theme: customButtonTheme }}>
         <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={tryLogin}>Submit</Button>
       </Flowbite>
     </form>
