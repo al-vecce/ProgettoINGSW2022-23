@@ -6,7 +6,7 @@ import React from 'react';
 import { Button } from 'flowbite-react';
 import ButtonPDF from './buttons/buttonPDF';
 import ButtonMore from './buttons/buttonMore';
-import Confirm from './buttons/buttonConferma';
+import Close from './buttons/buttonClose';
 import {contiAttiviService, getContiAttiviOrdinatiPerTavolo} from '@/services/contiAttiviService';
 import { useState } from 'react';
 import TabellaElementi from './tabellaElementiConto';
@@ -37,19 +37,17 @@ export default function ListaContiAttivi({page}) {
     }) => (
       <React.Fragment key={check_id}>
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-              <Table.Cell>{check_id}</Table.Cell>
+              <Table.Cell>Conto Num. {check_id}</Table.Cell>
               <Table.Cell>{check_table}</Table.Cell>
               <Table.Cell>{opening_date_time}</Table.Cell>
               <Table.Cell>{check_total}</Table.Cell>
-              <Table.Cell><span className="sr-only"></span></Table.Cell>
               <Table.Cell>
-                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                <Button.Group >
+                <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
+                justify-end'>
                   <ButtonPDF/>
-                  <Confirm />
+                  <Close />
                   <ButtonMore onClickAction={changeContoDetailsVisibility} /> 
                 </Button.Group>
-                </a>
                 </Table.Cell>
         </Table.Row>
           {contoDetailsVisibility ? <TabellaElementi key={check_id} conto={check_id}/> : null}
