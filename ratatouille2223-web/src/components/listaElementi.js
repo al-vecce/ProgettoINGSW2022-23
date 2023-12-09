@@ -59,7 +59,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
                             oldName={name} 
                             oldPrice={price} 
-                            oldAllergens={} 
+                            oldAllergens={null} 
                             oldIngredients={null} 
                         />
                         <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}>
