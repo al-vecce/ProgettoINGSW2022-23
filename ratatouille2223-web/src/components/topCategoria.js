@@ -5,15 +5,17 @@ import { Navbar } from 'flowbite-react';
 import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from 'next/navigation';
 export default function TopCategoria() {
+
   const router = useRouter();
+
   function goBackToHomepage(){
-    router.push("/Homepage");
+    router.push("/Homepage/");
   }
   return (
     <Navbar className='bg-green-600' fluid rounded>
       <Navbar.Brand>
           <Button onClick={goBackToHomepage} color='gray'>
-            <IoIosArrowBack /> 
+            <IoIosArrowBack />
           </Button>
       </Navbar.Brand>
       <div className="flex md:order-2">

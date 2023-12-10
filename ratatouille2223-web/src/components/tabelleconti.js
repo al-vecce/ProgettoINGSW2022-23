@@ -4,9 +4,7 @@ import React from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import FilterConti from './filterConti';
-import ButtonPDF from './buttons/buttonPDF';
-import ButtonMore from './buttons/buttonMore';
-import ButtonClose from './buttons/buttonClose';
+import { contiAttiviService } from '@/services/contiAttiviService';
 import Pager from './pager';
 import ButtonFilter from './buttons/buttonFilter';
 import ButtonRefresh from './buttons/buttonRefresh';
@@ -43,9 +41,20 @@ const customTableTheme = {
 
 export default function TabelleConti() {
 
-  const [ contiCurrentPage, setContiCurrentPage ] = useState(0);
-
+  const [ contiCurrentPage, setContiCurrentPage ] = useState(1);
   const [showFilter, setFilter] = useState(false);
+  const dud = "bread";
+  const contiServ = new contiAttiviService();
+  const fetchConti = useSWR((contiCurrentPage-1).toString(), contiServ.getContiAttiviOrdinatiPerTavolo);
+  const fetchPagina = useSWR(dud, contiServ.getNumberOfPagesContiAttivi);
+
+  const useUpdateData = ()=>{
+    fetchPagina.mutate(dud, contiServ.getNumberOfPagesContiAttivi);
+    if(contiCurrentPage > fetchPagina.data){
+      setContiCurrentPage(1);
+    }
+    fetchConti.mutate((contiCurrentPage-1).toString(), contiServ.getContiAttiviOrdinatiPerTavolo);
+  };
 
   return (
     <div className="overflow-y-auto overflow-x-auto w-screen">
@@ -58,10 +67,9 @@ export default function TabelleConti() {
         <Table.HeadCell> 
           <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
-            <Pager/> 
+            <Pager maxPages={fetchPagina.data} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} /> 
             <Button.Group className='flex flex-row items-center gap-1 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.1.5)]
                 justify-end'>
-              {showFilter ? <ButtonFilter/> : <div/>}
               {showFilter ? <div/> : <FilterConti/>}
               <ButtonRefresh/>
             </Button.Group>
@@ -69,7 +77,7 @@ export default function TabelleConti() {
         </Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
-        <ListaContiAttivi page={contiCurrentPage}/>
+        <ListaContiAttivi data={fetchConti.data} isLoading={fetchConti.isLoading} error={fetchConti.error} />
       </Table.Body>
     </Table>
     

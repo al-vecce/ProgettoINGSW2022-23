@@ -13,10 +13,8 @@ import TabellaElementi from './tabellaElementiConto';
 import { useElementiConto } from '@/hooks/useElementiConto';
 import { Accordion } from 'flowbite-react';
 
-export default function ListaContiAttivi({page}) {
+export default function ListaContiAttivi({data , error, isLoading}) {
 
-    const contiServ = new contiAttiviService();
-    const { data , error, isLoading } = useSWR(page.toString(), contiServ.getContiAttiviOrdinatiPerTavolo);
     const [ contoDetailsVisibility, setContoDetailsVisibility] = useState(false);
   
     const changeContoDetailsVisibility = () =>{setContoDetailsVisibility(contoDetailsVisibility => !contoDetailsVisibility)}
@@ -31,7 +29,11 @@ export default function ListaContiAttivi({page}) {
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell>Errore con il caricamento!</Table.Cell>
       </Table.Row>
-    )}else{
+    )}
+
+    if(!Array.isArray(data.openchecks) && data.openchecks)
+      data.openchecks = null;
+
     return (data.openchecks ? data.openchecks.map(({
       check_id, check_total, opening_date_time, check_table,
     }) => (
@@ -56,5 +58,5 @@ export default function ListaContiAttivi({page}) {
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
     <Table.Cell>Errore con il caricamento!</Table.Cell>
     </Table.Row>);
-    }
+
 }

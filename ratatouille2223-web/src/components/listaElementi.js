@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import ButtonPDF from './buttons/buttonPDF';
@@ -11,7 +11,20 @@ import { FaLanguage } from "react-icons/fa";
 import elementiService from '@/services/elementiService';
 
 export default function ListaElementi({alertsControl, data, error, isLoading, updateAction, categoria}) {
-
+    // const test = "Mioci,mario,michele,MinerG";
+    // const num = 1;
+    // let array = [{value:1}];
+    // const [arr, setArr] = useState({});
+    // const [valore,setValore] = useState(1);
+    // function oneTime(){
+    //     test.split(",").forEach((e)=>{
+    //         setArr(arr=>({...arr, [valore]: e}))
+    //         setValore(valore+1);
+    //     })
+    // }
+    // console.log(
+    //     arr
+    // );
     async function deleteElemento(args){
         const nomeElemento = args;
         const elementiServ = new elementiService();
@@ -56,12 +69,12 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             <FaLanguage /> 
                         </Button>
                         <ButtonMore/>
-                        <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
+                        {/* <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
                             oldName={name} 
                             oldPrice={price} 
-                            oldAllergens={null} 
+                            oldAllergens={data.allergens ? null: null } 
                             oldIngredients={null} 
-                        />
+                        /> */}
                         <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>

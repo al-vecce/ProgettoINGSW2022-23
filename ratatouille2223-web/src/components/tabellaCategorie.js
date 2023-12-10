@@ -12,17 +12,22 @@ import ButtonAggiungiCategoria from './buttons/buttonAggiungiCategoria';
 import TopCategoria from './topCategoria';
 import ListaCategorie from './listaCategorie';
 import { useRouter } from 'next/navigation';
+
 export default function TabelleCategorie() {
 
   const [alertSuccessState, setAlertSuccessState] = useState(false);
   const alertsControl = {setAlertSuccessState};
   const router = useRouter();
   const categorieServ = new categorieService();
-    const dud = "Tf2Bread.jpg";
-    const { data, error, isLoading, mutate } = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
-    const useUpdateData = () =>{
-        mutate(dud, categorieServ.getCategoriePerNome);
-    };
+  const dud = "Tf2Bread.jpg";
+  const { data, error, isLoading, mutate } = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
+  const useUpdateData = () =>{
+      mutate(dud, categorieServ.getCategoriePerNome);
+  };
+
+
+  
+
   /* {(alertSuccessState ? 
         <Toast>
         <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
