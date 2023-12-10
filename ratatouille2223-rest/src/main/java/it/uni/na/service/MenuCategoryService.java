@@ -34,7 +34,7 @@ public class MenuCategoryService {
             case ModeConstants.BYAVERAGECOST:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "average_cost");
                 break;
-            case ModeConstants.BYCLOSINGDATE:
+            case ModeConstants.BYLASTMODIFIED:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "last_modified");
                 break;
             default:
