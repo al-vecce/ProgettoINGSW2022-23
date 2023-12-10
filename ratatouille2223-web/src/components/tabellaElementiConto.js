@@ -7,6 +7,8 @@ import ButtonPDF from './buttons/buttonPDF';
 import ButtonMore from './buttons/buttonMore';
 import Confirm from './buttons/buttonConferma';
 
+import { FaSortDown } from "react-icons/fa";
+
 export default function TabellaElementiConto({conto}) {
   const listaElementi = useElementiConto(conto);
   let data = listaElementi.data;
@@ -37,12 +39,13 @@ export default function TabellaElementiConto({conto}) {
   }
   return (
     <React.Fragment>
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell>Nome</Table.Cell>
-            <Table.Cell>Quantità</Table.Cell>
-            <Table.Cell>Costo</Table.Cell>
-            <Table.Cell>Costo</Table.Cell>
-      </Table.Row>
+      {data.orders ? 
+      <Table.Row className="hover:bg-white">
+            <Table.Cell><div className='flex'>Elemento <FaSortDown /></div></Table.Cell>
+            <Table.Cell><div className='flex'>Quantità <FaSortDown /></div></Table.Cell>
+            <Table.Cell><div className='flex'>Costo Singolo <FaSortDown /></div></Table.Cell>
+            <Table.Cell><div className='flex'>Costo Complessivo <FaSortDown /></div></Table.Cell>
+      </Table.Row> : <div/>}
       {data.orders ? 
       data.orders.map(({
         order_id, order_total, quantity, current_price,
@@ -53,16 +56,6 @@ export default function TabellaElementiConto({conto}) {
                 <Table.Cell>{quantity}</Table.Cell>
                 <Table.Cell>{current_price}</Table.Cell>
                 <Table.Cell>{order_total}</Table.Cell>
-                <Table.Cell><span className="sr-only"></span></Table.Cell>
-                <Table.Cell>
-                  <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  <Button.Group>
-                    <ButtonPDF/>
-                    <Confirm/>
-                    <ButtonMore /> 
-                  </Button.Group>
-                  </a>
-                  </Table.Cell>
           </Table.Row>
         </React.Fragment>
       )) : 

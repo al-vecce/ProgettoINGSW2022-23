@@ -9,7 +9,7 @@ import ButtonRefresh from './buttons/buttonRefresh';
 import { useState } from 'react';
 import { categorieService } from '@/services/categorieService';
 import ButtonAggiungiCategoria from './buttons/buttonAggiungiCategoria';
-import TopCategoria from './topCategoria';
+
 import ListaCategorie from './listaCategorie';
 import { useRouter } from 'next/navigation';
 
@@ -37,7 +37,6 @@ export default function TabelleCategorie() {
       </Toast> : null)} */
   return (
     <div className="overflow-x-auto">
-        <TopCategoria/>
     <Table hoverable>
       <Table.Head>
       <Table.HeadCell>Nome</Table.HeadCell>
