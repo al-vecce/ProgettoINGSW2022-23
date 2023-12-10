@@ -28,7 +28,7 @@ const customTheme = {
 export default function top() {
   const [showSidebar, setSidebarshow] = useState(false);
   return (
-    <Navbar theme={customTheme} className="flex justify-between lg:xl:h-24 max-h-32 shadow-lg rounded-b-2xl
+    <Navbar theme={customTheme} className="flex sticky-top-0 justify-between lg:xl:h-24 max-h-32 shadow-lg rounded-b-2xl
     bg-cover bg-center bg-[url('/header-splash.svg')]"
     style={{alignItems:'center'}}>
       

@@ -18,7 +18,7 @@ const sidebarButtonTheme = {
 export default function HpSidebar() {
   return ( 
     //<div className="box w-screen h-screen backdrop backdrop-opacity-100 backdrop-brightness-[0.70] absolute top-0 left-0">
-        <div className="box w-64 h-screen rounded-r-[50px] shadow-lg bg-cover
+        <div className="box w-64 h-screen sticky-left-0  rounded-r-[50px] shadow-lg bg-cover
         bg-[url('/sidebar-splash.svg')] absolute top-0 left-0 transition-ease-in delay-1000 duration-1000">
             <div className='body-font font-quicksand drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] text-center tracking-widest uppercase text-[20.5px] pt-6 pr-4'>Ratatouille 23</div>
             <div className='flex flex-row flex-no-wrap pl-5 pr-5 pt-1 gap-1' style={{justifyContent:'center', alignItems:'center'}}>
