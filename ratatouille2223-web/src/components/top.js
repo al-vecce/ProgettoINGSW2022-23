@@ -40,7 +40,7 @@ export default function top() {
             <FaBars className='flex text-lg text-primary-icon'/>
           </Button>}
         </div>
-        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-2xl xl:text-4xl">Homepage</div>
+        <div className="body-font font-quicksand text-white drop-shadow-lg font-semibold tracking-widest uppercase text-2xl xl:text-4xl">Homepage</div>
         <div className='m-2'>
           <Dropdown
               arrowIcon={false}

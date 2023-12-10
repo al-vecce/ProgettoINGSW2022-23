@@ -31,7 +31,6 @@ export default function TabellaElementi({name}) {
 
   return (
     <div className="overflow-x-auto">
-    <TopElementi/>
     <Table hoverable>
       <Table.Head>
       <Table.HeadCell>Nome</Table.HeadCell>

@@ -13,6 +13,32 @@ import ButtonAggiungiCategoria from './buttons/buttonAggiungiCategoria';
 import ListaCategorie from './listaCategorie';
 import { useRouter } from 'next/navigation';
 
+import { FaSortDown } from "react-icons/fa";
+const customTableTheme = {
+  root: {
+    base: "w-full text-left text-sm text-gray-500 dark:text-gray-400",
+    shadow: "absolute bg-white dark:bg-black w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
+    wrapper: "relative"
+  },
+  body: {
+    base: "group/body",
+    cell: {
+      base: "group-first/body:group-first/row:first:rounded-tl-lg group-first/body:group-first/row:last:rounded-tr-lg group-last/body:group-last/row:first:rounded-bl-lg group-last/body:group-last/row:last:rounded-br-lg px-6 py-4"
+    }
+  },
+  head: {
+    base: "group/head text-lg body-font font-quicksand tracking-widest font-light text-primary-icon",
+    cell: {
+      "base": "group-first/head:first:rounded-tl-lg group-first/head:last:rounded-tr-lg grid-1 bg-gray-200 px-6 py-3"
+    }
+  },
+  row: {
+    base: "group/row",
+    hovered: "hover:bg-gray-50 dark:hover:bg-gray-600",
+    striped: "odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700"
+  }
+}
+
 export default function TabelleCategorie() {
 
   const [alertSuccessState, setAlertSuccessState] = useState(false);
@@ -36,30 +62,31 @@ export default function TabelleCategorie() {
         <div className="ml-3 text-sm font-normal">Aggiornamento avvenuto con successo.</div>
       </Toast> : null)} */
   return (
-    <div className="overflow-x-auto">
-    <Table hoverable>
-      <Table.Head>
-      <Table.HeadCell>Nome</Table.HeadCell>
-        <Table.HeadCell>Numero Elementi</Table.HeadCell>
-        <Table.HeadCell>Costo Medio</Table.HeadCell>
-        <Table.HeadCell>Ultima Modifica</Table.HeadCell>
-        <Table.HeadCell> 
-          <Pager/> 
-        </Table.HeadCell>
-        <Table.HeadCell> 
-          <Button.Group>
-            <ButtonRefresh onClickAction={useUpdateData} />
-          </Button.Group>
-        </Table.HeadCell>
-      </Table.Head>
-      <Table.Body>
-        <ListaCategorie data={data} error={error} isLoading={isLoading} updateAction={useUpdateData} alertsControl={alertsControl}/>
-      </Table.Body>
-    </Table>
-    <div className='flex justify-center p-2'>
-    <ButtonAggiungiCategoria alertsControl={alertsControl} refreshAction={useUpdateData}/>
+    <div className='w-full'>
+      <div className="overflow-x-auto">
+        <Table theme={customTableTheme} hoverable>
+          <Table.Head>
+          <Table.HeadCell><div className='flex'>Nome<FaSortDown /></div></Table.HeadCell>
+            <Table.HeadCell><div className='flex'>Numero Elementi<FaSortDown /></div></Table.HeadCell>
+            <Table.HeadCell><div className='flex'>Prezzo Medio<FaSortDown /></div></Table.HeadCell>
+            <Table.HeadCell><div className='flex'>Ultima Modifica<FaSortDown /></div></Table.HeadCell>
+            <Table.HeadCell> 
+              <Pager/> 
+            </Table.HeadCell>
+            <Table.HeadCell> 
+              <Button.Group>
+                <ButtonRefresh onClickAction={useUpdateData} />
+              </Button.Group>
+            </Table.HeadCell>
+          </Table.Head>
+          <Table.Body>
+            <ListaCategorie data={data} error={error} isLoading={isLoading} updateAction={useUpdateData} alertsControl={alertsControl}/>
+          </Table.Body>
+        </Table>
+      </div>
+      <div className='flex justify-center p-2'>
+        <ButtonAggiungiCategoria alertsControl={alertsControl} refreshAction={useUpdateData}/>
+      </div>
     </div>
-    
-  </div>
   )
 }

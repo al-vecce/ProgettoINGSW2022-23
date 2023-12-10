@@ -10,7 +10,6 @@ import { AiOutlineLoading } from 'react-icons/ai';
 
 export default function Pager({setCurrentPage, currentPage, maxPages, isLoading, error}) {
 
-
   function clickIncrementPage(){
       if((currentPage + 1 ) <= maxPages ){
         setCurrentPage(currentPage+1);
@@ -31,8 +30,8 @@ export default function Pager({setCurrentPage, currentPage, maxPages, isLoading,
         <FaCaretLeft className='text-xl'/>
       </Button>
       { isLoading && <AiOutlineLoading className="h-6 w-6 animate-spin" />}
-      { !isLoading && error && <p>Errore</p>}
-      { !isLoading && !error && <p>{currentPage} di {maxPages}</p>}
+      { !isLoading && (error || (typeof(maxPages) === 'number')) && <p>Errore</p>}
+      { !isLoading && !(error || (typeof(maxPages) === 'number')) && <p>{currentPage} di {maxPages}</p>}
       <Button onClick={clickIncrementPage} theme={{pill: "rounded-l-lg"}}className='text-inherit bg-trasparent enabled:hover:bg-transparent
       focus:border-transparent focus:ring-transparent'
       style={{width:"2.3em", height:"2.3em"}}>

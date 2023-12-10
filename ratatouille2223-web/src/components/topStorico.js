@@ -6,6 +6,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useRouter } from 'next/navigation';
 
 import { FaChevronLeft } from "react-icons/fa";
+
 const customTheme = {
   root: {
     inner: {
@@ -19,14 +20,14 @@ const customTheme = {
   }
 };
 
-export default function TopUtenze() {
+export default function TopStorico() {
   const router = useRouter();
   function goBackToHomepage(){
     router.push("/Homepage");
   }
   return (
     <Navbar theme={customTheme} className="flex justify-between lg:xl:h-24 max-h-32 shadow-lg rounded-b-2xl
-    bg-cover bg-center bg-[url('/header-splash.svg')] hue-rotate-[120deg] contrast-[1.50] saturate-[0.30]"
+    bg-cover bg-center bg-[url('/header-splash.svg')] hue-rotate-[0deg] contrast-[1.50] saturate-[0.1]"
     style={{alignItems:'center'}}>
       <div className='w-full flex justify-between' style={{alignItems:'center'}}>
         <div className='m-2 xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
@@ -36,7 +37,7 @@ export default function TopUtenze() {
             <FaChevronLeft className='flex text-xl text-primary-icon'/>
           </Button>
         </div>
-        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-2xl lg:xl:text-4xl">Utenti</div>
+        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-2xl lg:xl:text-4xl">Storico Conti</div>
         <div className='box m-2 xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
         </div>
       </div>
