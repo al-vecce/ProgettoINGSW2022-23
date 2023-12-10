@@ -63,7 +63,10 @@ export default function AggiungiElemento() {
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color='gray' outline><FaPlus /></Button>
+      <Button onClick={() => setOpenModal(true)} 
+      className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
+      border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
+      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
         <Modal.Header>
           

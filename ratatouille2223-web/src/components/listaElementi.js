@@ -4,13 +4,16 @@ import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import ButtonPDF from './buttons/buttonPDF';
 import ButtonMore from './buttons/buttonMore';
+import ButtonSecondaLingua from './buttons/buttonSecondaLingua';
 import ButtonModificaElemento from './buttons/buttonModificaElemento';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { IoTrashOutline } from "react-icons/io5";
-import { FaLanguage } from "react-icons/fa";
 import elementiService from '@/services/elementiService';
 
+import { FaTrashAlt  } from "react-icons/fa";
+
 export default function ListaElementi({alertsControl, data, error, isLoading, updateAction, categoria}) {
+    const [ secondaLingua, setSecondaLingua ] = useState(false);
     // const test = "Mioci,mario,michele,MinerG";
     // const num = 1;
     // let array = [{value:1}];
@@ -53,21 +56,19 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            name, last_modified, price, allergens
+            name, last_modified, price, allergens, second_name,
         }) => (
             <React.Fragment key={name}>
             <Table.Row key={name} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell >{name}</Table.Cell>
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell></Table.Cell>
+                    <Table.Cell >
+                        {secondaLingua && (second_name != "null") ? second_name : name}
+                    </Table.Cell>
                     <Table.Cell>{price}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
-                    <Table.Cell><span className="sr-only"></span></Table.Cell>
                     <Table.Cell>
-                    <Button.Group className='gap-3'>
-                        <Button> 
-                            <FaLanguage /> 
-                        </Button>
+                    <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
+                        justify-end'>
+                        <ButtonSecondaLingua onClickAction={()=>{setSecondaLingua(!secondaLingua)}}/>
                         <ButtonMore/>
                         {/* <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
                             oldName={name} 
@@ -75,7 +76,8 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             oldAllergens={data.allergens ? null: null } 
                             oldIngredients={null} 
                         /> */}
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<IoTrashOutline />}>
+                        <p>TODO</p>
+                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>
                     </Button.Group>

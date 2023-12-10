@@ -8,7 +8,6 @@ export class contiAttiviService{
         },
         }
         ).then((res) => res.json());
-
     getContiAttiviOrdinatiEFiltrati = ([page,ordinamento, filterStart, filterEnd]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + 
         "/homepage/filter?mode="+ ordinamento+ "&filterstart=" +filterStart+ "&filterend=" + filterEnd+ "&page=" + page, 
         {

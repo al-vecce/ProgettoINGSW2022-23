@@ -2,12 +2,13 @@
 import React, { Suspense, useEffect } from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import ButtonMore from './buttons/buttonMore';
+import ButtonCategoryMore from './buttons/buttonCategoryMore';
 import ButtonModificaCategoria from './buttons/buttonModificaCategoria';
 import ButtonConfirmElimina from './buttons/buttonConferma';
-import { IoTrashOutline } from "react-icons/io5";
 import { categorieService } from '@/services/categorieService';
 import { useRouter } from 'next/navigation';
+
+import { FaTrashAlt  } from "react-icons/fa";
 
 export default function listaCategorie({alertsControl, data, error, isLoading, updateAction}) {
     const router = useRouter();
@@ -50,12 +51,12 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
                     <Table.Cell>{element_number}</Table.Cell>
                     <Table.Cell>{average_cost}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
-                    <Table.Cell><span className="sr-only"></span></Table.Cell>
                     <Table.Cell>
-                    <Button.Group className='gap-3'>
-                        <ButtonMore onClickAction={()=>{router.push("/Homepage/Menu/Categoria?name=" + name);}} />
+                    <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
+                        justify-end'>
+                        <ButtonCategoryMore onClickAction={()=>{router.push("/Homepage/Menu/Categoria?name=" + name);}} />
                         <ButtonModificaCategoria refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<IoTrashOutline />}>
+                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<FaTrashAlt className='text-xl'/>}>
                             Vuoi eliminare la seguente categoria e tutti gli elementi all'interno?
                         </ButtonConfirmElimina>
                     </Button.Group>

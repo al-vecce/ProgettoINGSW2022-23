@@ -1,7 +1,7 @@
 
 export class categorieService{
 
-    getCategorieOrdinatePerNome = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories?mode=BYNAME", {
+    getCategorieOrdinatePer = ([page,ordinamento]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories?mode="+ ordinamento + "&page=" + page, {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -22,6 +22,7 @@ export class categorieService{
         },
         body: JSON.stringify({
             name: nuovoNome,
+            priority: 5,
         })
         }
         ).then((res) => res.json());
@@ -31,7 +32,7 @@ export class categorieService{
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            name: nome,
+            priority: 5,
         })
         }
         ).then((res) => res.json());

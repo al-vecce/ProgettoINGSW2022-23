@@ -1,6 +1,13 @@
 
 export default class elementiService{
-    getElementiCategoriaOrdinatiPerNome = (args) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ args.name + "?mode=BYNAME&page=" + args.page, {
+    getElementiCategoriaOrdinatiPerNome = ([nome, ordinamento, elementiCurrentPage]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ nome +"?mode="+ ordinamento +"&page=" + elementiCurrentPage, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        }
+        ).then((res) => res.json());
+    getNumberOfPagesElementi = ([nome]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/pages", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

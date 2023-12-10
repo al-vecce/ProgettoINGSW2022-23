@@ -30,8 +30,8 @@ export default function Pager({setCurrentPage, currentPage, maxPages, isLoading,
         <FaCaretLeft className='text-xl'/>
       </Button>
       { isLoading && <AiOutlineLoading className="h-6 w-6 animate-spin" />}
-      { !isLoading && (error || !(typeof(maxPages) === 'number')) && <p>Errore</p>}
-      { !isLoading && !error && (typeof(maxPages) === 'number') && <p>{currentPage} di {maxPages}</p>}
+      { !isLoading && error && !maxPages && <p>Errore</p>}
+      { !isLoading && !error && maxPages && <p>{currentPage} di {maxPages}</p>}
       <Button onClick={clickIncrementPage} theme={{pill: "rounded-l-lg"}}className='text-inherit bg-trasparent enabled:hover:bg-transparent
       focus:border-transparent focus:ring-transparent'
       style={{width:"2.3em", height:"2.3em"}}>

@@ -1,17 +1,17 @@
 'use client';
 import useSWR from 'swr';
 import React from 'react';
+
+import { useRouter } from 'next/navigation';
 import { Table, Toast } from 'flowbite-react';
-import { HiCheck, HiExclamation, HiX } from 'react-icons/hi';
 import { Button } from 'flowbite-react';
+import { useState } from 'react';
+
+import { categorieService } from '@/services/categorieService';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
-import { useState } from 'react';
-import { categorieService } from '@/services/categorieService';
 import ButtonAggiungiCategoria from './buttons/buttonAggiungiCategoria';
-
 import ListaCategorie from './listaCategorie';
-import { useRouter } from 'next/navigation';
 
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
@@ -46,9 +46,18 @@ export default function TabelleCategorie() {
   const router = useRouter();
   const categorieServ = new categorieService();
   const dud = "Tf2Bread.jpg";
-  const fetchCategoria = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
+
+  const [ categorieCurrentPage, setCategorieCurrentPage ] = useState(1);
+  const [ ordinamento, setOrdinamento ] = useState("BYPRIORITY");
+
+  const fetchCategoria = useSWR([(categorieCurrentPage-1).toString(), ordinamento], categorieServ.getCategorieOrdinatePer)
+  const fetchPagineCategoria = useSWR(dud, categorieServ.getNumberOfPagesCategorie)
 
   const useUpdateData = () =>{
+    fetchPagineCategoria.mutate(dud, categorieServ.getNumberOfPagesCategorie);
+    if(categorieCurrentPage > fetchPagineCategoria.data.pages){
+      setCategorieCurrentPage(1);
+    }
     fetchCategoria.mutate(dud, categorieServ.getCategoriePerNome);
   };
 
@@ -75,7 +84,7 @@ export default function TabelleCategorie() {
             <Table.HeadCell> 
               <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
-                <Pager/>
+                <Pager maxPages={fetchPagineCategoria.data ? fetchPagineCategoria.data.pages : null} setCurrentPage={setCategorieCurrentPage} currentPage={categorieCurrentPage} isLoading={fetchPagineCategoria.isLoading} error={fetchPagineCategoria.error}/>
                 <ButtonRefresh onClickAction={useUpdateData} />
               </Button.Group>
             </Table.HeadCell>
@@ -90,6 +99,4 @@ export default function TabelleCategorie() {
       </div>
     </div>
   )
-}
-//<Pager maxPages={fetchPagina.data} setCurrentPage={setCategorieCurrentPage} currentPage={categorieCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error}/>
-                
+}             
