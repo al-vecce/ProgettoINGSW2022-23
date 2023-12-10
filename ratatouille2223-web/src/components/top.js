@@ -33,20 +33,20 @@ export default function top() {
     style={{alignItems:'center'}}>
       
       <div className='w-full flex justify-between' style={{alignItems:'center'}}>
-        <div className='m-2 lg:xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
+        <div className='m-2 xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
           {!showSidebar && <Button className="shadow-lg rounded-md bg-white border border-none enabled:hover:bg-gray-200 focus:border-transparent focus:ring-transparent"
                 style={{width:"2.5em", height:"2.5em"}}
                 onClick={() => setSidebarshow(showSidebar => !showSidebar)}>
             <FaBars className='flex text-lg text-primary-icon'/>
           </Button>}
         </div>
-        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-3xl lg:xl:text-5xl">Homepage</div>
+        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-2xl xl:text-4xl">Homepage</div>
         <div className='m-2'>
           <Dropdown
               arrowIcon={false}
               inline
               label={
-                <Avatar className="lg:xl:scale-150" alt="User settings" img="/Logo.png" rounded />
+                <Avatar className="xl:scale-150" alt="User settings" img="/Logo.png" rounded />
               }
             >
               <Dropdown.Item className="text-primary-error mr-5"><FaArrowRightFromBracket className='flex text-lg mr-5'/>Disconnessione</Dropdown.Item>
