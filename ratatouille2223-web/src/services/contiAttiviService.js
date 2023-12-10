@@ -24,5 +24,12 @@ export class contiAttiviService{
         },
         }
         ).then((res) => res.json());
+    postChiudiContoPerID = (contoID) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/homepage/" + contoID , {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        }
+        ).then((res) => res.json());
 
 }
