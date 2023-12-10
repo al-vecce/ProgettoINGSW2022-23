@@ -1,17 +1,14 @@
 'use client';
 
 import { Table } from 'flowbite-react';
-import useSWR from 'swr'
 import React from 'react';
 import { Button } from 'flowbite-react';
 import ButtonPDF from './buttons/buttonPDF';
 import ButtonMore from './buttons/buttonMore';
 import Close from './buttons/buttonClose';
-import {contiAttiviService, getContiAttiviOrdinatiPerTavolo} from '@/services/contiAttiviService';
 import { useState } from 'react';
 import TabellaElementi from './tabellaElementiConto';
-import { useElementiConto } from '@/hooks/useElementiConto';
-import { Accordion } from 'flowbite-react';
+
 
 export default function ListaContiAttivi({data , error, isLoading}) {
 
@@ -48,7 +45,7 @@ export default function ListaContiAttivi({data , error, isLoading}) {
                 justify-end'>
                   <ButtonPDF/>
                   <Close />
-                  <ButtonMore onClickAction={changeContoDetailsVisibility} /> 
+                  <ButtonMore onClickAction={changeContoDetailsVisibility} />
                 </Button.Group>
                 </Table.Cell>
         </Table.Row>

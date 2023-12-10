@@ -6,9 +6,7 @@ import { Button } from 'flowbite-react';
 import FilterConti from './filterConti';
 import { contiAttiviService } from '@/services/contiAttiviService';
 import Pager from './pager';
-import ButtonFilter from './buttons/buttonFilter';
 import ButtonRefresh from './buttons/buttonRefresh';
-import Confirm from './buttons/buttonConferma';
 import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
 
@@ -41,37 +39,59 @@ const customTableTheme = {
 export default function TabelleConti() {
 
   const [ contiCurrentPage, setContiCurrentPage ] = useState(1);
-  const [showFilter, setFilter] = useState(false);
+  const [ oreMin, setOreMin] = useState(null);
+  const [ minMin, setMinutesMin] = useState(null);
+  const [ oreMax, setOreMax] = useState(null);
+  const [ minMax, setMinutesMax] = useState(null);
+  const setterFiltroOrari = {setOreMax, setOreMin, setMinutesMax, setMinutesMin};
+
+  const [ ordinamento, setOrdinamento ] = useState("BYID");
+
+  const getDate = ()=>{
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${year}-${month}-${date}`;
+  };
+
   const dud = "bread";
   const contiServ = new contiAttiviService();
-  const fetchConti = useSWR((contiCurrentPage-1).toString(), contiServ.getContiAttiviOrdinatiPerTavolo);
   const fetchPagina = useSWR(dud, contiServ.getNumberOfPagesContiAttivi);
+  const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) : 
+                                  useSWR([(contiCurrentPage-1).toString(), ordinamento, `${getDate()+"T"+oreMax+":"+minMax}`, `${getDate()+"T"+oreMin+":"+minMin}`], contiServ.getContiAttiviOrdinatiEFiltrati);
 
   const useUpdateData = ()=>{
     fetchPagina.mutate(dud, contiServ.getNumberOfPagesContiAttivi);
     if(contiCurrentPage > fetchPagina.data){
       setContiCurrentPage(1);
     }
-    fetchConti.mutate((contiCurrentPage-1).toString(), contiServ.getContiAttiviOrdinatiPerTavolo);
+    !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) :
+    fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento, `${getDate()+"T"+oreMax+":"+minMax}`, `${getDate()+"T"+oreMin+":"+minMin}`], contiServ.getContiAttiviOrdinatiEFiltrati);
+  };
+  const refreshAction = () =>{
+    setOreMin(null);
+    setOreMax(null);
+    setMinutesMin(null);
+    setMinutesMax(null);
+    useUpdateData();
   };
 
   return (
     <div className="overflow-y-auto overflow-x-auto w-screen">
     <Table theme={customTableTheme} hoverable >
       <Table.Head>
-      <Table.HeadCell><div className='flex'>Conto <FaSortDown /></div></Table.HeadCell>
-        <Table.HeadCell><div className='flex'>Tavolo <FaSortDown /></div></Table.HeadCell>
-        <Table.HeadCell><div className='flex'>Orario di apertura <FaSortDown /></div></Table.HeadCell>
-        <Table.HeadCell><div className='flex'>Costo totale <FaSortDown /></div></Table.HeadCell>
-        <Table.HeadCell> 
+      <Table.HeadCell onClick={()=>{setOrdinamento("BYID"); useUpdateData();}} ><div className='flex'>Conto <FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYTABLE"); useUpdateData();}}><div className='flex'>Tavolo <FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYOPENINGDATE"); useUpdateData();}}><div className='flex'>Orario di apertura <FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYTOTALCOST"); useUpdateData();}}><div className='flex'>Costo totale <FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell>
+          
           <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
             <Pager maxPages={fetchPagina.data} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} /> 
-            <Button.Group className='flex flex-row items-center gap-1 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.1.5)]
-                justify-end'>
-              {showFilter ? <div/> : <FilterConti/>}
-              <ButtonRefresh/>
-            </Button.Group>
+            <FilterConti oreMax={oreMax} oreMin={oreMin} minMax={minMax} minMin={minMin} setter={setterFiltroOrari}/>
+            <ButtonRefresh onClickAction={refreshAction}/>
           </Button.Group>
         </Table.HeadCell>
       </Table.Head>
