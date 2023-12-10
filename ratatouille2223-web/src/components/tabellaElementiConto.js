@@ -14,12 +14,9 @@ export default function TabellaElementiConto({conto}) {
   let data = listaElementi.data;
   const isLoading = listaElementi.isLoading;
   const error = listaElementi.error;
-  let test;
-  if(!data){
-    data = null;
-    data = {orders : null}
-  }
-  if(!Array.isArray(data.orders)){
+
+
+  if(data && !Array.isArray(data.orders)){
     if(!Array.isArray(data.orders)){
       data.orders = null;
     }
@@ -60,7 +57,7 @@ export default function TabellaElementiConto({conto}) {
         </React.Fragment>
       )) : 
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <Table.Cell>Errore con il caricamento!</Table.Cell>
+      <Table.Cell>Nessun risultato!</Table.Cell>
       </Table.Row>
       }
     </React.Fragment>

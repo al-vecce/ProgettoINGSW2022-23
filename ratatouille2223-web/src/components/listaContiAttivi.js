@@ -8,20 +8,32 @@ import ButtonMore from './buttons/buttonMore';
 import Close from './buttons/buttonClose';
 import { useState } from 'react';
 import TabellaElementi from './tabellaElementiConto';
+import { contiAttiviService } from '@/services/contiAttiviService';
+import useSWR from 'swr';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+export default function ListaContiAttivi({data , error, isLoading, refreshAction}) {
 
-export default function ListaContiAttivi({data , error, isLoading}) {
+    const [ contoDetailsVisibilities, setContoVisibility] = useState({});
 
-    const [ contoDetailsVisibility, setContoDetailsVisibility] = useState(false);
+    async function chiudiConto(contoID){
+      const contoServ = new contiAttiviService();
+      const data = await contoServ.postChiudiContoPerID(contoID);
+      if(data && data.result === "true"){
+        toast("Chiusura avvenuta con successo");
+      }else{
+        toast("fallimento");
+      }
+    }
   
-    const changeContoDetailsVisibility = () =>{setContoDetailsVisibility(contoDetailsVisibility => !contoDetailsVisibility)}
     if(isLoading) 
       return ( 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
         <Table.Cell>Caricamento...</Table.Cell>
         </Table.Row>
       );
-    if(!data || error){
+    if(error){
     return ( 
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell>Errore con il caricamento!</Table.Cell>
@@ -33,7 +45,8 @@ export default function ListaContiAttivi({data , error, isLoading}) {
 
     return (data.openchecks ? data.openchecks.map(({
       check_id, check_total, opening_date_time, check_table,
-    }) => (
+    }) => {
+      return(
       <React.Fragment key={check_id}>
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell>Conto Num. {check_id}</Table.Cell>
@@ -44,16 +57,16 @@ export default function ListaContiAttivi({data , error, isLoading}) {
                 <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
                   <ButtonPDF/>
-                  <Close />
-                  <ButtonMore onClickAction={changeContoDetailsVisibility} />
+                  <Close refreshAction={refreshAction} clickConfermaAction={chiudiConto} argsConfermaAction={check_id} >Chiudere il conto?</Close>
+                  <ButtonMore onClickAction={() =>{setContoVisibility({...contoDetailsVisibilities, [check_id]: contoDetailsVisibilities[check_id] ? !contoDetailsVisibilities[check_id] : true})}} />
                 </Button.Group>
                 </Table.Cell>
         </Table.Row>
-          {contoDetailsVisibility ? <TabellaElementi key={check_id} conto={check_id}/> : null}
+          {contoDetailsVisibilities[check_id] ? <TabellaElementi key={check_id} conto={check_id}/> : null}
       </ React.Fragment>
-    )) : 
+    )}) : 
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-    <Table.Cell>Errore con il caricamento!</Table.Cell>
+    <Table.Cell>Nessun risultato!</Table.Cell>
     </Table.Row>);
 
 }

@@ -9,6 +9,8 @@ import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
@@ -96,7 +98,7 @@ export default function TabelleConti() {
         </Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
-        <ListaContiAttivi data={fetchConti.data} isLoading={fetchConti.isLoading} error={fetchConti.error} />
+        <ListaContiAttivi refreshAction={useUpdateData} data={fetchConti.data} isLoading={fetchConti.isLoading} error={fetchConti.error} />
       </Table.Body>
     </Table>
     
