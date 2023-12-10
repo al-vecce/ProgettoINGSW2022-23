@@ -139,18 +139,41 @@ public class RestaurantCheck extends PanacheEntityBase {
     }
     @Transactional
     public static List<RestaurantCheck> findAllChecksUnpaged(Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY opening_date_time"
-                , checkstatus).list();
+        if(checkstatus) {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY opening_date_time"
+                    , true).list();
+        }
+        else {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY closing_date_time"
+                    , false).list();
+        }
     }
     @Transactional
     public static List<RestaurantCheck> findAllFilteredChecksUnpaged(LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY opening_date_time"
-                , checkstatus, filterstart, filterend).list();
+        if(checkstatus) {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY opening_date_time"
+                    , true, filterstart, filterend).list();
+        }
+        else {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY closing_date_time"
+                    , false, filterstart, filterend).list();
+        }
     }
 
     @Transactional
     public static Integer findChecksPages(Boolean checkstatus) {
         return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", checkstatus).page(Page.ofSize(10)).pageCount();
+    }
+    @Transactional
+    public static Integer findChecksPagesFiltered(Boolean checkstatus, LocalDateTime filterstart, LocalDateTime filterend) {
+        if(checkstatus) {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 " +
+                    "AND opening_date_time >= ?2 AND opening_date_time <= ?3", true).page(Page.ofSize(10)).pageCount();
+        }
+        else {
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 " +
+                    "AND closing_date_time >= ?2 AND closing_date_time <= ?3", false).page(Page.ofSize(10)).pageCount();
+        }
     }
 
     @PostLoad

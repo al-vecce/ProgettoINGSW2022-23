@@ -51,7 +51,7 @@ public class HomepageService {
             page = 0;
         }
         if(filterstart == null || filterstart.contains("null") || filterstart.isBlank()) {
-            filterstart = LocalDateTime.now().toString();
+            filterstart = LocalDateTime.MIN.toString();
         }
         start = LocalDateTime.parse(filterstart);
         if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
@@ -87,6 +87,25 @@ public class HomepageService {
     }
     public static Integer findNumberOfPagesOfOpenChecksService() {
         return RestaurantCheck.findChecksPages(true);
+    }
+    public static Integer findNumberOfPagesOfOpenChecksServiceFiltered(String filterstart, String filterend) {
+        LocalDateTime start, end;
+        if(filterstart == null || filterstart.contains("null") || filterstart.isBlank()) {
+            filterstart = LocalDateTime.MIN.toString();
+        }
+        start = LocalDateTime.parse(filterstart);
+        if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
+            filterend = LocalDateTime.now().toString();
+        }
+        end = LocalDateTime.parse(filterend);
+
+        if(filterstart.compareTo(filterend) >= 0) {
+            filterstart = LocalDateTime.MIN.toString();
+            filterend = LocalDateTime.now().toString();
+            start = LocalDateTime.parse(filterstart);
+            end = LocalDateTime.parse(filterend);
+        }
+        return RestaurantCheck.findChecksPagesFiltered(true, start, end);
     }
 
     @Transactional

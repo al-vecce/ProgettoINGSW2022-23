@@ -50,7 +50,7 @@ public class CheckHistoryService {
             page = 0;
         }
         if(filterstart == null || filterstart.contains("null") || filterstart.isBlank()) {
-            filterstart = LocalDateTime.now().toString();
+            filterstart = LocalDateTime.MIN.toString();
         }
         start = LocalDateTime.parse(filterstart);
         if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
@@ -86,6 +86,26 @@ public class CheckHistoryService {
     }
     public static Integer findNumberOfPagesOfClosedChecksService() {
         return RestaurantCheck.findChecksPages(false);
+    }
+
+    public static Integer findNumberOfPagesOfClosedChecksServiceFiltered(String filterstart, String filterend) {
+        LocalDateTime start, end;
+        if(filterstart == null || filterstart.contains("null") || filterstart.isBlank()) {
+            filterstart = LocalDateTime.MIN.toString();
+        }
+        start = LocalDateTime.parse(filterstart);
+        if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
+            filterend = LocalDateTime.now().toString();
+        }
+        end = LocalDateTime.parse(filterend);
+
+        if(filterstart.compareTo(filterend) >= 0) {
+            filterstart = LocalDateTime.MIN.toString();
+            filterend = LocalDateTime.now().toString();
+            start = LocalDateTime.parse(filterstart);
+            end = LocalDateTime.parse(filterend);
+        }
+        return RestaurantCheck.findChecksPagesFiltered(false, start, end);
     }
 
     public static List<String> findAllOrdersOrderedByModeService(String mode, Long checkid) {

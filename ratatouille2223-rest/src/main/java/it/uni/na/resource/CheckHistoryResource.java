@@ -154,6 +154,17 @@ public class CheckHistoryResource {
         Integer value = CheckHistoryService.findNumberOfPagesOfClosedChecksService();
         return Response.ok(value).build();
     }
+    @GET
+    @Produces("application/json")
+    @Path("/pages")
+    public Response getNumberOfPagesFiltered(@QueryParam("filterstart") String filterstart, @QueryParam("filterend") String filterend) {
+        if(filterstart == null || filterstart.isBlank() || filterend == null || filterend.isBlank()) {
+            return Response.ok("Inaccurate arguments in HISTORY/GETFILTEREDPAGES encountered.").status(400).build();
+        }
+        Integer value = CheckHistoryService.findNumberOfPagesOfClosedChecksServiceFiltered(filterstart, filterend);
+        return Response.ok(value).build();
+    }
+
     @DELETE
     @Produces("application/json")
     @Consumes("application/json")

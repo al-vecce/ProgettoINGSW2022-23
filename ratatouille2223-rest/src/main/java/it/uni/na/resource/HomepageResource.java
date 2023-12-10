@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.uni.na.service.CheckHistoryService;
 import it.uni.na.service.HomepageService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -125,6 +126,17 @@ public class HomepageResource {
         Integer value = HomepageService.findNumberOfPagesOfOpenChecksService();
         return Response.ok(value).build();
     }
+    @GET
+    @Produces("application/json")
+    @Path("/pages")
+    public Response getNumberOfPagesFiltered(@QueryParam("filterstart") String filterstart, @QueryParam("filterend") String filterend) {
+        if(filterstart == null || filterstart.isBlank() || filterend == null || filterend.isBlank()) {
+            return Response.ok("Inaccurate arguments in HOMEPAGE/GETFILTEREDPAGES encountered.").status(400).build();
+        }
+        Integer value = HomepageService.findNumberOfPagesOfOpenChecksServiceFiltered(filterstart, filterend);
+        return Response.ok(value).build();
+    }
+
     @POST
     @Produces("application/json")
     @Consumes("application/json")
