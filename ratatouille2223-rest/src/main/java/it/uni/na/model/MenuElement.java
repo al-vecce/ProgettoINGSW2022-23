@@ -49,7 +49,7 @@ public class MenuElement extends PanacheEntityBase {
     @Column(name = "openfoodfacts", nullable = false)
     private Boolean openfoodfacts = false;
 
-    @Column(name = "openfoodfacts_identifier", unique = true)
+    @Column(name = "openfoodfacts_identifier")
     private String openfoodfacts_identifier;
 
     @Column(name = "last_modified")
