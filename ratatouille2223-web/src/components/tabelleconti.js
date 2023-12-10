@@ -11,7 +11,6 @@ import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
 
 import { FaSortDown } from "react-icons/fa";
-
 const customTableTheme = {
   root: {
     base: "w-full text-left text-sm text-gray-500 dark:text-gray-400",

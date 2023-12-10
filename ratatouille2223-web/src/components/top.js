@@ -28,7 +28,7 @@ const customTheme = {
 export default function top() {
   const [showSidebar, setSidebarshow] = useState(false);
   return (
-    <Navbar theme={customTheme} className="flex justify-between lg:xl:h-24 max-h-32 shadow-lg rounded-b-2xl
+    <Navbar theme={customTheme} className="flex sticky-top-0 justify-between lg:xl:h-24 max-h-32 shadow-lg rounded-b-2xl
     bg-cover bg-center bg-[url('/header-splash.svg')]"
     style={{alignItems:'center'}}>
       
@@ -40,7 +40,7 @@ export default function top() {
             <FaBars className='flex text-lg text-primary-icon'/>
           </Button>}
         </div>
-        <div className="body-font font-quicksand drop-shadow-lg font-semibold tracking-widest uppercase text-2xl xl:text-4xl">Homepage</div>
+        <div className="body-font font-quicksand text-white drop-shadow-lg font-semibold tracking-widest uppercase text-2xl xl:text-4xl">Homepage</div>
         <div className='m-2'>
           <Dropdown
               arrowIcon={false}
