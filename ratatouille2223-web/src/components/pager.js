@@ -8,6 +8,11 @@ import { useState } from 'react';
 
 export default function Pager({setCurrentPage, currentPage, maxPages, isLoading, error}) {
 
+  let maxPag = maxPages;
+
+  if(!(typeof(maxPag) === 'number') || error){
+    maxPag = "0";
+  }
 
   function clickIncrementPage(){
       if((currentPage + 1 ) <= maxPages ){
@@ -28,7 +33,7 @@ export default function Pager({setCurrentPage, currentPage, maxPages, isLoading,
       style={{width:"2.3em", height:"2.3em"}}>
         <FaCaretLeft className='text-xl'/>
       </Button>
-      {currentPage} di {maxPages}
+      {currentPage} di {maxPag}
       <Button onClick={clickIncrementPage} theme={{pill: "rounded-l-lg"}}className='text-inherit bg-trasparent enabled:hover:bg-transparent
       focus:border-transparent focus:ring-transparent'
       style={{width:"2.3em", height:"2.3em"}}>
