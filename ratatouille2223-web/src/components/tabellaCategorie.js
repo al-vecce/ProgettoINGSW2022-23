@@ -46,9 +46,10 @@ export default function TabelleCategorie() {
   const router = useRouter();
   const categorieServ = new categorieService();
   const dud = "Tf2Bread.jpg";
-  const { data, error, isLoading, mutate } = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
+  const fetchCategoria = useSWR(dud, categorieServ.getCategorieOrdinatePerNome);
+
   const useUpdateData = () =>{
-      mutate(dud, categorieServ.getCategoriePerNome);
+    fetchCategoria.mutate(dud, categorieServ.getCategoriePerNome);
   };
 
 
@@ -70,17 +71,17 @@ export default function TabelleCategorie() {
             <Table.HeadCell><div className='flex'>Numero Elementi<FaSortDown /></div></Table.HeadCell>
             <Table.HeadCell><div className='flex'>Prezzo Medio<FaSortDown /></div></Table.HeadCell>
             <Table.HeadCell><div className='flex'>Ultima Modifica<FaSortDown /></div></Table.HeadCell>
+            
             <Table.HeadCell> 
-              <Pager/> 
-            </Table.HeadCell>
-            <Table.HeadCell> 
-              <Button.Group>
+              <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
+                justify-end'>
+                <Pager/>
                 <ButtonRefresh onClickAction={useUpdateData} />
               </Button.Group>
             </Table.HeadCell>
           </Table.Head>
           <Table.Body>
-            <ListaCategorie data={data} error={error} isLoading={isLoading} updateAction={useUpdateData} alertsControl={alertsControl}/>
+            <ListaCategorie data={fetchCategoria.data} error={fetchCategoria.error} isLoading={fetchCategoria.isLoading} updateAction={useUpdateData} alertsControl={alertsControl}/>
           </Table.Body>
         </Table>
       </div>
@@ -90,3 +91,5 @@ export default function TabelleCategorie() {
     </div>
   )
 }
+//<Pager maxPages={fetchPagina.data} setCurrentPage={setCategorieCurrentPage} currentPage={categorieCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error}/>
+                

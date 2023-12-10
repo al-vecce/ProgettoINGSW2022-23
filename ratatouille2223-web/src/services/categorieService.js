@@ -8,6 +8,13 @@ export class categorieService{
         },
         }
         ).then((res) => res.json());
+    getNumberOfPagesCategorie = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/pages", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        }
+        ).then((res) => res.json());
     postCategoriaPerNome = (vecchioNome, nuovoNome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + vecchioNome, {
         method: "POST",
         headers: {
