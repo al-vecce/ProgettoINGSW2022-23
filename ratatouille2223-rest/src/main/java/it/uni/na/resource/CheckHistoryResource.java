@@ -18,7 +18,7 @@ public class CheckHistoryResource {
     @Inject
     ObjectMapper objectMapper;
 
-    @GET
+    /*@GET
     @Produces("application/json")
     public Response getAllClosedChecks() {
 
@@ -44,7 +44,7 @@ public class CheckHistoryResource {
             return Response.ok("JSON Parsing Error for HISTORY/GETCHECKS Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
-    }
+    }*/
 
     @GET
     @Produces("application/json")
@@ -169,7 +169,7 @@ public class CheckHistoryResource {
     @Produces("application/json")
     @Consumes("application/json")
     @Path("{check}")
-    public Response deleteCloseOpenCheckById(@PathParam("check") Long checkid) {
+    public Response deleteClosedCheckById(@PathParam("check") Long checkid) {
         if(checkid == null) {
             return Response.ok("Inaccurate arguments in HISTORY/CLOSECHECK encountered.").status(400).build();
         }

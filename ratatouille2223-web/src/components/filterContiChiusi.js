@@ -3,16 +3,22 @@
 import { Button, Select,  Label, Modal, TextInput, ButtonGroup } from 'flowbite-react';
 import { useState } from 'react';
 import { RangeSlider } from 'flowbite-react';
+import { Datepicker } from 'flowbite-react';
 
 import { FaFilter } from "react-icons/fa";
 
-export default function FilterConti({oreMinOld, minMinOld, oreMaxOld, minMaxOld, setter}) {
+export default function FilterContiChiusi({oreMinOld, minMinOld, oreMaxOld, minMaxOld, minDate, maxDate, setter}) {
+
   const [openModal, setOpenModal] = useState(false);
+  const today = new Date();
   
   const [ oreMin, setOreMin] = useState(oreMinOld ? oreMinOld : "00");
   const [ minMin, setMinutesMin] = useState(minMinOld ? minMinOld : "00");
   const [ oreMax, setOreMax] = useState(oreMaxOld ? oreMaxOld : "00");
   const [ minMax, setMinutesMax] = useState(minMaxOld ? minMaxOld : "00");
+
+  const [ minData, setMinData ] = useState(minDate ? minDate : today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+today.getDate().toString());
+  const [ maxData, setMaxData ] = useState(maxDate ? maxDate : today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+today.getDate().toString());
 
   function onCloseModal() {
     setOpenModal(false);
@@ -23,8 +29,23 @@ export default function FilterConti({oreMinOld, minMinOld, oreMaxOld, minMaxOld,
     setter.setMinutesMin(minMin);
     setter.setOreMax(oreMax);
     setter.setOreMin(oreMin);
+    setter.setMinData(minData);
+    setter.setMaxData(maxData);
     setOpenModal(false);
   }
+
+  const startingDate = new Date();
+
+  const handleMinDateChange = (date) => {
+    const temp = JSON.stringify(date).split('T');
+    const temp2 = temp[0].replace('"','');
+    setMinData(temp2);
+  };
+  const handleMaxDateChange = (date) => {
+    const temp = JSON.stringify(date).split('T');
+    const temp2 = temp[0].replace('"','');
+    setMaxData(temp2);
+  };
 
   return (
     <>
@@ -33,17 +54,39 @@ export default function FilterConti({oreMinOld, minMinOld, oreMaxOld, minMaxOld,
         style={{width:"2.3em", height:"2.3em"}}>
           <FaFilter className='text-xl'/>
       </Button>
-      <Modal show={openModal} size="md" onClose={onCloseModal} popup>
+      <Modal className="w-full h-full" show={openModal} onClose={onCloseModal} popup>
         <Modal.Header />
         <Modal.Body>
           <div className="flex flex-col flex-nowrap items-center space-y-6">
           <div className="text-primary-icon body-font font-quicksand tracking-widest text-3xl">Filtro Intervallo</div>
-            <div className="flex flex-row flex-nowrap gap-10 justify-center">
+            <div className="flex flex-row flex-nowrap gap-10 justify-center p-4">
                 <div className="flex flex-col flex-nowrap justify-center">
                   <div className="mb-2 block">
                       <div className="text-primary-icon body-font font-quicksand tracking-widest text-lg">Orario Minimo</div>
                   </div>
                   <div className='flex flex-col gap-1 justify-center'>
+                  <Datepicker 
+                  language="it-IT" labelTodayButton="Oggi" labelClearButton="Annulla" weekStart={2}
+                  onSelectedDateChanged={handleMinDateChange}
+                  theme={{
+                    popup: { root: { base: "sticky"},
+                    footer:{button:{
+                        today:"bg-primary-2 hover:bg-primary-3 enabled:focus:ring-transparent",
+                        clear:"border border-gray-300 bg-white text-gray-900 enabled:focus:ring-transparent hover:bg-gray-100 "}}},
+                        views: {
+                        days:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        months:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        years:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        decades:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        }}}/>
                     <Label>Ore</Label>
                     <Select id="OreMin" 
                       value={oreMin}
@@ -99,6 +142,28 @@ export default function FilterConti({oreMinOld, minMinOld, oreMaxOld, minMaxOld,
                   <div className="text-primary-icon body-font font-quicksand tracking-widest text-lg">Orario Massimo</div>
                   </div>
                   <div className="flex flex-col gap-1 justify-center">
+                  <Datepicker 
+                  language="it-IT" labelTodayButton="Oggi" labelClearButton="Annulla" weekStart={2}
+                  onSelectedDateChanged={handleMaxDateChange}
+                  theme={{
+                    popup: { root: { base: "sticky"},
+                    footer:{button:{
+                        today:"bg-primary-2 hover:bg-primary-3 enabled:focus:ring-transparent",
+                        clear:"border border-gray-300 bg-white text-gray-900 enabled:focus:ring-transparent hover:bg-gray-100 "}}},
+                        views: {
+                        days:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        months:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        years:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        decades:{items:{item:{
+                            selected:"bg-primary-2 text-white hover:bg-primary-3"
+                        }}},
+                        }}}/>
                   <Label>Ore</Label>
                   <Select id="OreMax" 
                     value={oreMax}

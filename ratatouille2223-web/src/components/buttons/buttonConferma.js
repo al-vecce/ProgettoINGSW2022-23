@@ -25,7 +25,7 @@ export default function Confirm({icona, colore, refreshAction, clickConfermaActi
   }
   return (
     <>
-     <Button theme={customButtonTheme} className="shadow-xl rounded-lg border border-none focus:border-transparent focus:ring-transparent" 
+     <Button theme={customButtonTheme} className="shadow-md rounded-lg border border-none focus:border-transparent focus:ring-transparent" 
      color="delete" onClick={() => setOpenModal(true)} style={{width:"2.3em", height:"2.3em"}}>{icona}</Button>
       <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
         <Modal.Header />
@@ -38,7 +38,7 @@ export default function Confirm({icona, colore, refreshAction, clickConfermaActi
               <Button color="failure" onClick={confermaAction}>
                 Conferma
               </Button>
-              <Button color="gray" className='border-4 border-primary-icon' onClick={() => {setOpenModal(false)}}>
+              <Button color="gray" className='border-4 border-primary-icon focus:ring-transparent' onClick={() => {setOpenModal(false)}}>
                 Annulla
               </Button>
             </div>

@@ -8,11 +8,13 @@ import { contiAttiviService } from '@/services/contiAttiviService';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import { useState } from 'react';
-import ListaContiAttivi from './listaContiAttivi';
+import ListaContiChiusi from './listaContiChiusi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { FaSortDown } from "react-icons/fa";
+import { contiChiusiService } from '@/services/contiChiusiService';
+import FilterContiChiusi from './filterContiChiusi';
 const customTableTheme = {
   root: {
     base: "w-full text-left text-sm text-gray-500 dark:text-gray-400",
@@ -38,14 +40,16 @@ const customTableTheme = {
   }
 }
 
-export default function TabelleConti() {
+export default function TabelleContiChiusi() {
 
   const [ contiCurrentPage, setContiCurrentPage ] = useState(1);
   const [ oreMin, setOreMin] = useState(null);
   const [ minMin, setMinutesMin] = useState(null);
   const [ oreMax, setOreMax] = useState(null);
   const [ minMax, setMinutesMax] = useState(null);
-  const setterFiltroOrari = {setOreMax, setOreMin, setMinutesMax, setMinutesMin};
+  const [ minData, setMinData] = useState("2023-12-16");
+  const [ maxData, setMaxData] = useState("2023-12-16");
+  const setterFiltroOrari = {setOreMax, setOreMin, setMinutesMax, setMinutesMin, setMinData, setMaxData};
 
   const [ ordinamento, setOrdinamento ] = useState("BYID");
 
@@ -58,33 +62,45 @@ export default function TabelleConti() {
   };
 
   const dud = "bread";
-  const contiServ = new contiAttiviService();
-  const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
-                                useSWR([ 
-                                `${getDate()+"T"+oreMin+":"+minMin}`, 
-                                `${getDate()+"T"+oreMax+":"+minMax}`],
-                                contiServ.getNumberOfPagesContiAttiviFiltrati);
-  const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) : 
+  const contiServ = new contiChiusiService();
+  const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPages) : 
+                                useSWR([
+                                `${minData+"T"+oreMin+":"+minMin}`, 
+                                `${maxData+"T"+oreMax+":"+minMax}`], 
+                                contiServ.getNumberOfPagesFiltered);
+  const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getClosedChecksOrderedBy) : 
                                useSWR([(contiCurrentPage-1).toString(), ordinamento, 
-                                `${getDate()+"T"+oreMin+":"+minMin}`, 
-                                `${getDate()+"T"+oreMax+":"+minMax}`], 
-                                contiServ.getContiAttiviOrdinatiEFiltrati);
+                                `${minData+"T"+oreMin+":"+minMin}`, 
+                                `${maxData+"T"+oreMax+":"+minMax}`], 
+                                contiServ.getClosedChecksFilteredOrderedBy);
 
   const useUpdateData = ()=>{
-    fetchPagina.mutate(dud, contiServ.getNumberOfPagesContiAttivi);
+    !oreMin ? fetchPagina.mutate(dud, contiServ.getNumberOfPages) :
+              fetchPagina.mutate([
+                `${minData+"T"+oreMin+":"+minMin}`, 
+                `${maxData+"T"+oreMax+":"+minMax}`], 
+                contiServ.getNumberOfPagesFiltered);
     if(contiCurrentPage > fetchPagina.data){
       setContiCurrentPage(1);
     }
-    !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) :
-    fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento, `${getDate()+"T"+oreMin+":"+minMin}`, `${getDate()+"T"+oreMax+":"+minMax}`], contiServ.getContiAttiviOrdinatiEFiltrati);
+    !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], 
+                                contiServ.getClosedChecksOrderedBy) :
+              fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento, 
+                                `${minData+"T"+oreMin+":"+minMin}`, 
+                                `${maxData+"T"+oreMax+":"+minMax}`], 
+                                contiServ.getClosedChecksFilteredOrderedBy);
   };
   const refreshAction = () =>{
     setOreMin(null);
     setOreMax(null);
     setMinutesMin(null);
     setMinutesMax(null);
+    setMinData(null);
+    setMaxData(null);
     useUpdateData();
   };
+
+  
 
   return (
     <div className="overflow-y-auto overflow-x-auto w-screen">
@@ -93,19 +109,20 @@ export default function TabelleConti() {
       <Table.HeadCell onClick={()=>{setOrdinamento("BYID"); useUpdateData();}} ><div className='w-40'><div className='flex'>Conto <FaSortDown /></div></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYTABLE"); useUpdateData();}}><div className='flex'>Tavolo <FaSortDown /></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYOPENINGDATE"); useUpdateData();}}><div className='flex'>Orario di apertura <FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYCLOSINGDATE"); useUpdateData();}}><div className='flex'>Orario di Chiusura <FaSortDown /></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYTOTALCOST"); useUpdateData();}}><div className='flex'>Costo totale <FaSortDown /></div></Table.HeadCell>
         <Table.HeadCell>
           
           <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
             <Pager maxPages={fetchPagina.data} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} /> 
-            <FilterConti oreMax={oreMax} oreMin={oreMin} minMax={minMax} minMin={minMin} setter={setterFiltroOrari}/>
+            <FilterContiChiusi oreMax={oreMax} oreMin={oreMin} minMax={minMax} minMin={minMin} setter={setterFiltroOrari}/>
             <ButtonRefresh onClickAction={refreshAction}/>
           </Button.Group>
         </Table.HeadCell>
       </Table.Head>
       <Table.Body className="divide-y">
-        <ListaContiAttivi refreshAction={useUpdateData} data={fetchConti.data} isLoading={fetchConti.isLoading} error={fetchConti.error} />
+        <ListaContiChiusi refreshAction={useUpdateData} data={fetchConti.data} isLoading={fetchConti.isLoading} error={fetchConti.error} />
       </Table.Body>
     </Table>
     
