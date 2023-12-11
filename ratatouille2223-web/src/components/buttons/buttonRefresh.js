@@ -5,6 +5,9 @@ import { FaArrowsRotate } from "react-icons/fa6";
 
 
 export default function ButtonRefresh({onClickAction}) {
+  if(!onClickAction){
+    onClickAction = ()=>{};
+}
   return (
     <Button onClick={onClickAction} 
     className='text-lg text-primary-icon body-font rounded-r-lg font-quicksand tracking-widest bg-white

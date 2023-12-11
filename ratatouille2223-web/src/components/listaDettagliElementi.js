@@ -75,7 +75,8 @@ export default function ListaDettagliElementi({key, secondaLingua, ingredienti, 
             <Table.Row className='bg-white hover:bg-white'>
                 <Table.Cell colSpan={3}>
                     <div className='flex flex-wrap gap-2'>
-                        {splitString(ingredienti)}
+                        {!secondaLingua && splitString(ingredienti)}
+                        {secondaLingua && splitString(secondi_ingredienti)}
                     </div>
                 </Table.Cell>
                 <Table.Cell colSpan={2}>

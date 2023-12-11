@@ -2,12 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import ButtonPDF from './buttons/buttonPDF';
+import ButtonPriorita from './buttons/buttonPriorita';
 import ButtonMore from './buttons/buttonMore';
 import ButtonSecondaLingua from './buttons/buttonSecondaLingua';
-import ButtonModificaElemento from './buttons/buttonModificaElemento';
 import ButtonConfirmElimina from './buttons/buttonConferma';
-import { IoTrashOutline } from "react-icons/io5";
 import elementiService from '@/services/elementiService';
 import ListaDettagliElementi from './listaDettagliElementi';
 
@@ -18,6 +16,11 @@ import { FaTrashAlt  } from "react-icons/fa";
 export default function ListaElementi({alertsControl, data, error, isLoading, updateAction, categoria}) {
     const [ secondaLingua, setSecondaLingua ] = useState({});
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
+    const [ elementoPriority, setElementoPriority] = useState({});
+
+    //function move
+
+
     // const test = "Mioci,mario,michele,MinerG";
     // const num = 1;
     // let array = [{value:1}];
@@ -60,12 +63,15 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
+            priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
         }) => (
             <React.Fragment key={name}>
             <Table.Row key={name} className="text-[15px] bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell >
-                        <p>TODO PRIORITA</p>
+                    <Table.Cell className='flex flex-row items-center justify-center'>
+                        <ButtonPriorita 
+                            onClickDecrease={()=>{}}
+                            onClickIncrease={()=>{}}/>
+                        {priority}
                     </Table.Cell>
                     <Table.Cell >
                         {secondaLingua[name] && (second_name != "null") ? second_name : name}
@@ -91,7 +97,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                     </Table.Cell>
             </Table.Row>
             {!elementoDetailsVisibilities[name] ? <Table.Cell colSpan={6}><TableHorizontalBar/></Table.Cell> : null }
-            {elementoDetailsVisibilities[name] ? <ListaDettagliElementi key={name} secondaLingua={secondaLingua} ingredienti={ingredients} allergeni={allergens} secondi_ingredienti={second_ingredients}/> : null}
+            {elementoDetailsVisibilities[name] ? <ListaDettagliElementi key={name} secondaLingua={secondaLingua[name]} ingredienti={ingredients} allergeni={allergens} secondi_ingredienti={second_ingredients}/> : null}
             </React.Fragment>
         )) : 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
