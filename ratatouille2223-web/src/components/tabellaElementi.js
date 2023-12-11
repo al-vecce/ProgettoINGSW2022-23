@@ -67,9 +67,18 @@ export default function TabellaElementi({name}) {
       <div className="overflow-x-auto">
       <Table theme={customTableTheme} hoverable>
         <Table.Head>
-        <Table.HeadCell><div className='w-80'><div className='flex'>Nome<FaSortDown /></div></div></Table.HeadCell>
-          <Table.HeadCell><div className='flex'>Prezzo<FaSortDown /></div></Table.HeadCell>
-          <Table.HeadCell><div className='flex'>Ultima Modifica<FaSortDown /></div></Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYPRIORITY"); useUpdateData();}}>
+          <Button>P</Button>
+        </Table.HeadCell>
+        <Table.HeadCell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>
+            <div className='w-80'><div className='flex'>Nome<FaSortDown /></div></div>
+          </Table.HeadCell>
+          <Table.HeadCell onClick={()=>{setOrdinamento("BYPRICE"); useUpdateData();}}>
+            <div className='flex'>Prezzo<FaSortDown /></div>
+          </Table.HeadCell>
+          <Table.HeadCell onClick={()=>{setOrdinamento("BYLASTMODIFIED"); useUpdateData();}}>
+            <div className='flex'>Ultima Modifica<FaSortDown /></div>
+          </Table.HeadCell>
           <Table.HeadCell> 
             <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                   justify-end'>

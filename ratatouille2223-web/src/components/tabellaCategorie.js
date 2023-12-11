@@ -76,10 +76,21 @@ export default function TabelleCategorie() {
       <div className="overflow-x-auto">
         <Table theme={customTableTheme} hoverable>
           <Table.Head>
-          <Table.HeadCell><div className='flex'>Nome<FaSortDown /></div></Table.HeadCell>
-            <Table.HeadCell><div className='flex'>Numero Elementi<FaSortDown /></div></Table.HeadCell>
-            <Table.HeadCell><div className='flex'>Prezzo Medio<FaSortDown /></div></Table.HeadCell>
-            <Table.HeadCell><div className='flex'>Ultima Modifica<FaSortDown /></div></Table.HeadCell>
+            <Table.HeadCell onClick={()=>{setOrdinamento("BYPRIORITY"); useUpdateData();}}>
+              <Button>P</Button>
+            </Table.HeadCell>
+            <Table.HeadCell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>
+              <div className='flex'>Nome<FaSortDown /></div>
+            </Table.HeadCell>
+            <Table.HeadCell onClick={()=>{setOrdinamento("BYNUMBEROFELEMENTS"); useUpdateData();}}>
+              <div className='flex'>Numero Elementi<FaSortDown /></div>
+              </Table.HeadCell>
+            <Table.HeadCell onClick={()=>{setOrdinamento("BYAVERAGECOST"); useUpdateData();}}>
+              <div className='flex'>Prezzo Medio<FaSortDown /></div>
+              </Table.HeadCell>
+            <Table.HeadCell onClick={()=>{setOrdinamento("BYLASTMODIFIED"); useUpdateData();}}>
+              <div className='flex'>Ultima Modifica<FaSortDown /></div>
+              </Table.HeadCell>
             
             <Table.HeadCell> 
               <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]

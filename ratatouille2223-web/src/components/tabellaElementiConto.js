@@ -45,11 +45,11 @@ export default function TabellaElementiConto({conto}) {
       </Table.Row> : <div/>}
       {data.orders ? 
       data.orders.map(({
-        order_id, order_total, quantity, current_price,
+        order_id, order_total, quantity, current_price, element_name,
       }) => (
         <React.Fragment key={order_id}>
           <Table.Row key={order_id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <Table.Cell >{order_id}</Table.Cell>
+                <Table.Cell>{element_name}</Table.Cell>
                 <Table.Cell>{quantity}</Table.Cell>
                 <Table.Cell>{current_price}</Table.Cell>
                 <Table.Cell>{order_total}</Table.Cell>

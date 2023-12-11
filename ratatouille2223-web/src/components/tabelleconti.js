@@ -83,7 +83,7 @@ export default function TabelleConti() {
     <div className="overflow-y-auto overflow-x-auto w-screen">
     <Table theme={customTableTheme} hoverable >
       <Table.Head>
-      <Table.HeadCell onClick={()=>{setOrdinamento("BYID"); useUpdateData();}} ><div className='flex'>Conto <FaSortDown /></div></Table.HeadCell>
+      <Table.HeadCell onClick={()=>{setOrdinamento("BYID"); useUpdateData();}} ><div className='w-40'><div className='flex'>Conto <FaSortDown /></div></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYTABLE"); useUpdateData();}}><div className='flex'>Tavolo <FaSortDown /></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYOPENINGDATE"); useUpdateData();}}><div className='flex'>Orario di apertura <FaSortDown /></div></Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYTOTALCOST"); useUpdateData();}}><div className='flex'>Costo totale <FaSortDown /></div></Table.HeadCell>

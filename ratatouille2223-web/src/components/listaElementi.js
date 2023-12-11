@@ -9,11 +9,15 @@ import ButtonModificaElemento from './buttons/buttonModificaElemento';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { IoTrashOutline } from "react-icons/io5";
 import elementiService from '@/services/elementiService';
+import ListaDettagliElementi from './listaDettagliElementi';
+
+import TableHorizontalBar from './tableHorizontalBar';
 
 import { FaTrashAlt  } from "react-icons/fa";
 
 export default function ListaElementi({alertsControl, data, error, isLoading, updateAction, categoria}) {
-    const [ secondaLingua, setSecondaLingua ] = useState(false);
+    const [ secondaLingua, setSecondaLingua ] = useState({});
+    const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     // const test = "Mioci,mario,michele,MinerG";
     // const num = 1;
     // let array = [{value:1}];
@@ -56,33 +60,38 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            name, last_modified, price, allergens, second_name,
+            name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
         }) => (
             <React.Fragment key={name}>
-            <Table.Row key={name} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+            <Table.Row key={name} className="text-[15px] bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell >
-                        {secondaLingua && (second_name != "null") ? second_name : name}
+                        <p>TODO PRIORITA</p>
+                    </Table.Cell>
+                    <Table.Cell >
+                        {secondaLingua[name] && (second_name != "null") ? second_name : name}
                     </Table.Cell>
                     <Table.Cell>{price}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
                     <Table.Cell>
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                         justify-end'>
-                        <ButtonSecondaLingua onClickAction={()=>{setSecondaLingua(!secondaLingua)}}/>
-                        <ButtonMore/>
+                        <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
+                        <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
                         {/* <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
                             oldName={name} 
                             oldPrice={price} 
                             oldAllergens={data.allergens ? null: null } 
                             oldIngredients={null} 
                         /> */}
-                        <p>TODO</p>
+                        <p>TODO MODIFICA</p>
                         <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>
                     </Button.Group>
                     </Table.Cell>
             </Table.Row>
+            {!elementoDetailsVisibilities[name] ? <Table.Cell colSpan={6}><TableHorizontalBar/></Table.Cell> : null }
+            {elementoDetailsVisibilities[name] ? <ListaDettagliElementi key={name} secondaLingua={secondaLingua} ingredienti={ingredients} allergeni={allergens} secondi_ingredienti={second_ingredients}/> : null}
             </React.Fragment>
         )) : 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -92,3 +101,11 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         </React.Fragment>
     );
 }
+/*
+<Table.Cell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>
+                        {secondaLingua && (second_name != "null") ? second_name : name}
+                    </Table.Cell>
+                    <Table.Cell onClick={()=>{setOrdinamento("BYPRICE"); useUpdateData();}}>{price}</Table.Cell>
+                    <Table.Cell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>{last_modified}</Table.Cell>
+                    <Table.Cell>
+*/
