@@ -19,7 +19,7 @@ public class EmployeeResource {
     @Inject
     ObjectMapper objectMapper;
 
-    @GET
+    /*@GET
     @Produces("application/json")
     public Response getAllEmployees() {
 
@@ -46,7 +46,7 @@ public class EmployeeResource {
             return Response.ok("JSON Parsing Error for EMPLOYEES/GET Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
-    }
+    }*/
     @GET
     @Produces("application/json")
     public Response getAllEmployeesOrderedByMode(@QueryParam("mode") String mode, @QueryParam("page") Integer page) {

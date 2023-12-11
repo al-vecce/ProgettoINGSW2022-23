@@ -209,10 +209,10 @@ public class ReviewResource {
         try {
             request_tree = objectMapper.readTree(json_request);
             orders_array_node = request_tree.get("table");
-            if(orders_array_node == null) { return Response.ok("Inaccurate arguments of Orders in REVIEW/CHECK/CREATE encountered.").status(400).build(); }
+            if(orders_array_node == null) { return Response.ok("Inaccurate arguments in REVIEW/CHECK/CREATE encountered.").status(400).build(); }
             table = orders_array_node.asText();
             orders_array_node = request_tree.get("orders");
-            if(orders_array_node == null) { return Response.ok("Inaccurate arguments of Orders in REVIEW/CHECK/CREATE encountered.").status(400).build(); }
+            if(orders_array_node == null) { return Response.ok("Inaccurate arguments in REVIEW/CHECK/CREATE encountered.").status(400).build(); }
 
             for(JsonNode array_elem: orders_array_node){
                 tmp_node = array_elem.get("element_name");

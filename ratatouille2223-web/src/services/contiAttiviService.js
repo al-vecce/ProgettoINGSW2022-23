@@ -24,6 +24,13 @@ export class contiAttiviService{
         },
         }
         ).then((res) => res.json());
+    getNumberOfPagesContiAttiviFiltrati = ([filterStart, filterEnd]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/homepage/pages?filterstart=" +filterStart+ "&filterend=" + filterEnd, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        }
+        ).then((res) => res.json());
     postChiudiContoPerID = (contoID) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/homepage/" + contoID , {
         method: "POST",
         headers: {

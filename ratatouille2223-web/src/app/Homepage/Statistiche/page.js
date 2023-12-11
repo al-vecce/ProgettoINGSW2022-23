@@ -1,5 +1,6 @@
 import TopStatistiche from '@/components/topStatistiche'
 import React from 'react'
+import { Datepicker } from 'flowbite-react'
 
 export default function page() {
   return (
@@ -8,6 +9,7 @@ export default function page() {
         
       </div>
       <TopStatistiche className='order-1'/>
+      
     </div>
   )
 }

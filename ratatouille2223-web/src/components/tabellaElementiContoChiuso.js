@@ -2,19 +2,25 @@
 import React from 'react';
 import { useElementiConto } from '@/hooks/useElementiConto';
 import { Table } from 'flowbite-react';
-import { Button } from 'flowbite-react';
-import ButtonPDF from './buttons/buttonPDF';
-import ButtonMore from './buttons/buttonMore';
-import Confirm from './buttons/buttonConferma';
+import useSWR from 'swr';
 
 import { FaSortDown } from "react-icons/fa";
+import { contiChiusiService } from '@/services/contiChiusiService';
 
-export default function TabellaElementiConto({conto}) {
-  const listaElementi = useElementiConto(conto);
+export default function TabellaElementiContoChiuso({conto}) {
+
+    const elementiContoServ = new contiChiusiService();
+    let c;
+    if(conto){
+        c = conto;
+    }else{
+        c = '';
+    }
+    const listaElementi = useSWR(c.toString(), elementiContoServ.getElementiContoOrdinatiPerID);
+
   let data = listaElementi.data;
   const isLoading = listaElementi.isLoading;
   const error = listaElementi.error;
-
 
   if(data && !Array.isArray(data.orders)){
     if(!Array.isArray(data.orders)){
@@ -42,6 +48,7 @@ export default function TabellaElementiConto({conto}) {
             <Table.Cell><div className='flex'>Quantità <FaSortDown /></div></Table.Cell>
             <Table.Cell><div className='flex'>Costo Singolo <FaSortDown /></div></Table.Cell>
             <Table.Cell><div className='flex'>Costo Complessivo <FaSortDown /></div></Table.Cell>
+            <Table.Cell></Table.Cell>
       </Table.Row> : <div/>}
       {data.orders ? 
       data.orders.map(({
