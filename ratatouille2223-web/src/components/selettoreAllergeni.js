@@ -2,11 +2,7 @@
 
 import { Button, Modal } from 'flowbite-react';
 import { useState } from 'react';
-import { FaEgg } from "react-icons/fa";
-import { FaCow } from "react-icons/fa6";
-import { FaFishFins } from "react-icons/fa6";
-import { LuWheat } from "react-icons/lu";
-import { FaShrimp } from "react-icons/fa6"
+import ButtonAllergen from './buttons/buttonAllergen';
 import { FaPlus } from "react-icons/fa";
 
 export default function SelettoreAllergeni({allergens, setterAllergeni}) {
@@ -16,22 +12,6 @@ export default function SelettoreAllergeni({allergens, setterAllergeni}) {
   const [ cowOutline, setCowOutline] = useState(!allergens.cow);
   const [ wheatOutline, setWheatOutline] = useState(!allergens.wheat);
   const [ fishOutline, setFishOutline] = useState(!allergens.fish);
-
-  const onEggClick = ()=>{
-    setEggOutline(!eggOutline)
-  }
-  const onShrimpClick = ()=>{
-    setShrimpOutline(!shrimpOutline)
-  }
-  const onCowClick = ()=>{
-    setCowOutline(!cowOutline)
-  }
-  const onWheatClick = ()=>{
-    setWheatOutline(!wheatOutline)
-  }
-  const onFishClick = ()=>{
-    setFishOutline(!fishOutline)
-  }
   function onCloseAction(){
     setOpenModal(false);
   }
@@ -42,6 +22,9 @@ export default function SelettoreAllergeni({allergens, setterAllergeni}) {
     setterAllergeni.setWheatAllergen(!wheatOutline);
     setterAllergeni.setShrimpAllergen(!shrimpOutline);
     setOpenModal(false);
+  }
+  function changeButtonState(){
+
   }
   return (
     <>
@@ -57,11 +40,11 @@ export default function SelettoreAllergeni({allergens, setterAllergeni}) {
         <Modal.Body>
           <div className="space-y-6 space-w-6 p-30">
             <div className="flex flex-wrap gap-12">
-              <Button onClick={onEggClick} color='dark' size="xl" outline={eggOutline} pill><FaEgg/></Button>
-              <Button onClick={onCowClick} color='dark' size="xl" outline={cowOutline} pill><FaCow/></Button>
-              <Button onClick={onFishClick} color='dark' size="xl" outline={fishOutline} pill><FaFishFins/></Button>
-              <Button onClick={onWheatClick} color='dark' size="xl" outline={wheatOutline} pill><LuWheat/></Button>
-              <Button onClick={onShrimpClick} color='dark' size="xl" outline={shrimpOutline} pill><FaShrimp/></Button>
+              {Object.entries(allergens).map(([key,value]) => {
+                return(
+                <ButtonAllergen type={key} onClickAction={() =>{changeButtonState()}}/>
+                );
+              })}
             </div>
             <Button color='success' onClick={onSubmit}>Conferma</Button>
           </div>

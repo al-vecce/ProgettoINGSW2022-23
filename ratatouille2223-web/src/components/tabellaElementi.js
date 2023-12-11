@@ -3,14 +3,9 @@
 import React from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import ButtonMore from './buttons/buttonMore';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
-import ButtonConfermaDelete from './buttons/buttonConferma';
 import AggiungiElementoButton from './buttons/buttonAggiuntaElemento';
-import { FaLanguage } from "react-icons/fa";
-import TopElementi from './topElementi';
-import { IoTrashOutline } from "react-icons/io5";
 import useSWR from 'swr';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -93,8 +88,8 @@ export default function TabellaElementi({name}) {
       </Table>
     </div>
     <div className='flex justify-center p-2 gap-5'>
-        <AggiungiElementoButton />
-        <AggiungiElementoButton /> 
+        <AggiungiElementoButton categoria={name} refreshAction={useUpdateData} />
+        <AggiungiElementoButton categoria={name} /> 
         <p className='text-black'>OPENFOOD</p>
       </div>
   </div>

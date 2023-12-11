@@ -11,7 +11,6 @@ export default function ButtonSecondaLingua({onClickAction}) {
         onClickAction = ()=>{};
     }
     return (
-        <div>
             <Button theme={{pill: { 
                 off: "rounded-lg bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-gray-800 focus:border-transparent focus:ring-transparent", 
                 on: "rounded-lg text-lg body-font text-primary-icon font-quicksand tracking-widest bg-gray-100 border border-4 border-primary-icon enabled:hover:bg-gray-300 enabled:hover:border-primary-icon focus-bg-gray-100 focus:border-gray-800 focus:border-primary-icon focus:ring-transparent"}}}
@@ -22,7 +21,6 @@ export default function ButtonSecondaLingua({onClickAction}) {
                           setState(!state);}}>
                 <FaLanguage className='text-2xl'/>
             </Button>
-        </div>
     );
 }
 

@@ -8,38 +8,25 @@ import { FaEgg } from "react-icons/fa";
 import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
 import { LuWheat } from "react-icons/lu";
 import React from 'react';
-import PriceForm from '../priceForm';
+import elementiService from '@/services/elementiService';
 
-export default function AggiungiElemento() {
+export default function AggiungiElemento({categoria, refreshAction}) {
   const [openModal, setOpenModal] = useState(false);
   const [nomeElemento, setNomeElemento] = useState('');
   const [prezzo, setPrezzo] = useState('');
-  const [ allergenEgg, setEggAllergen] = useState(false);
-  const [ allergenShrimp, setShrimpAllergen] = useState(false);
-  const [ allergenCow, setCowAllergen] = useState(false);
-  const [ allergenWheat, setWheatAllergen] = useState(false);
-  const [ allergenFish, setFishAllergen] = useState(false);
+  const [ allergens, setAllergens] = useState({
+    GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+  })
   const [ ingredienti, setIngrediente ] = useState({1:""});
   const [ elementsRowCounter, setElemRowCounter] = useState(0);
 
   let counter = 0;
 
-  const setterAllergeni = {setEggAllergen, setShrimpAllergen, setCowAllergen, setWheatAllergen, setFishAllergen};
-
-  const allergens ={
-    wheat: allergenWheat,
-    egg: allergenEgg,
-    cow: allergenCow,
-    shrimp: allergenShrimp,
-    fish: allergenFish,
-  }
   function onCloseModal() {
     setOpenModal(false);
-    setCowAllergen(false);
-    setEggAllergen(false);
-    setFishAllergen(false);
-    setShrimpAllergen(false);
-    setWheatAllergen(false);
+    setAllergens({
+      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+    });
     setIngrediente({});
     setElemRowCounter(0);
     setNomeElemento('');
@@ -57,8 +44,37 @@ export default function AggiungiElemento() {
     setIngrediente(ingredienti =>({...ingredienti, [name]: newValue}));
   }
 
-  function onSubmit(){
-    console.log(ingredienti);
+  async function onSubmit(){
+    const elementiServ = new elementiService();
+    let ingredientiString = "";
+    let allergeniString = "LATTE,UOVA,";
+    allergeniString = allergeniString.concat(
+    (allergens.LATTE ? "LATTE,": ""),
+    (allergens.PESCE ? "PESCE,": ""),
+    (allergens.CROSTACEI ? "CROSTACEI," : ""),
+    (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
+    (allergens.LUPINI ? "LUPINI," : ""),
+    (allergens.GLUTINE ? "GLUTINE," : ""),
+    (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
+    (allergens.SEDANO ? "SEDANO," : ""),
+    (allergens.SOIA ? "SOIA," : ""),
+    (allergens.UOVA ? "UOVA," : "")
+    );
+
+    Object.keys(ingredienti).forEach(([key,index])=>{
+      ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
+    });
+
+    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, 100, ingredientiString, allergeniString, 7, "mario" , "FuocoFatuo," ]);
+    setAllergens({
+      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+    });
+    setIngrediente({});
+    setElemRowCounter(0);
+    setNomeElemento('');
+    counter = 0;
+    setOpenModal(false);
+    refreshAction();
   }
 
   return (
@@ -100,14 +116,14 @@ export default function AggiungiElemento() {
               <Label htmlFor="Allergeni" value="Allergeni:" />
               <div className='flex gap-4'>
               <>
-                {allergenFish ?<Button color='dark' size="sm" pill><FaFishFins/></Button>: null}
-                {allergenCow ? <Button color='dark' size="sm" pill><FaCow/></Button>: null}
-                {allergenEgg ?<Button color='dark' size="sm" pill><FaEgg/></Button>: null}
-                {allergenShrimp ? <Button color='dark' size="sm" pill><FaShrimp/></Button>: null}
-                {allergenWheat ? <Button color='dark' size="sm" pill><LuWheat/></Button>: null}
+                {allergens.PESCE ?<Button color='dark' size="sm" pill><FaFishFins/></Button>: null}
+                {allergens.LATTE ? <Button color='dark' size="sm" pill><FaCow/></Button>: null}
+                {allergens.UOVA ?<Button color='dark' size="sm" pill><FaEgg/></Button>: null}
+                {allergens.MOLLUSCHI ? <Button color='dark' size="sm" pill><FaShrimp/></Button>: null}
+                {allergens.GLUTINE ? <Button color='dark' size="sm" pill><LuWheat/></Button>: null}
               </>
               </div>
-              <SelettoreAllergeni setterAllergeni={setterAllergeni} allergens={allergens}>
+              <SelettoreAllergeni setterAllergeni={setAllergens} allergens={allergens}>
               </SelettoreAllergeni>
             </div>
           </div>

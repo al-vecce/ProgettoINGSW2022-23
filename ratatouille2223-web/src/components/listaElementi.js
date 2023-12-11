@@ -8,8 +8,9 @@ import ButtonSecondaLingua from './buttons/buttonSecondaLingua';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import elementiService from '@/services/elementiService';
 import ListaDettagliElementi from './listaDettagliElementi';
-
+import { toast, ToastContainer } from 'react-toastify';
 import TableHorizontalBar from './tableHorizontalBar';
+import ButtonModificaElemento from './buttons/buttonModificaElemento';
 
 import { FaTrashAlt  } from "react-icons/fa";
 
@@ -17,7 +18,6 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
     const [ secondaLingua, setSecondaLingua ] = useState({});
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     const [ elementoPriority, setElementoPriority] = useState({});
-
     //function move
 
 
@@ -40,7 +40,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         const elementiServ = new elementiService();
         const res = await elementiServ.deleteElementoPerNome(categoria,nomeElemento);
         if(res){
-            (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+            (res.result == "true" ? toast("Eliminazione avvenuta con successo!") : null);
         }
     }
     if(isLoading) 
@@ -66,6 +66,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
             priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
         }) => (
             <React.Fragment key={name}>
+                <ToastContainer />
             <Table.Row key={name} className="text-[15px] bg-white dark:border-gray-700 dark:bg-gray-800">
                     <Table.Cell className='flex flex-row items-center justify-center'>
                         <ButtonPriorita 
@@ -83,14 +84,14 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         justify-end'>
                         <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
                         <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
-                        {/* <ButtonModificaElemento refreshAction={updateAction} alertsControl={alertsControl} 
+                        <ButtonModificaElemento refreshAction={updateAction} 
                             oldName={name} 
                             oldPrice={price} 
-                            oldAllergens={data.allergens ? null: null } 
-                            oldIngredients={null} 
-                        /> */}
+                            oldAllergens={allergens ? allergens : null } 
+                            oldIngredients={ingredients} 
+                        />
                         <p>TODO MODIFICA</p>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
+                        <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>
                     </Button.Group>

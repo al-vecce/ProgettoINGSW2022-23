@@ -22,4 +22,38 @@ export default class elementiService{
         },
         }
         ).then((res) => res.json());
+    putElementoInCategoria = ([categoria, nomeNuovoElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ nomeNuovoElemento, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            price: prezzo,
+            ingredients: ingredienti,
+            allergens: allergeni,
+            second_name: second_name,
+            second_ingredients: second_ingredients,
+            openfoodfacts: false,
+            openfoodfacts_identifier: "",
+            priority: priority,
+        })
+        }
+        ).then((res) => res.json());
+    putElementoInCategoriaConOFF = ([categoria, nomeNuovoElemento, ingredienti, allergeni, priority, second_name, second_ingredients, openfoodfacts_identifier]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ nomeNuovoElemento, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            price: nuovoNome,
+            ingredients: ingredienti,
+            allergens: allergeni,
+            second_name: second_name,
+            second_ingredients: second_ingredients,
+            openfoodfacts: true,
+            openfoodfacts_identifier: openfoodfacts_identifier,
+            priority: priority,
+        })
+        }
+        ).then((res) => res.json());
 }

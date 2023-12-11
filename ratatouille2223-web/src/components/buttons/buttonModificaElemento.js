@@ -8,47 +8,56 @@ import { FaEgg } from "react-icons/fa";
 import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
 import { LuWheat } from "react-icons/lu";
 import React from 'react';
-import PriceForm from '../priceForm';
+import elementiService from '@/services/elementiService';
 
-export default function ModificaElemento({oldAllergens, oldIngredients, oldName, oldPrice}) {
-  const [openModal, setOpenModal] = useState(false);
-  const [nomeElemento, setNomeElemento] = useState(oldName);
-  const [prezzo, setPrezzo] = useState(oldPrice);
-  const [ allergenEgg, setEggAllergen] = useState(oldAllergens.egg);
-  const [ allergenShrimp, setShrimpAllergen] = useState(oldAllergens.shrimp);
-  const [ allergenCow, setCowAllergen] = useState(oldAllergens.cow);
-  const [ allergenWheat, setWheatAllergen] = useState(oldAllergens.wheat);
-  const [ allergenFish, setFishAllergen] = useState(oldAllergens.fish);
-  const [ ingredienti, setIngrediente ] = useState(oldIngredients);
-  const [ elementsRowCounter, setElemRowCounter] = useState();
-
-  let counter = 0;
-
-  const setterAllergeni = {setEggAllergen, setShrimpAllergen, setCowAllergen, setWheatAllergen, setFishAllergen};
-
-  const allergens ={
-    wheat: allergenWheat,
-    egg: allergenEgg,
-    cow: allergenCow,
-    shrimp: allergenShrimp,
-    fish: allergenFish,
+function parseAllergens(oldAllergens){
+  const allergens = {
+    GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
   }
+  let split = oldAllergens.split(",");
+  let res = {};
+  split.map((element)=>{
+    res = {...res, [element]: true}
+  })
+  Object.entries(allergens).map(([nome,value])=>{
+    res = {...res, [nome]: res[nome] ? res[nome] : value}
+  })
+  return res;
+}
+function parseIngredients(ingredients){
+  let split = ingredients.split(",");
+  let res = {};
+  split.map((element ,index)=>{
+    res = {...res, [index+1]: element};
+  })
+
+  return res;
+}
+
+export default function ModificaElemento({categoria, refreshAction, oldAllergens, oldIngredients , oldName, oldPrice,}) {
+
+
+  const [openModal, setOpenModal] = useState(false);
+  const [nomeElemento, setNomeElemento] = useState(oldName? oldName : '');
+  const [prezzo, setPrezzo] = useState(oldPrice ? oldPrice : 0);
+  const [ allergens, setAllergens] = useState(parseAllergens(oldAllergens))
+  const [ ingredienti, setIngrediente ] = useState(parseIngredients(oldIngredients));
+  const [ elementsRowCounter, setElemRowCounter] = useState(oldIngredients ? (oldIngredients.split(",").length)-1 : {1:""});
+  let counter = 0;
   function onCloseModal() {
     setOpenModal(false);
-    setCowAllergen(false);
-    setEggAllergen(false);
-    setFishAllergen(false);
-    setShrimpAllergen(false);
-    setWheatAllergen(false);
-    setIngrediente({});
-    setElemRowCounter(0);
-    setNomeElemento('');
-    counter = 0;
+    setAllergens(parseAllergens(oldAllergens));
+    setIngrediente(parseIngredients(oldIngredients));
+    setElemRowCounter(oldIngredients ? (oldIngredients.split(",").length)-1 : {1:""});
+    setNomeElemento(oldName? oldName : '');
+    resetCounter();
   }
+
+  const resetCounter = ()=> counter = 0;
 
   const addIngredientClick = ()=>{
     setElemRowCounter(elementsRowCounter+1);
-    counter = 0;
+    resetCounter();
   }
 
   const handleIngredienteInput = (e) =>{
@@ -57,13 +66,42 @@ export default function ModificaElemento({oldAllergens, oldIngredients, oldName,
     setIngrediente(ingredienti =>({...ingredienti, [name]: newValue}));
   }
 
-  function onSubmit(){
-    console.log(ingredienti);
+  async function onSubmit(){
+    const elementiServ = new elementiService();
+    let ingredientiString = ",";
+    let allergeniString = "LATTE,PESCE,UOVA,";
+    allergeniString = allergeniString.concat(
+    (allergens.LATTE ? "LATTE,": ""),
+    (allergens.PESCE ? "PESCE,": ""),
+    (allergens.CROSTACEI ? "CROSTACEI," : ""),
+    (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
+    (allergens.LUPINI ? "LUPINI," : ""),
+    (allergens.GLUTINE ? "GLUTINE," : ""),
+    (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
+    (allergens.SEDANO ? "SEDANO," : ""),
+    (allergens.SOIA ? "SOIA," : ""),
+    (allergens.UOVA ? "UOVA," : "")
+    );
+
+    Object.keys(ingredienti).forEach(([key,index])=>{
+      ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
+    });
+
+    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, 100, ingredientiString, allergeniString, 7, "mario" , "FuocoFatuo," ]);
+    setAllergens({
+      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+    });
+    resetCounter();
+    setOpenModal(false);
+    refreshAction();
   }
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color='gray' outline><FaPlus /></Button>
+      <Button onClick={() => setOpenModal(true)} 
+      className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
+      border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
+      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
         <Modal.Header>
           
@@ -97,14 +135,14 @@ export default function ModificaElemento({oldAllergens, oldIngredients, oldName,
               <Label htmlFor="Allergeni" value="Allergeni:" />
               <div className='flex gap-4'>
               <>
-                {allergenFish ?<Button color='dark' size="sm" pill><FaFishFins/></Button>: null}
-                {allergenCow ? <Button color='dark' size="sm" pill><FaCow/></Button>: null}
-                {allergenEgg ?<Button color='dark' size="sm" pill><FaEgg/></Button>: null}
-                {allergenShrimp ? <Button color='dark' size="sm" pill><FaShrimp/></Button>: null}
-                {allergenWheat ? <Button color='dark' size="sm" pill><LuWheat/></Button>: null}
+                {allergens.PESCE ?<Button color='dark' size="sm" pill><FaFishFins/></Button>: null}
+                {allergens.LATTE ? <Button color='dark' size="sm" pill><FaCow/></Button>: null}
+                {allergens.UOVA ?<Button color='dark' size="sm" pill><FaEgg/></Button>: null}
+                {allergens.MOLLUSCHI ? <Button color='dark' size="sm" pill><FaShrimp/></Button>: null}
+                {allergens.GLUTINE ? <Button color='dark' size="sm" pill><LuWheat/></Button>: null}
               </>
               </div>
-              <SelettoreAllergeni setterAllergeni={setterAllergeni} allergens={allergens}>
+              <SelettoreAllergeni setterAllergeni={setAllergens} allergens={allergens}>
               </SelettoreAllergeni>
             </div>
           </div>
@@ -121,7 +159,7 @@ export default function ModificaElemento({oldAllergens, oldIngredients, oldName,
                       id={"input"+counter} 
                       type="text"
                       sizing="sm"
-                      value={ingredienti[{counter}]}
+                      value={ingredienti[counter]}
                       name={counter}
                       onChange={handleIngredienteInput} />
                     </div>
