@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
-import { FaPlus } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 import { useState } from 'react';
 import { utenzeService } from '@/services/utenzeService';
 import { Select } from 'flowbite-react';
@@ -32,7 +32,10 @@ export default function buttonModificaUtente({alertsControl, refreshAction, old_
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color='gray' outline><FaPlus /></Button>
+      <Button onClick={() => setOpenModal(true)} 
+      className='text-lg body-font font-quicksand tracking-widest bg-primary-icon
+      border border-none enabled:hover:bg-gray-800 focus:bg-gray-800 focus:border-transparent focus:ring-transparent'
+      style={{width:"2.3em", height:"2.3em"}} ><FaUserEdit className='text-[24px]'/></Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
         <Modal.Header>
         <div className="flex flex-wrap gap-14">

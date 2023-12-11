@@ -5,8 +5,10 @@ import { Button } from 'flowbite-react';
 import { FaWheatAwn, FaCow, FaEgg, FaFish, FaShrimp  } from "react-icons/fa6";
 import { GiPeas, GiPeanut, GiNautilusShell,GiCrab  } from "react-icons/gi";
 import { LuShrub, LuBean  } from "react-icons/lu";
+import { useState } from 'react';
 
-export default function ButtonAllergen({type, onClickAction}) {
+export default function ButtonAllergen({type, selector, onClickAction}) {
+  const [ state, setState ] = useState(false);
   if(type == null || type == 'null'){
   }
   if(!onClickAction){
@@ -16,10 +18,13 @@ export default function ButtonAllergen({type, onClickAction}) {
     case "GLUTINE":
       return (
         <div>
-          <Button pill={true} className='drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest
-          border border-none bg-yellow-400 enabled:hover:bg-yellow-500 focus:bg-yellow-400 focus:border-transparent focus:ring-transparent'
+          <Button theme={{pill: { 
+                off: "rounded-full text-white bg-yellow-400 enabled:hover:bg-yellow-500 border border-none focus:bg-yellow-400 focus:border-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent", 
+                on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}
+          pill={state}
           style={{width:"2.3em", height:"2.3em"}}
-          onClick={onClickAction()}>
+          onClick={()=>{onClickAction();
+                        selector && setState(!state);}}>
             <FaWheatAwn className='text-2xl'/>
           </Button>
         </div>

@@ -1,7 +1,14 @@
 
 export class utenzeService{
 
-    getUtentiOrdinatiPerUsername = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/employees?mode=BYUSERNAME", {
+    getUtentiOrdinatiPer = ([page,ordinamento]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/employees?mode="+ordinamento+"&page=" + page, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        }
+        ).then((res) => res.json());
+    getNumberOfPages = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/history/pages", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
