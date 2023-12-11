@@ -56,7 +56,7 @@ export default function ListaContiAttivi({data , error, isLoading, refreshAction
               <Table.Cell>
                 <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
-                  <ButtonPDF/>
+                  <ButtonPDF checkID={check_id} table={check_table} dataAperturaConto={opening_date_time}/>
                   <Close refreshAction={refreshAction} clickConfermaAction={chiudiConto} argsConfermaAction={check_id} >Chiudere il conto?</Close>
                   <ButtonMore onClickAction={() =>{setContoVisibility({...contoDetailsVisibilities, [check_id]: contoDetailsVisibilities[check_id] ? !contoDetailsVisibilities[check_id] : true})}} />
                 </Button.Group>
