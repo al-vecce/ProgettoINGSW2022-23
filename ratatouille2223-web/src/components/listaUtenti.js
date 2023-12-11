@@ -4,9 +4,9 @@ import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import ButtonModificaUtente from './buttons/buttonModificaUtente';
 import ButtonConfirmElimina from './buttons/buttonConferma';
-import { IoTrashOutline } from "react-icons/io5";
 import { useRouter } from 'next/navigation';
 import { utenzeService } from '@/services/utenzeService';
+import { FaUserTimes } from "react-icons/fa";
 
 export default function ListaUtenti({alertsControl, data, error, isLoading, updateAction}) {
     const router = useRouter();
@@ -45,11 +45,11 @@ export default function ListaUtenti({alertsControl, data, error, isLoading, upda
                     <Table.Cell >{username}</Table.Cell>
                     <Table.Cell>{employee_role}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
-                    <Table.Cell />
                     <Table.Cell>
-                    <Button.Group className='gap-3'>
+                    <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
+                justify-end'>
                         <ButtonModificaUtente old_username={username} old_ruolo={employee_role} refreshAction={updateAction} alertsControl={alertsControl} nome={username}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={username} clickConfermaAction={deleteUtente} icona={<IoTrashOutline />}>
+                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={username} clickConfermaAction={deleteUtente} icona={<FaUserTimes className='text-2xl'/>}>
                             Vuoi eliminare il seguente utente?
                         </ButtonConfirmElimina>
                     </Button.Group>

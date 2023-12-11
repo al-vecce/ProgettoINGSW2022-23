@@ -99,9 +99,9 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
   return (
     <>
       <Button onClick={() => setOpenModal(true)} 
-      className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
-      border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
-      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
+      className='text-lg body-font font-quicksand tracking-widest bg-primary-icon
+      border border-none enabled:hover:bg-gray-800 focus:bg-gray-800 focus:border-transparent focus:ring-transparent'
+      style={{width:"2.3em", height:"2.3em"}} ><FaPlus className='text-[24px]'/></Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
         <Modal.Header>
           
