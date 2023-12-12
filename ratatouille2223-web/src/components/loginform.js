@@ -3,7 +3,7 @@
 import { Button, Label, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import loginService from '../services/loginService';
+import useLogin from '@/hooks/useLogin';
 
 import { FaLock, FaUser } from "react-icons/fa";
 import { Flowbite } from 'flowbite-react';
@@ -43,44 +43,60 @@ const customTextInputTheme = {
 
 export default function LoginForm(){
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [ errorCredenzialiErrate, setErrorCredenzialiErrate ] = useState(false);
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const router = useRouter();
+  const { login } = useLogin();
 
-  async function tryLogin(e){
-    e.preventDefault();
-    const logger = new loginService();
-    const data = logger.postLogin(username,password);
-    console.log(JSON.stringify(data));
-    (data.JWTAuthenticationCode ? console.log("Login success!") : console.log("Error with login!"));
-    (data.JWTAuthenticationCode ? router.push('/Homepage') : router.push('/'));
-
+  async function Login(){
+    if(username == "" || password == ""){
+      alert("Inserire i campi del login!");
+    }
+    else{
+      login(username,password)
+        .then((data)=>{
+          if(data.result === true){
+            if(data.firstLogin === true)
+              router.push("/PrimoAccesso");
+            else
+              router.push("/Homepage");
+          }
+          else{
+            setErrorCredenzialiErrate(true);
+          }
+        })
+        .catch((e)=>alert(e));
+    }
   }
 
   return (
-    <form className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-      <div class="inline-flex gap-2" role="group">
-        <div class="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
-        style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <FaUser fill='#393945' />
+    <>
+      {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Credenziali errate!" /> : null}
+      <div className="flex gap-4 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+        <div className="inline-flex gap-2" role="group">
+          <div className="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
+          style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+          <FaUser fill='#393945' />
+          </div>
+          <TextInput theme={customTextInputTheme} placeholder="Username" id="username" onChange={handleUsernameChange} required />
         </div>
-        <TextInput theme={customTextInputTheme} placeholder="Username" id="username" addon="" type="email" onChange={handleUsernameChange} required />
-      </div>
-      <div class="inline-flex gap-2" role="group">
-        <div class="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
-        style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-        <FaLock fill='#393945' />
+        <div className="inline-flex gap-2" role="group">
+          <div className="shadow-md px-3 py-2 text-gray-900 bg-white rounded-s-lg"
+          style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+          <FaLock fill='#393945' />
+          </div>
+          <TextInput theme={customTextInputTheme} placeholder="Password" id="password" type="password" onChange={handlePasswordChange} required/>
         </div>
-        <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required/>
-      </div>
-      <Flowbite theme={{ theme: customButtonTheme }}>
-        <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={tryLogin}>Submit</Button>
-      </Flowbite>
-    </form>
+        <Flowbite theme={{ theme: customButtonTheme }}>
+          <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={Login}>Submit</Button>
+        </Flowbite>
+        </div>
+    </>
   );
 }
 

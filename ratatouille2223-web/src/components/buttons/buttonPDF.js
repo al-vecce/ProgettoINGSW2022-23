@@ -27,7 +27,7 @@ export default function ButtonPDF({checkID, table, dataAperturaConto, dataChisur
   };
   const MyDoc = () => {
     return(
-    <Document title={getDate() + today.getHours + ":" + today.getMinutes + checkID}>
+    <Document key={"PDF"+checkID} title={getDate() + today.getHours + ":" + today.getMinutes + checkID}>
       <Page> 
         <View >
           <Text>{dataAperturaConto ? "Data di apertura del conto: " + dataAperturaConto : null}</Text>
@@ -35,9 +35,9 @@ export default function ButtonPDF({checkID, table, dataAperturaConto, dataChisur
           <Text>{totale ? "Totale: " + totale : null}</Text>
           <Text>Data di Stampa: {getDateForClosingTime() + today.getHours() + ":" + today.getMinutes()}</Text>
             {data && data.orders && Array.isArray(data.orders) ? data.orders.map(({order_id, element_name, quantity, current_price, description, order_total})=>{
-              console.log(order_id);
+              
               return(
-              <Text>
+              <Text key={order_id}>
                 {order_id}
                 {element_name}
                 {quantity}
