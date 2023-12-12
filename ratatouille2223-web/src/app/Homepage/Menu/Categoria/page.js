@@ -10,10 +10,10 @@ export default function page() {
   const name = searchParams.get("name")
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
-      <div className='order-2 flex p-4'>
+      <TopElementi name={name} style={{zIndex: '2'}}/>
+      <div className='flex p-4' style={{zIndex: '1'}}>
         <TabellaElementi name={name}/>
       </div>
-      <TopElementi name={name} className='order-1'/>
     </div>
   )
 }
