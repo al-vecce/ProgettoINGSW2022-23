@@ -239,7 +239,7 @@ public class MenuElementService {
                 result = result.concat(FieldCheckService.BLANKVALUE);
             } else if (s.isEmpty()) {
                 result = result.concat(FieldCheckService.EMPTYVALUE);
-            } else if(s.length() > 20) {
+            } else if(s.length() > 80) {
                 result = result.concat(FieldCheckService.TOOBIG);
             } else if(s.length() < 2) {
                 result = result.concat(FieldCheckService.TOOSMALL);
@@ -271,7 +271,7 @@ public class MenuElementService {
                 result = result.concat(FieldCheckService.BLANKVALUE);
             } else if (s.isEmpty()) {
                 result = result.concat(FieldCheckService.EMPTYVALUE);
-            } else if(s.length() > 20) {
+            } else if(s.length() > 80) {
                 result = result.concat(FieldCheckService.TOOBIG);
             } else if(s.length() < 2) {
                 result = result.concat(FieldCheckService.TOOSMALL);
