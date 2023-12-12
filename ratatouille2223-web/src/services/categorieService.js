@@ -1,6 +1,8 @@
 
 export class categorieService{
 
+    
+
     getCategorieOrdinatePer = ([page,ordinamento]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories?mode="+ ordinamento + "&page=" + page, {
         method: "GET",
         headers: {
