@@ -76,7 +76,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
       ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
     });
     ingredientiString === "" ? ingredientiString="," : null;
-    ingredientiSLString === "" ? ingredientiString="," : null;
+    ingredientiSLString === "" ? ingredientiSLString="," : null;
 
     const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
     setAllergens({
