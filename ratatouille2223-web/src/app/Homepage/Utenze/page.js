@@ -5,10 +5,10 @@ import TabellaUtenze from '@/components/tabellaUtenze'
 export default function page() {
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
-      <div className='order-2 flex p-4'>
+      <TopUtenze style={{zIndex: '1'}}/>
+      <div className='flex p-4' style={{zIndex: '1'}}>
         <TabellaUtenze/>
       </div>
-      <TopUtenze className='order-1'/>
     </div>
   )
 }
