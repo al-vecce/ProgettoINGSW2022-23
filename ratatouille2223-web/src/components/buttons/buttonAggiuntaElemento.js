@@ -1,5 +1,5 @@
 'use client';
-import { Button, Label, Modal, TextInput } from 'flowbite-react';
+import { Button, Label, Modal, Table, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import SelettoreAllergeni from '../selettoreAllergeni';
 import { FaPlus } from "react-icons/fa";
@@ -13,17 +13,18 @@ import CurrencyInput from 'react-currency-input-field';
 import ButtonAllergen from './buttonAllergen';
 
 export default function AggiungiElemento({categoria, refreshAction}) {
-  const [openModal, setOpenModal] = useState(false);
-  const [nomeElemento, setNomeElemento] = useState('');
-  const [prezzo, setPrezzo] = useState(0);
-  const [priority, setPriority] = useState("1");
-  const [ allergens, setAllergens] = useState({
+  const [ openModal, setOpenModal ] = useState(false);
+  const [ nomeElemento, setNomeElemento ] = useState('');
+  const [ prezzo, setPrezzo ] = useState(0);
+  const [ priority, setPriority ] = useState("1");
+  const [ allergens, setAllergens ] = useState({
     GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
   })
   const [ ingredienti, setIngrediente ] = useState({1:""});
-  const [ elementsRowCounter, setElemRowCounter] = useState(0);
-
+  const [ elementsRowCounter, setElemRowCounter ] = useState(0);
   let counter = 0;
+  const [ ingredientiSL, setIngredienteSL ] = useState({1:""});
+  const [ nomeElementoSL, setNomeElementoSL ] = useState('');
 
   function onCloseModal() {
     setOpenModal(false);
@@ -31,8 +32,10 @@ export default function AggiungiElemento({categoria, refreshAction}) {
       GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
     });
     setIngrediente({});
+    setIngredienteSL({1:""});
     setElemRowCounter(0);
     setNomeElemento('');
+    setNomeElementoSL("");
     counter = 0;
   }
 
@@ -50,7 +53,8 @@ export default function AggiungiElemento({categoria, refreshAction}) {
   async function onSubmit(){
     const elementiServ = new elementiService();
     let ingredientiString = "";
-    let allergeniString = "LATTE,UOVA,";
+    let ingredientiSLString = "";
+    let allergeniString = "";
     allergeniString = allergeniString.concat(
     (allergens.LATTE ? "LATTE,": ""),
     (allergens.PESCE ? "PESCE,": ""),
@@ -63,12 +67,18 @@ export default function AggiungiElemento({categoria, refreshAction}) {
     (allergens.SOIA ? "SOIA," : ""),
     (allergens.UOVA ? "UOVA," : "")
     );
+    allergeniString === "" ? allergeniString="," : null;
 
     Object.keys(ingredienti).forEach(([key,index])=>{
       ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
     });
+    Object.keys(ingredientiSL).forEach(([key,index])=>{
+      ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
+    });
+    ingredientiString === "" ? ingredientiString="," : null;
+    ingredientiSLString === "" ? ingredientiSLString="," : null;
 
-    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, "mario" , "FuocoFatuo," ]);
+    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
     setAllergens({
       GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
     });
@@ -90,7 +100,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
         <Modal.Header>
           
         <div className="flex flex-wrap gap-14">
-          <ModificaElementoSecondaLingua />
+          <ModificaElementoSecondaLingua oldIngredienti={ingredientiSL} oldNomeElemento={nomeElementoSL} setterIngredienti={setIngredienteSL} setterNomeElemento={setNomeElementoSL} />
           <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Inserimento Elemento</h1>
         </div>
         
@@ -115,8 +125,11 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                 <Label htmlFor="Prezzo" value="Prezzo:" />
                 <CurrencyInput
                   id={"CurrInput"+( categoria ? categoria: "")}
+                  className="text-primary-icon"
                   placeholder="Inserire un prezzo"
                   defaultValue={prezzo}
+                  decimalSeparator='.'
+                  groupSeparator=' '
                   value={prezzo}
                   allowNegativeValue={false}
                   decimalsLimit={2}
@@ -131,22 +144,24 @@ export default function AggiungiElemento({categoria, refreshAction}) {
               <>
                 {Object.entries(allergens).map(([nome,value])=>{
                   return(
-                    <ButtonAllergen type={nome}  />
+                    allergens[nome] ? <ButtonAllergen statoIniziale={true} type={nome} /> : null
                   );
                   })
                 }
               </>
               </div>
-              <SelettoreAllergeni setterAllergeni={setAllergens} allergens={allergens}>
+              <SelettoreAllergeni setAllergens={setAllergens} allergens={allergens}>
               </SelettoreAllergeni>
             </div>
             <div className="mb-2 block space y-1">
             <Label htmlFor="Priorità" value="Priorità:" />
                 <CurrencyInput
+                  className="text-primary-icon"
                   id={"PriorInput"+( priority ? priority: "")}
                   placeholder="Inserire una priorità"
                   defaultValue={priority}
                   allowNegativeValue={false}
+                  disableGroupSeparators={true}
                   value={priority}
                   decimalsLimit={0}
                   onValueChange={(value) => setPriority(value)}
@@ -155,24 +170,26 @@ export default function AggiungiElemento({categoria, refreshAction}) {
           </div>
         </Modal.Body>
         <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
-          <Label htmlFor="Ingredienti" value="Ingredienti:" />
-          <Button color='dark' size="xs" pill onClick={addIngredientClick}><FaPlus/></Button>
-            {Array.from({length: elementsRowCounter}).map(() =>{
-              counter++;
-              return(
-                <React.Fragment key={"Ingrediente"+counter}>
-                    <div className="mb-2 block">
-                      <TextInput 
-                      id={"input"+counter} 
-                      type="text"
-                      sizing="sm"
-                      value={ingredienti[{counter}]}
-                      name={counter}
-                      onChange={handleIngredienteInput} />
-                    </div>
-              </React.Fragment>
-              );
-            })}
+            <div>
+            <Label htmlFor="Ingredienti" value="Ingredienti:" />
+            <Button color='dark' size="xs" pill onClick={addIngredientClick}><FaPlus/></Button>
+              {Array.from({length: elementsRowCounter}).map(() =>{
+                counter++;
+                return(
+                  <React.Fragment key={"Ingrediente"+counter}>
+                      <div className="mb-2 block">
+                        <TextInput 
+                        id={"input"+counter} 
+                        type="text"
+                        sizing="sm"
+                        value={ingredienti[{counter}]}
+                        name={counter}
+                        onChange={handleIngredienteInput} />
+                      </div>
+                </React.Fragment>
+                );
+              })}
+            </div>
         </Modal.Footer>
         <div className="flex justify-center p-2">
               <Button onClick={onSubmit} color='success'>Conferma</Button>

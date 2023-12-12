@@ -11,6 +11,7 @@ import ListaDettagliElementi from './listaDettagliElementi';
 import { toast, ToastContainer } from 'react-toastify';
 import TableHorizontalBar from './tableHorizontalBar';
 import ButtonModificaElemento from './buttons/buttonModificaElemento';
+import ButtonModificaElementoOFF from './buttons/buttonModificaElementoOFF';
 
 import { FaTrashAlt  } from "react-icons/fa";
 
@@ -18,23 +19,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
     const [ secondaLingua, setSecondaLingua ] = useState({});
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     const [ elementoPriority, setElementoPriority] = useState({});
-    //function move
-
-
-    // const test = "Mioci,mario,michele,MinerG";
-    // const num = 1;
-    // let array = [{value:1}];
-    // const [arr, setArr] = useState({});
-    // const [valore,setValore] = useState(1);
-    // function oneTime(){
-    //     test.split(",").forEach((e)=>{
-    //         setArr(arr=>({...arr, [valore]: e}))
-    //         setValore(valore+1);
-    //     })
-    // }
-    // console.log(
-    //     arr
-    // );
+    
     async function deleteElemento(args){
         const nomeElemento = args;
         const elementiServ = new elementiService();
@@ -63,7 +48,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
+            priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier
         }) => (
             <React.Fragment key={name}>
                 <ToastContainer />
@@ -84,12 +69,30 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         justify-end'>
                         <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
                         <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
-                        <ButtonModificaElemento refreshAction={updateAction} 
+                        { openfoodfacts === "true" ? 
+                        <ButtonModificaElementoOFF 
+                            categoria={categoria}
+                            oldPrice={price}
+                            oldPriority={priority}
+                            ingredienti={ingredients}
+                            allergens={allergens}
+                            codiceElemento={openfoodfacts_identifier}
+                            nomeElemento={name}
+                            refreshAction={updateAction}
+                        /> 
+                        :
+                        <ButtonModificaElemento 
+                            refreshAction={updateAction}
+                            categoria={categoria}
                             oldName={name} 
                             oldPrice={price} 
                             oldAllergens={allergens ? allergens : null } 
-                            oldIngredients={ingredients} 
+                            oldIngredients={ingredients}
+                            oldNomeSL={second_name}
+                            oldIngredientiSL={second_ingredients}
+                            oldPriority={priority}
                         />
+                        }
                         <p>TODO MODIFICA</p>
                         <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?

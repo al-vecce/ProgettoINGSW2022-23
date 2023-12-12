@@ -41,7 +41,7 @@ export default function ListaDettagliElementi({key, secondaLingua, ingredienti, 
         if(input && input != "null") {
             return (
                 input.split(",").map(name => (
-                    <ButtonAllergen type={name}/>
+                    <ButtonAllergen statoIniziale={true} type={name}/>
                 ))
             )
         }
@@ -54,7 +54,6 @@ export default function ListaDettagliElementi({key, secondaLingua, ingredienti, 
         }
     }
 
-    console.log(ingredienti.split(","))
 
     return (
         <React.Fragment key={key}>
