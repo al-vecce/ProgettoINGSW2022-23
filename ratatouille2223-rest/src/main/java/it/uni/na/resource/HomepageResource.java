@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.CheckHistoryService;
 import it.uni.na.service.HomepageService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -13,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/homepage")
-//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+//@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class HomepageResource {
 
     @Inject
@@ -128,7 +129,7 @@ public class HomepageResource {
     }
     @GET
     @Produces("application/json")
-    @Path("/pages")
+    @Path("/pages/pages")
     public Response getNumberOfPagesFiltered(@QueryParam("filterstart") String filterstart, @QueryParam("filterend") String filterend) {
         if(filterstart == null || filterstart.isBlank() || filterend == null || filterend.isBlank()) {
             return Response.ok("Inaccurate arguments in HOMEPAGE/GETFILTEREDPAGES encountered.").status(400).build();
