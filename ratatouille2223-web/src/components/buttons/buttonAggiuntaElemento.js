@@ -161,6 +161,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                   placeholder="Inserire una priorità"
                   defaultValue={priority}
                   allowNegativeValue={false}
+                  disableGroupSeparators={true}
                   value={priority}
                   decimalsLimit={0}
                   onValueChange={(value) => setPriority(value)}

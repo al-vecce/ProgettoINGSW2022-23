@@ -11,6 +11,7 @@ import ListaDettagliElementi from './listaDettagliElementi';
 import { toast, ToastContainer } from 'react-toastify';
 import TableHorizontalBar from './tableHorizontalBar';
 import ButtonModificaElemento from './buttons/buttonModificaElemento';
+import ButtonModificaElementoOFF from './buttons/buttonModificaElementoOFF';
 
 import { FaTrashAlt  } from "react-icons/fa";
 
@@ -47,7 +48,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
         <React.Fragment>
         {data.elements ? 
         data.elements.map(({
-            priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients,
+            priority, name, last_modified, price, ingredients, allergens, second_name, second_ingredients, openfoodfacts, openfoodfacts_identifier
         }) => (
             <React.Fragment key={name}>
                 <ToastContainer />
@@ -68,7 +69,20 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         justify-end'>
                         <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
                         <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
-                        <ButtonModificaElemento refreshAction={updateAction}
+                        { openfoodfacts === "true" ? 
+                        <ButtonModificaElementoOFF 
+                            categoria={categoria}
+                            oldPrice={price}
+                            oldPriority={priority}
+                            ingredienti={ingredients}
+                            allergens={allergens}
+                            codiceElemento={openfoodfacts_identifier}
+                            nomeElemento={name}
+                            refreshAction={updateAction}
+                        /> 
+                        :
+                        <ButtonModificaElemento 
+                            refreshAction={updateAction}
                             categoria={categoria}
                             oldName={name} 
                             oldPrice={price} 
@@ -78,6 +92,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             oldIngredientiSL={second_ingredients}
                             oldPriority={priority}
                         />
+                        }
                         <p>TODO MODIFICA</p>
                         <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?

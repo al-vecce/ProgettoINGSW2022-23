@@ -49,8 +49,6 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
   let counter = 0;
 
   function onCloseModal() {
-    console.log(oldIngredients);
-    console.log(ingredienti);
     setAllergens(parseAllergens(oldAllergens));
     setIngrediente(parseIngredients(oldIngredients));
     setElemRowCounter(oldIngredients ? (oldIngredients.split(",").length)-1 : {1:""});
@@ -186,6 +184,7 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
                   placeholder="Inserire una priorità"
                   defaultValue={priority}
                   allowNegativeValue={false}
+                  disableGroupSeparators={true}
                   value={priority}
                   decimalsLimit={0}
                   onValueChange={(value) => setPriority(value)}
