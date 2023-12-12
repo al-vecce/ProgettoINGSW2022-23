@@ -9,11 +9,14 @@ import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
 import { LuWheat } from "react-icons/lu";
 import React from 'react';
 import elementiService from '@/services/elementiService';
+import CurrencyInput from 'react-currency-input-field';
+import ButtonAllergen from './buttonAllergen';
 
 export default function AggiungiElemento({categoria, refreshAction}) {
   const [openModal, setOpenModal] = useState(false);
   const [nomeElemento, setNomeElemento] = useState('');
-  const [prezzo, setPrezzo] = useState('');
+  const [prezzo, setPrezzo] = useState(0);
+  const [priority, setPriority] = useState("1");
   const [ allergens, setAllergens] = useState({
     GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
   })
@@ -65,7 +68,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
       ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
     });
 
-    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, 100, ingredientiString, allergeniString, 7, "mario" , "FuocoFatuo," ]);
+    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, "mario" , "FuocoFatuo," ]);
     setAllergens({
       GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
     });
@@ -83,7 +86,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
       className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
       border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
       style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
-      <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
+      <Modal dismissible show={openModal} size="xl" onClose={onCloseModal}>
         <Modal.Header>
           
         <div className="flex flex-wrap gap-14">
@@ -109,22 +112,45 @@ export default function AggiungiElemento({categoria, refreshAction}) {
             </div>
             <div>
               <div className="mb-2 block">
-                <Label htmlFor="Prezzo" value="Prezzo" />
+                <Label htmlFor="Prezzo" value="Prezzo:" />
+                <CurrencyInput
+                  id={"CurrInput"+( categoria ? categoria: "")}
+                  placeholder="Inserire un prezzo"
+                  defaultValue={prezzo}
+                  value={prezzo}
+                  allowNegativeValue={false}
+                  decimalsLimit={2}
+                  onValueChange={(value) => setPrezzo(value)}
+                  required
+                />
               </div>
             </div>
             <div className="mb-2 block space-y-2">
               <Label htmlFor="Allergeni" value="Allergeni:" />
               <div className='flex gap-4'>
               <>
-                {allergens.PESCE ?<Button color='dark' size="sm" pill><FaFishFins/></Button>: null}
-                {allergens.LATTE ? <Button color='dark' size="sm" pill><FaCow/></Button>: null}
-                {allergens.UOVA ?<Button color='dark' size="sm" pill><FaEgg/></Button>: null}
-                {allergens.MOLLUSCHI ? <Button color='dark' size="sm" pill><FaShrimp/></Button>: null}
-                {allergens.GLUTINE ? <Button color='dark' size="sm" pill><LuWheat/></Button>: null}
+                {Object.entries(allergens).map(([nome,value])=>{
+                  return(
+                    <ButtonAllergen type={nome}  />
+                  );
+                  })
+                }
               </>
               </div>
               <SelettoreAllergeni setterAllergeni={setAllergens} allergens={allergens}>
               </SelettoreAllergeni>
+            </div>
+            <div className="mb-2 block space y-1">
+            <Label htmlFor="Priorità" value="Priorità:" />
+                <CurrencyInput
+                  id={"PriorInput"+( priority ? priority: "")}
+                  placeholder="Inserire una priorità"
+                  defaultValue={priority}
+                  allowNegativeValue={false}
+                  value={priority}
+                  decimalsLimit={0}
+                  onValueChange={(value) => setPriority(value)}
+                />
             </div>
           </div>
         </Modal.Body>
