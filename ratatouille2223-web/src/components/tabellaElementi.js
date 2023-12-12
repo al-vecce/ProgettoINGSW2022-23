@@ -6,6 +6,7 @@ import { Button } from 'flowbite-react';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import AggiungiElementoButton from './buttons/buttonAggiuntaElemento';
+import AggiungiElementoOFFButton from './buttons/buttonAggiuntaElementoOFF';
 import useSWR from 'swr';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -89,7 +90,7 @@ export default function TabellaElementi({name}) {
     </div>
     <div className='flex justify-center p-2 gap-5'>
         <AggiungiElementoButton categoria={name} refreshAction={useUpdateData} />
-        <AggiungiElementoButton categoria={name} /> 
+        <AggiungiElementoOFFButton categoria={name} refreshAction={useUpdateData} /> 
         <p className='text-black'>OPENFOOD</p>
       </div>
   </div>

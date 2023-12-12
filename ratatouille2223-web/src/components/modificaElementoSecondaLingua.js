@@ -2,18 +2,38 @@
 
 import { Button, Label, Modal, TextInput } from 'flowbite-react';
 import { useState } from 'react';
-import SelettoreAllergeni from './selettoreAllergeni';
-import { FaLanguage } from "react-icons/fa";
+import { FaLanguage, FaPlus } from "react-icons/fa";
+import React from 'react';
 
-export default function ModificaElementoSecondaLingua() {
+export default function ModificaElementoSecondaLingua({oldNomeElemento, oldIngredienti, setterNomeElemento, setterIngredienti}) {
   const [openModal, setOpenModal] = useState(false);
-  const [nomeElemento, setNomeElemento] = useState('');
-  const [prezzo, setPrezzo] = useState('');
-
-
+  const [nomeElemento, setNomeElemento] = useState(oldNomeElemento ? oldNomeElemento : "");
+  const [ ingredienti, setIngrediente ] = useState(oldIngredienti ? oldIngredienti : {1:""});
+  const [ elementsRowCounter, setElemRowCounter ] = useState(oldIngredienti ? (Object.keys(oldIngredienti).length)-1 : 0);
+  let counter = 0;
   function onCloseModal() {
+    counter = 0;
     setOpenModal(false);
-    setNomeElemento('');
+    setElemRowCounter(oldIngredienti ? (Object.keys(oldIngredienti).length)-1 : 0);
+  }
+
+  const addIngredientClick = ()=>{
+    setElemRowCounter(elementsRowCounter+1);
+    counter = 0;
+  }
+
+  const handleIngredienteInput = (e) =>{
+    const name = e.target.name;
+    const newValue = e.target.value;
+    setIngrediente(ingredienti =>({...ingredienti, [name]: newValue}));
+  }
+
+  function onClickConferma(){
+    counter = 0;
+    setterIngredienti(ingredienti);
+    setterNomeElemento(nomeElemento);
+    setElemRowCounter(oldIngredienti ? (Object.keys(oldIngredienti).length)-1 : 0);
+    setOpenModal(false);
   }
 
   return (
@@ -46,13 +66,29 @@ export default function ModificaElementoSecondaLingua() {
           </div>
         </Modal.Body>
         <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
-          <Label htmlFor="Ingredienti" value="Ingredienti:" />
-        <div>
-        <TextInput id="small" type="text" sizing="sm" />
-        </div>
+          <div>
+            <Label htmlFor="Ingredienti" value="Ingredienti:" />
+              <Button color='dark' size="xs" pill onClick={addIngredientClick}><FaPlus/></Button>
+              {Array.from({length: elementsRowCounter}).map(() =>{
+                counter++;
+                return(
+                  <React.Fragment key={"Ingrediente"+counter}>
+                      <div className="mb-2 block">
+                        <TextInput 
+                        id={"input"+counter} 
+                        type="text"
+                        sizing="sm"
+                        value={ingredienti[counter]}
+                        name={counter}
+                        onChange={handleIngredienteInput} />
+                      </div>
+                </React.Fragment>
+                );
+              })}
+            </div>
         </Modal.Footer>
         <div className="flex justify-center p-2">
-              <Button color='success'>Conferma</Button>
+              <Button onClick={onClickConferma} color='success'>Conferma</Button>
         </div>
       </Modal>
     </>

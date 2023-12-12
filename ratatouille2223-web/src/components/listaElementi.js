@@ -18,23 +18,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
     const [ secondaLingua, setSecondaLingua ] = useState({});
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     const [ elementoPriority, setElementoPriority] = useState({});
-    //function move
-
-
-    // const test = "Mioci,mario,michele,MinerG";
-    // const num = 1;
-    // let array = [{value:1}];
-    // const [arr, setArr] = useState({});
-    // const [valore,setValore] = useState(1);
-    // function oneTime(){
-    //     test.split(",").forEach((e)=>{
-    //         setArr(arr=>({...arr, [valore]: e}))
-    //         setValore(valore+1);
-    //     })
-    // }
-    // console.log(
-    //     arr
-    // );
+    
     async function deleteElemento(args){
         const nomeElemento = args;
         const elementiServ = new elementiService();
@@ -84,11 +68,15 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                         justify-end'>
                         <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
                         <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
-                        <ButtonModificaElemento refreshAction={updateAction} 
+                        <ButtonModificaElemento refreshAction={updateAction}
+                            categoria={categoria}
                             oldName={name} 
                             oldPrice={price} 
                             oldAllergens={allergens ? allergens : null } 
-                            oldIngredients={ingredients} 
+                            oldIngredients={ingredients}
+                            oldNomeSL={second_name}
+                            oldIngredientiSL={second_ingredients}
+                            oldPriority={priority}
                         />
                         <p>TODO MODIFICA</p>
                         <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>

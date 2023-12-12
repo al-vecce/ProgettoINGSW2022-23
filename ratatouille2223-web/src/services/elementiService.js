@@ -56,4 +56,22 @@ export default class elementiService{
         })
         }
         ).then((res) => res.json());
+    postElementoInCategoria = ([categoria, oldNomeElemento, nuovoNomeElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ oldNomeElemento, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            name: nuovoNomeElemento,
+            price: prezzo,
+            ingredients: ingredienti,
+            allergens: allergeni,
+            second_name: second_name,
+            second_ingredients: second_ingredients,
+            openfoodfacts: false,
+            openfoodfacts_identifier: "",
+            priority: priority,
+        })
+        }
+        ).then((res) => res.json());
 }
