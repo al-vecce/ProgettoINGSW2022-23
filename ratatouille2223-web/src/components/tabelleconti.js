@@ -61,13 +61,13 @@ export default function TabelleConti() {
   const contiServ = new contiAttiviService();
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
                                 useSWR([ 
-                                `${getDate()+"T"+oreMin+":"+minMin}`, 
-                                `${getDate()+"T"+oreMax+":"+minMax}`],
+                                `${getDate()+"T"+oreMin+":"+minMin+":00"}`, 
+                                `${getDate()+"T"+oreMax+":"+minMax+":00"}`],
                                 contiServ.getNumberOfPagesContiAttiviFiltrati);
   const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) : 
                                useSWR([(contiCurrentPage-1).toString(), ordinamento, 
-                                `${getDate()+"T"+oreMin+":"+minMin}`, 
-                                `${getDate()+"T"+oreMax+":"+minMax}`], 
+                                `${getDate()+"T"+oreMin+":"+minMin+":00"}`, 
+                                `${getDate()+"T"+oreMax+":"+minMax+":00"}`], 
                                 contiServ.getContiAttiviOrdinatiEFiltrati);
 
   const useUpdateData = ()=>{

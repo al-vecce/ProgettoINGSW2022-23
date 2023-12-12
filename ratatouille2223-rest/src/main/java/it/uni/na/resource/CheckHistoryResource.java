@@ -156,7 +156,7 @@ public class CheckHistoryResource {
     }
     @GET
     @Produces("application/json")
-    @Path("/pages")
+    @Path("/pages/filter")
     public Response getNumberOfPagesFiltered(@QueryParam("filterstart") String filterstart, @QueryParam("filterend") String filterend) {
         if(filterstart == null || filterstart.isBlank() || filterend == null || filterend.isBlank()) {
             return Response.ok("Inaccurate arguments in HISTORY/GETFILTEREDPAGES encountered.").status(400).build();

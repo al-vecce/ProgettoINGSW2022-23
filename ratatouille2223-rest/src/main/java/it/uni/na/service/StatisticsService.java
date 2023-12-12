@@ -7,6 +7,7 @@ import jakarta.persistence.criteria.Order;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class StatisticsService {
@@ -96,7 +97,7 @@ public class StatisticsService {
         if(filterstart == null || filterstart.contains("null") || filterstart.isBlank()) {
             filterstart = LocalDateTime.now().toString();
         }
-        start = LocalDateTime.parse(filterstart);
+        start = LocalDateTime.parse(filterstart, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         if(filterend == null || filterend.contains("null") || filterend.isBlank()) {
             filterend = LocalDateTime.now().toString();
         }
@@ -107,7 +108,7 @@ public class StatisticsService {
         }
 
         List<RestaurantCheck> check_list = RestaurantCheck.findAllFilteredChecksUnpaged(start, end, false);;
-        if(check_list == null) {
+        if(check_list.isEmpty()) {
             mode = "No closed checks, ignore.";
             scope = "No closed checks, ignore.";
         }
@@ -147,8 +148,7 @@ public class StatisticsService {
         while(it1.hasNext() && it2.hasNext()) {
             curr_time = it1.next();
             curr_float = it2.next();
-            newString = "{\n" +
-                    "\t\"";
+            newString = "{\n\t\"key\": \"";
             switch (scope) {
                 case StatisticsConstants.DAILY, StatisticsConstants.WEEKLY:
                     newString = newString + curr_time.getYear() + "/" + curr_time.getMonth().getValue() + "/" + curr_time.getDayOfMonth();
@@ -161,8 +161,7 @@ public class StatisticsService {
                     break;
 
             }
-            newString = newString + "\": " + curr_float + "\n" +
-                    "}";
+            newString = newString + "\",\n\t\"value\": \"" + curr_float + "\"\n}";
             return_string_list.add(newString);
         }
 

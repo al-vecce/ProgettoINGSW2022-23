@@ -1,15 +1,16 @@
+'use client'
+
+import GraphGroup from '@/components/graphGroup';
 import TopStatistiche from '@/components/topStatistiche'
-import React from 'react'
-import { Datepicker } from 'flowbite-react'
+import React, { Component } from "react";
 
 export default function page() {
   return (
-    <div className='flex flex-col min-h-screen min-w-screen bg-white'>
-      <div className='order-2 flex p-4'>
-        
+    <div className='flex flex-col min-h-screen gap-4 bg-white'>
+      <TopStatistiche/>
+      <div className='flex-1'>
+        <GraphGroup/>
       </div>
-      <TopStatistiche className='order-1'/>
-      
     </div>
   )
 }
