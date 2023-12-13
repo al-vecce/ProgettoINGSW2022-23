@@ -48,7 +48,7 @@ export default function TabelleCategorie() {
   const router = useRouter();
   const userData = useCurrentUserData();
   const categorieServ = new categorieService(userData ? userData.token : "");
-  const dud = "Tf2Bread.jpg";
+  const dud = "1";
 
   const [ categorieCurrentPage, setCategorieCurrentPage ] = useState(1);
   const [ ordinamento, setOrdinamento ] = useState("BYPRIORITY");

@@ -64,7 +64,7 @@ export default function TabelleConti() {
     return `${year}-${month}-${date}`;
   };
 
-  const dud = "bread";
+  const dud = "1";
   const userData = useCurrentUserData();
   const contiServ = new contiAttiviService(userData ? userData.token : "");
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
