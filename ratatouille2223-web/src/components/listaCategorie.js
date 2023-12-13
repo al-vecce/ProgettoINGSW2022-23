@@ -50,7 +50,7 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
                     <Table.Cell>{priority}</Table.Cell>
                     <Table.Cell>{name}</Table.Cell>
                     <Table.Cell>{element_number}</Table.Cell>
-                    <Table.Cell>{average_cost}</Table.Cell>
+                    <Table.Cell>{average_cost} €</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
                     <Table.Cell>
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]

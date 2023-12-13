@@ -52,7 +52,7 @@ export default function ListaContiAttivi({data , error, isLoading, refreshAction
               <Table.Cell>Conto Num. {check_id}</Table.Cell>
               <Table.Cell>{check_table}</Table.Cell>
               <Table.Cell>{opening_date_time}</Table.Cell>
-              <Table.Cell>{check_total}</Table.Cell>
+              <Table.Cell>{check_total} €</Table.Cell>
               <Table.Cell>
                 <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>

@@ -36,29 +36,29 @@ export default function buttonAggiungiCategoria({alertsControl, refreshAction}) 
         <FaPlus className='text-[24px]'/>
       </Button>
       <Modal dismissible show={openModal} size="md" onClose={onCloseModal}>
-        <Modal.Header>
-          
-        <div className="flex flex-wrap gap-14">
-          <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Nuova categoria</h1>
-        </div>
-        
-        </Modal.Header>
-        <Modal.Body>  
-            <div>
-              <div className="mb-2 block">
-                <Label htmlFor="NomeCategoria" value="Nome Categoria" />
-              </div>
-              <TextInput
-                id="NomeCategoria"
-                placeholder="Nome Categoria"
-                value={NomeCategoria}
-                onChange={(event) => setNomeCategoria(event.target.value)}
-                required
-              />
+        <div className='p-4'>
+          <Modal.Header>
+            <div className="flex flex-wrap gap-14">
+              <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Nuova categoria</h1>
             </div>
-        </Modal.Body>
-        <div className="flex justify-center p-2">
-              <Button onClick={submitChange} color='success'>Conferma</Button>
+          </Modal.Header>
+          <Modal.Body>  
+              <div>
+                <div className="mb-2 block">
+                  <Label htmlFor="NomeCategoria" value="Nome Categoria" />
+                </div>
+                <TextInput
+                  id="NomeCategoria"
+                  placeholder="Nome Categoria"
+                  value={NomeCategoria}
+                  onChange={(event) => setNomeCategoria(event.target.value)}
+                  required
+                />
+              </div>
+          </Modal.Body>
+          <div className="flex justify-center p-2">
+                <Button onClick={submitChange} color='success'>Conferma</Button>
+          </div>
         </div>
       </Modal>
     </>

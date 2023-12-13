@@ -61,7 +61,7 @@ export default function ButtonAllergen({type, selector, onClickAction, statoIniz
       return (
         <div>
           <Button theme={{pill: { 
-                off: "rounded-full text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widestborder border-none bg-yellow-300 enabled:hover:bg-yellow-400 focus:bg-yellow-300 focus:border-transparent focus:ring-transparent contrast-[0.9] saturate-[0.2]", 
+                off: "rounded-full text-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widestborder border-none bg-yellow-300 enabled:hover:bg-yellow-400 focus:bg-yellow-300 focus:border-transparent focus:ring-transparent contrast-[1] saturate-[0.2]", 
                 on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}  
           pill={state} 
           style={{width:"2.3em", height:"2.3em"}}
