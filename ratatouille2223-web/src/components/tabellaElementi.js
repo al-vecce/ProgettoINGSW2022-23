@@ -64,7 +64,7 @@ export default function TabellaElementi({name}) {
       <Table theme={customTableTheme} hoverable>
         <Table.Head>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYPRIORITY"); useUpdateData();}}>
-          <Button>P</Button>
+        <div><div className='flex'>Priorità<FaSortDown /></div></div>
         </Table.HeadCell>
         <Table.HeadCell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>
             <div className='w-80'><div className='flex'>Nome<FaSortDown /></div></div>
@@ -91,7 +91,6 @@ export default function TabellaElementi({name}) {
     <div className='flex justify-center p-2 gap-5'>
         <AggiungiElementoButton categoria={name} refreshAction={useUpdateData} />
         <AggiungiElementoOFFButton categoria={name} refreshAction={useUpdateData} /> 
-        <p className='text-black'>OPENFOOD</p>
       </div>
   </div>
   )

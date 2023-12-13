@@ -1,13 +1,17 @@
 package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class RestaurantOrder extends PanacheEntityBase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Order_GEN")
     @SequenceGenerator(name = "Order_GEN", sequenceName = "Order_SEQ")
@@ -115,10 +119,16 @@ public class RestaurantOrder extends PanacheEntityBase {
     }
     @Transactional
     public static List<RestaurantOrder> findAllOrdersForCheckIdOrderBy(Long checkid, String order) {
-        return RestaurantOrder.find("SELECT o FROM RestaurantOrder o WHERE o.restaurantCheck.id = ?1 ORDER BY ?2"
-                ,checkid, order).list();
+        List<RestaurantOrder> list1 = RestaurantOrder.findAll(Sort.by(order)).list();
+        List<RestaurantOrder> list2 = new ArrayList<>();
+        for(RestaurantOrder e: list1) {
+            if(e.getCheck().getId().equals(checkid)) {
+                list2.add(e);
+            }
+        }
+        return list2;
     }
-
+//("SELECT o FROM RestaurantOrder o WHERE o.restaurantCheck.id = ?1 ORDER BY ?2" ,checkid, order).list();
     @PostLoad
     public void PostLoad() {
         this.setOrder_total(quantity * current_price);

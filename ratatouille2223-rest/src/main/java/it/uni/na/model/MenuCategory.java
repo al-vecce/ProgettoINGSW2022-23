@@ -2,6 +2,7 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Entity
 public class MenuCategory extends PanacheEntityBase {
+
+    public static final int PAGES = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MenuCategory_GEN")
     @SequenceGenerator(name = "MenuCategory_GEN", sequenceName = "MenuCategory_SEQ")
@@ -145,12 +149,11 @@ public class MenuCategory extends PanacheEntityBase {
     }
     @Transactional
     public static List<MenuCategory> findAllCategoriesOrderedBy(Integer page, String order) {
-        return MenuCategory.find("SELECT c FROM MenuCategory c ORDER BY ?1",
-                order).page(Page.of(page,10)).list();
+        return MenuCategory.find("SELECT c FROM MenuCategory c", Sort.by(order)).page(Page.of(page,PAGES)).list();
     }
     @Transactional
     public static Integer findCategoryPages() {
-        return RestaurantCheck.find("SELECT c FROM MenuCategory c").page(Page.ofSize(10)).pageCount();
+        return RestaurantCheck.find("SELECT c FROM MenuCategory c").page(Page.ofSize(PAGES)).pageCount();
     }
 
     public MenuCategory() {}

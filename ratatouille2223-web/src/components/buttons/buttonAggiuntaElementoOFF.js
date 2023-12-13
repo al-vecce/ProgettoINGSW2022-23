@@ -100,13 +100,13 @@ export default function AggiungiElementoOFF({categoria, refreshAction}) {
       refreshAction();
     }
   }
-
+// <img className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)]' style={{height:'15em'}} src='/off-logo.png'/>
   return (
     <>
       <Button onClick={() => {setOpenFrontModal(true)}} 
       className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
-      border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
-      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
+      border border-none enabled:hover:bg-gray-400 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
+      style={{width:"3em", height:"3em"}}><div className='box bg-cover bg-no-repeat bg-center bg-[url("/off-logo.png")] p-6'></div></Button>
       <Modal show={openModal} size="xl" onClose={onCloseModal}>
         <Modal.Header>
         <div className="flex flex-wrap gap-14">

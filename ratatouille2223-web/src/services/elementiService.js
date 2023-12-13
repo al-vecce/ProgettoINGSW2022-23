@@ -7,7 +7,7 @@ export default class elementiService{
         },
         }
         ).then((res) => res.json());
-    getNumberOfPagesElementi = ([nome]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/pages", {
+    getNumberOfPagesElementi = ([nome]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+nome+"/pages", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

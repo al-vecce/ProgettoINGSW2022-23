@@ -10,6 +10,9 @@ import java.util.List;
 
 @Entity
 public class Business extends PanacheEntityBase {
+
+    public static final int PAGES = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Business_SEQ")
     @SequenceGenerator(name = "Business_SEQ")

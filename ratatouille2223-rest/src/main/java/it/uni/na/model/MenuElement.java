@@ -2,6 +2,7 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -14,6 +15,8 @@ import java.util.Set;
 
 @Entity
 public class MenuElement extends PanacheEntityBase {
+
+    public static final int PAGES = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MenuElement_GEN")
@@ -216,8 +219,7 @@ public class MenuElement extends PanacheEntityBase {
     }
     @Transactional
     public static List<MenuElement> findAllElementsOrderedBy(MenuCategory category, Integer page, String order) {
-        List<MenuElement> list1 = MenuElement.find("SELECT e FROM MenuElement e ORDER BY ?1",
-                order).page(Page.of(page,10)).list();
+        List<MenuElement> list1 = MenuElement.findAll(Sort.by(order)).page(Page.of(page,PAGES)).list();
         List<MenuElement> list2 = new ArrayList<>();
         for(MenuElement e: list1) {
             if(e.getMenuCategory().getName().equals(category.getName())) {
@@ -229,10 +231,10 @@ public class MenuElement extends PanacheEntityBase {
     @Transactional
     public static Integer findElementPages(Long categoryid) {
         MenuCategory c = MenuCategory.find("SELECT c FROM MenuCategory c WHERE c.id = ?1", categoryid).firstResult();
-        if(c.getElement_number() <= 10) {
+        if(c.getElement_number() <= PAGES) {
             return 1;
         }
-        return c.getElement_number() / 10;
+        return (int) Math.ceil( ((double)c.getElement_number()) / 10);
     }
 
 

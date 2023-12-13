@@ -2,6 +2,7 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Entity
 public class RestaurantCheck extends PanacheEntityBase {
+
+    public static final int PAGES = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Check_GEN")
     @SequenceGenerator(name = "Check_GEN", sequenceName = "Check_SEQ")
@@ -123,61 +127,64 @@ public class RestaurantCheck extends PanacheEntityBase {
     }
     @Transactional
     public static List<RestaurantCheck> findAllChecksOrderedBy(Integer page, Boolean checkstatus, String order) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY ?2"
-                , checkstatus, order).page(Page.of(page,10)).list();
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", Sort.by(order) , checkstatus )
+                .page(Page.of(page,PAGES)).list();
     }
+
+    //return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY ?2"
+    //                , checkstatus, order).page(Page.of(page,10)).list();
 
     @Transactional
     public static List<RestaurantCheck> findAllChecksFilteredOrderedBy(Integer page, LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus, String order) {
         if(checkstatus) {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY ?4"
-                    , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3"
+                    , Sort.by(order), checkstatus, filterstart, filterend).page(Page.of(page,PAGES)).list();
         } else {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY ?4"
-                    , checkstatus, filterstart, filterend, order).page(Page.of(page,10)).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3"
+                    , Sort.by(order), checkstatus, filterstart, filterend).page(Page.of(page,PAGES)).list();
         }
     }
     @Transactional
     public static List<RestaurantCheck> findAllChecksUnpaged(Boolean checkstatus) {
         if(checkstatus) {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY opening_date_time"
-                    , true).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1"
+                    , Sort.by("opening_date_time"), true).list();
         }
         else {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 ORDER BY closing_date_time"
-                    , false).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1"
+                    , Sort.by("closing_date_time"), false).list();
         }
     }
     @Transactional
     public static List<RestaurantCheck> findAllFilteredChecksUnpaged(LocalDateTime filterstart, LocalDateTime filterend, Boolean checkstatus) {
         if(checkstatus) {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3 ORDER BY opening_date_time"
-                    , true, filterstart, filterend).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND opening_date_time >= ?2 AND opening_date_time <= ?3"
+                    , Sort.by("opening_date_time"), true, filterstart, filterend).list();
         }
         else {
-            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3 ORDER BY closing_date_time"
-                    , false, filterstart, filterend).list();
+            return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 AND closing_date_time >= ?2 AND closing_date_time <= ?3"
+                    , Sort.by("closing_date_time"), false, filterstart, filterend).list();
         }
     }
 
     @Transactional
     public static Integer findChecksPages(Boolean checkstatus) {
-        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", checkstatus).page(Page.ofSize(10)).pageCount();
+        return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1", checkstatus).page(Page.ofSize(PAGES)).pageCount();
     }
     @Transactional
     public static Integer findChecksPagesFiltered(Boolean checkstatus, LocalDateTime filterstart, LocalDateTime filterend) {
         if(checkstatus) {
             return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 " +
-                    "AND opening_date_time >= ?2 AND opening_date_time <= ?3", true).page(Page.ofSize(10)).pageCount();
+                    "AND opening_date_time >= ?2 AND opening_date_time <= ?3", true, filterstart, filterend).page(Page.ofSize(PAGES)).pageCount();
         }
         else {
             return RestaurantCheck.find("SELECT c FROM RestaurantCheck c WHERE check_status = ?1 " +
-                    "AND closing_date_time >= ?2 AND closing_date_time <= ?3", false).page(Page.ofSize(10)).pageCount();
+                    "AND closing_date_time >= ?2 AND closing_date_time <= ?3", false, filterstart, filterend).page(Page.ofSize(PAGES)).pageCount();
         }
     }
 
-    @PostLoad
-    /*public void postLoad() {
+    /*@PostLoad
+    public void postLoad() {
         float tmp = Float.parseFloat("0");
         for(RestaurantOrder o: this.restaurantOrders) {
             tmp = tmp + o.getOrder_total();
