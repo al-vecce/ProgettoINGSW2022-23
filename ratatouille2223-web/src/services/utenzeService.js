@@ -13,7 +13,7 @@ export class utenzeService{
         },
         }
         ).then((res) => res.json());
-    getNumberOfPages = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/history/pages", {
+    getNumberOfPages = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/employees/pages", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

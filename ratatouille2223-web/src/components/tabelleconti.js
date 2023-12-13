@@ -80,7 +80,7 @@ export default function TabelleConti() {
 
   const useUpdateData = ()=>{
     fetchPagina.mutate(dud, contiServ.getNumberOfPagesContiAttivi);
-    if(contiCurrentPage > fetchPagina.data){
+    if(contiCurrentPage > (fetchPagina.data ? fetchPagina.data.pages : 0)){
       setContiCurrentPage(1);
     }
     !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) :
