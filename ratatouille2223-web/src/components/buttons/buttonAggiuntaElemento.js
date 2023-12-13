@@ -2,10 +2,10 @@
 import { Button, Label, Modal, Table, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import SelettoreAllergeni from '../selettoreAllergeni';
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaMinus } from "react-icons/fa";
 import ModificaElementoSecondaLingua from '../modificaElementoSecondaLingua';
 import { FaEgg } from "react-icons/fa";
-import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
+import { FaCow, FaFishFins, FaShrimp, FaXmark   } from "react-icons/fa6";
 import { LuWheat } from "react-icons/lu";
 import React from 'react';
 import elementiService from '@/services/elementiService';
@@ -42,6 +42,11 @@ export default function AggiungiElemento({categoria, refreshAction}) {
   const addIngredientClick = ()=>{
     setElemRowCounter(elementsRowCounter+1);
     counter = 0;
+  }
+
+  const removeIngredientClick = ()=>{
+    if(elementsRowCounter-1 >= 0)
+    {setElemRowCounter(elementsRowCounter-1);}
   }
 
   const handleIngredienteInput = (e) =>{
@@ -98,25 +103,55 @@ export default function AggiungiElemento({categoria, refreshAction}) {
       className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
       border border-none enabled:hover:bg-gray-400 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
       style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
-
-      <Modal dismissible show={openModal} size="2xl" onClose={onCloseModal}>
-        <div className='p-4'>
+      <Modal theme={{
+        "root": {
+          "base": "fixed top-0 right-0 left-0 z-50 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
+          "show": {
+            "on": "flex bg-gray-900 bg-opacity-50 dark:bg-opacity-80",
+            "off": "hidden"
+          },
+          "sizes": {
+            "2xl": "max-w-[680px]",
+          },
+        },
+        "content": {
+          "base": "relative h-full w-full p-4",
+          "inner": "relative rounded-lg bg-white shadow dark:bg-gray-700 max-w-[90vh]"
+        },
+        "body": {
+          "base": "p-6 flex-none",
+          "popup": "pt-0"
+        },
+        "header": {
+          "base": "flex items-start justify-between rounded-t dark:border-gray-600 border-b p-5",
+          "popup": "p-2 border-b-0",
+          "title": "text-xl font-medium text-gray-900 dark:text-white",
+          "close": {
+            "base": "ml-auto flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white",
+            "icon": "h-5 w-5"
+          }
+        },
+        "footer": {
+          "base": "flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600",
+          "popup": "border-t"
+        }
+      }}
+      dismissible show={openModal} size="2xl" onClose={onCloseModal}>
+        <div className='flex-none p-4'>
           <Modal.Header>
-            <div className="flex flex-wrap gap-14">
-              TODO<ModificaElementoSecondaLingua oldIngredienti={ingredientiSL} oldNomeElemento={nomeElementoSL} setterIngredienti={setIngredienteSL} setterNomeElemento={setNomeElementoSL} />
+            <div className="flex flex-wrap gap-14 items-center">
+              <ModificaElementoSecondaLingua oldIngredienti={ingredientiSL} oldNomeElemento={nomeElementoSL} setterIngredienti={setIngredienteSL} setterNomeElemento={setNomeElementoSL} />
               <h1 className="text-xl font-medium text-gray-900 dark:text-white text-center">Inserimento Elemento</h1>
             </div>
           </Modal.Header>
           <Modal.Body>
-            <div className="space-y-6">
-              
+            <div className="flex flex-col overflow-hidden gap-5">
               <div>
                 <div className="mb-2 block">
                   <Label htmlFor="NomeElemento" value="Nome Elemento" />
                 </div>
                 <TextInput
                   id="NomeElemento"
-                  className=''
                   placeholder="Nome Elemento"
                   value={nomeElemento}
                   onChange={(event) => setNomeElemento(event.target.value)}
@@ -129,17 +164,16 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                     <Label htmlFor="Prezzo" value="Prezzo:" />
                   </div>
                   <CurrencyInput
-                    id={"CurrInput"+( categoria ? categoria: "")}
+                    id={"PriceInput"+( categoria ? categoria: "")}
                     className="text-primary-icon rounded-lg bg-gray-100 border-gray-300 focus:border-black focus:ring-black"
                     placeholder="Inserire un prezzo"
-                    defaultValue={prezzo}
+                    defaultValue={0}
                     decimalSeparator='.'
                     groupSeparator=' '
                     value={prezzo}
                     allowNegativeValue={false}
                     decimalsLimit={2}
                     onValueChange={(value) => setPrezzo(value)}
-                    suffix=' €'
                     required
                   />
                 </div>
@@ -148,17 +182,16 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                     <Label htmlFor="Priorità" value="Priorità:" />
                   </div>
                   <CurrencyInput
-                    id={"CurrInput"+( categoria ? categoria: "")}
+                    id={"PriorityInput"+( categoria ? categoria: "")}
                     className="text-primary-icon rounded-lg bg-gray-100 border-gray-300 focus:border-black focus:ring-black"
                     placeholder="Inserire un prezzo"
-                    defaultValue={prezzo}
+                    defaultValue={1}
                     decimalSeparator='.'
                     groupSeparator=' '
-                    value={prezzo}
+                    value={priority}
                     allowNegativeValue={false}
                     decimalsLimit={2}
-                    onValueChange={(value) => setPrezzo(value)}
-                    suffix=' €'
+                    onValueChange={(value) => setPriority(value)}
                     required
                   />
                 </div>
@@ -175,33 +208,47 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                   }
                 </div>
               </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
-              <div>
-              <Label htmlFor="Ingredienti" value="Ingredienti:" />
-              <Button color='dark' size="xs" pill onClick={addIngredientClick}><FaPlus/></Button>
-                {Array.from({length: elementsRowCounter}).map(() =>{
-                  counter++;
-                  return(
-                    <React.Fragment key={"Ingrediente"+counter}>
-                        <div className="mb-2 block">
-                          <TextInput 
+              <div className="flex flex-col flex-wrap">
+                <Label htmlFor="Ingredienti" value="Ingredienti:" />
+                <div className='flex flex-rows flex-wrap gap-2 items-center justify-start'>
+                  {Array.from({length: elementsRowCounter}).map(() =>{
+                    counter++;
+                    return(
+                      <React.Fragment key={"Ingrediente"+counter}>
+                        <div className="flex flex-row gap-1 block">
+                          <TextInput
                           id={"input"+counter} 
                           type="text"
                           sizing="sm"
                           value={ingredienti[{counter}]}
                           name={counter}
-                          onChange={handleIngredienteInput} />
+                          onChange={handleIngredienteInput}
+                          style={{ height:"3.2em" }} />
                         </div>
-                  </React.Fragment>
-                  );
-                })}
+                      </React.Fragment>
+                    );
+                  })}
+                  <Button theme={{pill: { 
+                    off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent", 
+                    on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}
+                  pill={false}
+                  onClick={removeIngredientClick}
+                  style={{width:"2.3em", height:"2.3em"}}><FaMinus className='text-lg'></FaMinus></Button>
+                  <Button theme={{pill: { 
+                    off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent", 
+                    on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}
+                  pill={false}
+                  style={{width:"2.3em", height:"2.3em"}}
+                  onClick={addIngredientClick}><FaPlus className='text-xl'/></Button>
+                </div>
               </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center items-center justify-center">
+            <div className="flex justify-center p-2">
+              <Button onClick={onSubmit} color='success'>Conferma</Button>
+            </div>
           </Modal.Footer>
-          <div className="flex justify-center p-2">
-                <Button onClick={onSubmit} color='success'>Conferma</Button>
-          </div>
         </div>
       </Modal>
     </>

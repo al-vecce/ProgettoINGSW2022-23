@@ -5,12 +5,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.QRGenerationService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 @Path("/business-information/qr-generation")
-//TODO @RolesAllowed("AMMINISTRATORE")
+@RolesAllowed("AMMINISTRATORE")
 public class QRGenerationResource {
 
     @Inject

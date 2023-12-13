@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.MenuElementService;
 import it.uni.na.service.StatisticsService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/statistics")
-//TODO @RolesAllowed({"AMMINISTRATORE"})
+@RolesAllowed({"AMMINISTRATORE"})
 public class StatisticsResource {
 
     @Inject

@@ -8,6 +8,7 @@ import it.uni.na.service.MenuCategoryService;
 import it.uni.na.service.MenuElementService;
 import it.uni.na.service.OnlineMenuService;
 import it.uni.na.service.ReviewService;
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/menu")
-//TODO @PermitAll
+@PermitAll
 public class OnlineMenuResource {
 
     @Inject

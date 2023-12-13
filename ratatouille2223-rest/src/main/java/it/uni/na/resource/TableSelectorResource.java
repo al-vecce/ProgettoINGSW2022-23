@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.MenuElementService;
 import it.uni.na.service.QRGenerationService;
 import it.uni.na.service.TableSelectorService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -22,7 +23,7 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/table-selector")
-//TODO @RolesAllowed("ADDETTOSALA")
+@RolesAllowed("ADDETTOSALA")
 public class TableSelectorResource {
 
     @Inject

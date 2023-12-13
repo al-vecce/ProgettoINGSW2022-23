@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.MenuCategoryService;
 import it.uni.na.service.MenuElementService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -13,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/menu/editor/categories")
-//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class MenuCategoryResource {
 
     @Inject

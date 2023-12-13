@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/homepage")
-//@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class HomepageResource {
 
     @Inject

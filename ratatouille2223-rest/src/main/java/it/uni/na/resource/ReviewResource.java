@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.model.RestaurantCheck;
 import it.uni.na.service.*;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/review")
-//TODO @RolesAllowed("ADDETTOSALA")
+@RolesAllowed("ADDETTOSALA")
 public class ReviewResource {
 
     @Inject

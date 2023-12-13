@@ -20,7 +20,10 @@ export default function ListaDettagliElementi({key, secondaLingua, ingredienti, 
     const [ ingredientsNumber, setIngredientsNumber] = useState(0);
 
     const splitString = (input) => {
-        if(input && input != "null") {
+        if(input && input != "null" && input != ',' && input != ',') {
+            if(input.substring(input.length - 1, input.length) == ",") {
+                input = input.slice(0, -1);
+            }
             return (
                 input.split(",").map(name => (
                 <div className='flex capitalize flex-col flex-wrap block rounded-md bg-gray-200 hover:bg-gray-200 p-2'>

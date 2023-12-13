@@ -17,7 +17,7 @@ public class LoginService {
         if(Employee.signIn(username, password)) {
             Employee e = Employee.findEmployeeByUsername(username);
             token = Jwt.issuer("https://example.com/issuer")
-                        .upn(username)
+                        .upn(username).expiresIn(16 * 60 * 60)
                         .groups(new HashSet<>(Arrays.asList(e.getAccount().toString())))
                         .sign();
             return token;
