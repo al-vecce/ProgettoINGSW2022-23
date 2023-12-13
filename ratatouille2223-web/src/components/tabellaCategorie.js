@@ -53,12 +53,12 @@ export default function TabelleCategorie() {
   const [ categorieCurrentPage, setCategorieCurrentPage ] = useState(1);
   const [ ordinamento, setOrdinamento ] = useState("BYPRIORITY");
 
-  const fetchCategoria = useSWR([(categorieCurrentPage-1).toString(), ordinamento], categorieServ.getCategorieOrdinatePer)
-  const fetchPagineCategoria = useSWR(dud, categorieServ.getNumberOfPagesCategorie)
+  const fetchCategoria = useSWR([(categorieCurrentPage-1).toString(), ordinamento], categorieServ.getCategorieOrdinatePer);
+  const fetchPagineCategoria = useSWR(dud, categorieServ.getNumberOfPagesCategorie);
 
   const useUpdateData = () =>{
     fetchPagineCategoria.mutate(dud, categorieServ.getNumberOfPagesCategorie);
-    if(categorieCurrentPage > fetchPagineCategoria.data.pages){
+    if(categorieCurrentPage > (fetchPagineCategoria.data ? fetchPagineCategoria.data.pages : 0)){
       setCategorieCurrentPage(1);
     }
     fetchCategoria.mutate(dud, categorieServ.getCategoriePerNome);

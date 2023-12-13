@@ -58,7 +58,7 @@ export default function PrimoAccessoForm(){
   const router = useRouter();
 
   async function onSubmit(){
-    if(password != "" && passwordConfirmation != "" && !(password === passwordConfirmation)){
+    if(password != "" && passwordConfirmation != "" && password === passwordConfirmation){
       const logger = new loginService(userData.token);
       if(userData.currentUser && userData.currentUserRole){
         const data = await logger.postPrimoAccessoCambioPassword(userData.currentUser,password,passwordConfirmation);
@@ -90,7 +90,7 @@ export default function PrimoAccessoForm(){
   return (
     <div className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Password non uguali o vuote!" /> : null}
-      {errorCriterioCredenzialeSbagliato ? <Label htmlFor="error" color={"failure"} value="La nuova password deve contenere:\n-Un carattere speciale(esempio: '!' '$')\n-Una lettere maiuscola\n-Un numero" /> : null}
+      {errorCriterioCredenzialeSbagliato ? <Label htmlFor="error" color={"failure"} value="La nuova password deve contenere:Un carattere speciale(esempio: '!' '$') Una lettere maiuscola Un numero Non deve essere uguale a quella precedente e deve essere lunga almeno 8 caratteri " /> : null}
       <div className="inline-flex gap-2" role="group">
         <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required />
       </div>

@@ -22,7 +22,7 @@ export class categorieService{
         },
         }
         ).then((res) => res.json());
-    postCategoriaPerNome = (vecchioNome, nuovoNome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + vecchioNome, {
+    postCategoriaPerNome = (vecchioNome, nuovoNome, priority) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + vecchioNome, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -30,18 +30,18 @@ export class categorieService{
         },
         body: JSON.stringify({
             name: nuovoNome,
-            priority: 5,
+            priority: priority,
         })
         }
         ).then((res) => res.json());
-    putCategoriaPerNome = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nome, {
+    putCategoriaPerNome = (nome, priority) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nome, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify({
-            priority: 5,
+            priority: priority,
         })
         }
         ).then((res) => res.json());
