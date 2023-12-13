@@ -73,7 +73,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                     <Table.Cell >
                         {secondaLingua[name] && (second_name != "null" && second_name != "") ? second_name : name}
                     </Table.Cell>
-                    <Table.Cell>{price}</Table.Cell>
+                    <Table.Cell>{price} €</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
                     <Table.Cell>
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
