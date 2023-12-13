@@ -6,25 +6,28 @@ import { useState } from 'react';
 import { categorieService } from '@/services/categorieService';
 import useSWR from 'swr';
 import useCurrentUserData from '@/hooks/useCurrentUserData';
+import CurrencyInput from 'react-currency-input-field';
 
 
-
-export default function ModificaCategoria({nome, alertsControl, refreshAction}) {
+export default function ModificaCategoria({nome, alertsControl, refreshAction, oldPriority}) {
   const userData = useCurrentUserData();
   const categorieServ = new categorieService(userData ? userData.token : "");
   const [openModal, setOpenModal] = useState(false);
   const [NomeCategoria, setNomeCategoria] = (nome ? useState(nome) : useState(''));
+  const [ priority, setPriority ] = useState(oldPriority);
+
   function onCloseModal() {
     setOpenModal(false);
     (nome ? setNomeCategoria(nome) : setNomeCategoria(''));
   }
   async function submitChange(event){
-    if(NomeCategoria != ""){
-      const res = await categorieServ.postCategoriaPerNome(nome, NomeCategoria);
+    if(NomeCategoria != "" && priority){
+      const res = await categorieServ.postCategoriaPerNome(nome, NomeCategoria, priority);
       if(res){
         (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
       }
       refreshAction();
+      setPriority(priority);
       setOpenModal(false);
     }
   }
@@ -57,6 +60,23 @@ export default function ModificaCategoria({nome, alertsControl, refreshAction}) 
                 required
               />
             </div>
+            <div>
+                  <div className="mb-2 block">
+                    <Label htmlFor="Priorità" value="Priorità:" />
+                  </div>
+                  <CurrencyInput
+                    id={"PriorityInput"}
+                    className="text-primary-icon rounded-lg bg-gray-100 border-gray-300 focus:border-black focus:ring-black"
+                    placeholder="Inserire una priorità"
+                    defaultValue={1}
+                    disableGroupSeparators={true}
+                    value={priority}
+                    allowNegativeValue={false}
+                    decimalsLimit={0}
+                    onValueChange={(value) => setPriority(value)}
+                    required
+                  />
+                </div>
           </Modal.Body>
           <div className="flex justify-center p-2">
               <Button onClick={submitChange} color='success'>Conferma</Button>

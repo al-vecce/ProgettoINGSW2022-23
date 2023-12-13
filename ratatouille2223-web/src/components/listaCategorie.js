@@ -17,9 +17,7 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
     const userData = useCurrentUserData();
     const categorieServ = new categorieService(userData ? userData.token : "");
 
-    function goToElement(){
-        router
-    }
+    
     async function deleteCategoria(args){
         const nome = args;
         const res = await categorieServ.deleteCategoriaPerNome(nome);
@@ -60,7 +58,7 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                         justify-end'>
                         <ButtonCategoryMore onClickAction={()=>{router.push("/Homepage/Menu/Categoria?name=" + name);}} />
-                        <ButtonModificaCategoria refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
+                        <ButtonModificaCategoria oldPriority={priority}refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
                         <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<FaTrashAlt className='text-xl'/>}>
                             Vuoi eliminare la seguente categoria e tutti gli elementi all'interno?
                         </ButtonConfirmElimina>
