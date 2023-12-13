@@ -19,14 +19,14 @@ export default function HpSidebar() {
   return ( 
     //<div className="box w-screen h-screen backdrop backdrop-opacity-100 backdrop-brightness-[0.70] absolute top-0 left-0">
         <div className="box w-64 h-screen sticky-left-0  rounded-r-[50px] shadow-lg bg-cover
-        bg-[url('/sidebar-splash.svg')] absolute top-0 left-0 transition-ease-in delay-1000 duration-1000">
+        bg-[url('/sidebar-splash.svg')] absolute top-0 left-0">
             <div className='body-font font-quicksand drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] text-center tracking-widest uppercase text-[20.5px] pt-6 pr-4'>Ratatouille 23</div>
             <div className='flex flex-row flex-no-wrap pl-5 pr-5 pt-1 gap-1' style={{justifyContent:'center', alignItems:'center'}}>
               <img className='w-[50px] h-[50px] drop-shadow-sm' src='/logoicon.svg'/>
-              <div className='flex flex-col flex-wrap p-2 gap-2 font-light'>
+              {/*<div className='flex flex-col flex-wrap p-2 gap-2 font-light'>
                 <div className='tracking-widest text-[12px]'>Nome Ristorante</div>
                 <div className='tracking-widest text-[9px] italic'>Indirizzo Ristorante</div>
-              </div>
+              </div>*/}
             </div>
             <div className='flex flex-col flex-no-wrap p-3 gap-4 body-font font-quicksand tracking-widest'>
               <Button theme={sidebarButtonTheme} href="/Homepage/StoricoConti" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>

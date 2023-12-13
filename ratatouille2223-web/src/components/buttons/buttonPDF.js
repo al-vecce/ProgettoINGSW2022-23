@@ -62,7 +62,7 @@ export default function ButtonPDF({checkID, table, dataAperturaConto, dataChisur
           <FaRegFilePdf/>
           <PDFDownloadLink document={<MyDoc />} fileName={getDate()+ `checkID${checkID ? checkID : ""}table${table ? table : ""}`}>
         {({ blob, url, loading, error }) =>
-          loading ? 'Loading PDF...' : 'PDF'
+          loading ? 'PDF' : 'PDF'
         }
       </PDFDownloadLink>
         </div>

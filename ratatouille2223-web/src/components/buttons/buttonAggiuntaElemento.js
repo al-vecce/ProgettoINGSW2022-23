@@ -10,82 +10,84 @@ import elementiService from '@/services/elementiService';
 import CurrencyInput from 'react-currency-input-field';
 import ButtonAllergen from './buttonAllergen';
 
-export default function AggiungiElemento({categoria, refreshAction}) {
-  const [ openModal, setOpenModal ] = useState(false);
-  const [ nomeElemento, setNomeElemento ] = useState('');
-  const [ prezzo, setPrezzo ] = useState(0);
-  const [ priority, setPriority ] = useState("1");
-  const [ allergens, setAllergens ] = useState({
-    GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+export default function AggiungiElemento({ categoria, refreshAction }) {
+  const [openModal, setOpenModal] = useState(false);
+  const [nomeElemento, setNomeElemento] = useState('');
+  const [prezzo, setPrezzo] = useState(0);
+  const [priority, setPriority] = useState("1");
+  const [allergens, setAllergens] = useState({
+    GLUTINE: false, LATTE: false, SOIA: false, UOVA: false, FRUTTAGUSCIO: false, PESCE: false, MOLLUSCHI: false, CROSTACEI: false, SEDANO: false, LUPINI: false
   })
-  const [ ingredienti, setIngrediente ] = useState({1:""});
-  const [ elementsRowCounter, setElemRowCounter ] = useState(0);
+  const [ingredienti, setIngrediente] = useState({ 1: "" });
+  const [elementsRowCounter, setElemRowCounter] = useState(0);
   let counter = 0;
-  const [ ingredientiSL, setIngredienteSL ] = useState({1:""});
-  const [ nomeElementoSL, setNomeElementoSL ] = useState('');
+  const [ingredientiSL, setIngredienteSL] = useState({ 1: "" });
+  const [nomeElementoSL, setNomeElementoSL] = useState('');
   const userData = useCurrentUserData();
   const elementiServ = new elementiService(userData ? userData.token : "");
 
   function onCloseModal() {
     setOpenModal(false);
     setAllergens({
-      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+      GLUTINE: false, LATTE: false, SOIA: false, UOVA: false, FRUTTAGUSCIO: false, PESCE: false, MOLLUSCHI: false, CROSTACEI: false, SEDANO: false, LUPINI: false
     });
     setIngrediente({});
-    setIngredienteSL({1:""});
+    setIngredienteSL({ 1: "" });
     setElemRowCounter(0);
     setNomeElemento('');
     setNomeElementoSL("");
     counter = 0;
   }
 
-  const addIngredientClick = ()=>{
-    setElemRowCounter(elementsRowCounter+1);
+  const addIngredientClick = () => {
+    setElemRowCounter(elementsRowCounter + 1);
     counter = 0;
   }
 
-  const removeIngredientClick = ()=>{
-    if(elementsRowCounter-1 >= 0)
-    {setElemRowCounter(elementsRowCounter-1);}
+  const removeIngredientClick = () => {
+    if (elementsRowCounter - 1 >= 0) { 
+      setElemRowCounter(elementsRowCounter - 1);
+      delete ingredienti[counter]; 
+    }
   }
 
-  const handleIngredienteInput = (e) =>{
+  const handleIngredienteInput = (e) => {
     const name = e.target.name;
     const newValue = e.target.value;
-    setIngrediente(ingredienti =>({...ingredienti, [name]: newValue}));
+    setIngrediente(ingredienti => ({ ...ingredienti, [name]: newValue }));
   }
 
-  async function onSubmit(){
-    if(nomeElemento != '' && prezzo && priority){
+  async function onSubmit() {
+    if (nomeElemento != '' && prezzo && priority) {
       let ingredientiString = "";
       let ingredientiSLString = "";
       let allergeniString = "";
       allergeniString = allergeniString.concat(
-      (allergens.LATTE ? "LATTE,": ""),
-      (allergens.PESCE ? "PESCE,": ""),
-      (allergens.CROSTACEI ? "CROSTACEI," : ""),
-      (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
-      (allergens.LUPINI ? "LUPINI," : ""),
-      (allergens.GLUTINE ? "GLUTINE," : ""),
-      (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
-      (allergens.SEDANO ? "SEDANO," : ""),
-      (allergens.SOIA ? "SOIA," : ""),
-      (allergens.UOVA ? "UOVA," : "")
+        (allergens.LATTE ? "LATTE," : ""),
+        (allergens.PESCE ? "PESCE," : ""),
+        (allergens.CROSTACEI ? "CROSTACEI," : ""),
+        (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
+        (allergens.LUPINI ? "LUPINI," : ""),
+        (allergens.GLUTINE ? "GLUTINE," : ""),
+        (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
+        (allergens.SEDANO ? "SEDANO," : ""),
+        (allergens.SOIA ? "SOIA," : ""),
+        (allergens.UOVA ? "UOVA," : "")
       );
-      allergeniString === "" ? allergeniString="," : null;
+      allergeniString === "" ? allergeniString = "," : null;
 
-      Object.keys(ingredienti).forEach(([key,index])=>{
+      Object.keys(ingredienti).forEach(([key, index]) => {
         ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
       });
-      Object.keys(ingredientiSL).forEach(([key,index])=>{
+      Object.keys(ingredientiSL).forEach(([key, index]) => {
         ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
       });
-      ingredientiString === "" ? ingredientiString="," : null;
-      ingredientiSLString === "" ? ingredientiSLString="," : null;
+      ingredientiString === "" ? ingredientiString = "," : null;
+      ingredientiSLString === "" ? ingredientiSLString = "," : null;
 
-      const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
+      const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL, ingredientiSLString]);
       setAllergens({
-        GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+        GLUTINE: false, LATTE: false, SOIA: false, UOVA: false, FRUTTAGUSCIO: false, PESCE: false, MOLLUSCHI: false, CROSTACEI: false, SEDANO: false, LUPINI: false
       });
       setIngrediente({});
       setElemRowCounter(0);
@@ -98,10 +100,10 @@ export default function AggiungiElemento({categoria, refreshAction}) {
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} 
-      className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
+      <Button onClick={() => setOpenModal(true)}
+        className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
       border border-none enabled:hover:bg-gray-400 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
-      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
+        style={{ width: "3em", height: "3em" }} ><FaPlus className='text-[24px]' /></Button>
       <Modal theme={{
         "root": {
           "base": "fixed top-0 right-0 left-0 z-50 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full",
@@ -135,7 +137,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
           "popup": "border-t"
         }
       }}
-      dismissible show={openModal} size="2xl" onClose={onCloseModal}>
+        dismissible show={openModal} size="2xl" onClose={onCloseModal}>
         <div className='flex-none p-4'>
           <Modal.Header>
             <div className="flex flex-wrap gap-14 items-center">
@@ -163,7 +165,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                     <Label htmlFor="Prezzo" value="Prezzo:" />
                   </div>
                   <CurrencyInput
-                    id={"PriceInput"+( categoria ? categoria: "")}
+                    id={"PriceInput" + (categoria ? categoria : "")}
                     className="text-primary-icon rounded-lg bg-gray-100 border-gray-300 focus:border-black focus:ring-black"
                     placeholder="Inserire un prezzo"
                     defaultValue={0}
@@ -181,12 +183,11 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                     <Label htmlFor="Priorità" value="Priorità:" />
                   </div>
                   <CurrencyInput
-                    id={"PriorityInput"+( categoria ? categoria: "")}
+                    id={"PriorityInput" + (categoria ? categoria : "")}
                     className="text-primary-icon rounded-lg bg-gray-100 border-gray-300 focus:border-black focus:ring-black"
-                    placeholder="Inserire un prezzo"
                     defaultValue={1}
                     decimalSeparator='.'
-                    groupSeparator=' '
+                    disableGroupSeparators={true}
                     value={priority}
                     allowNegativeValue={false}
                     decimalsLimit={2}
@@ -198,47 +199,53 @@ export default function AggiungiElemento({categoria, refreshAction}) {
               <div className="flex flex-col flex-wrap items-stretch justify-between">
                 <Label className='pb-2' htmlFor="Allergeni" value="Allergeni:" />
                 <div className='flex flex-rows flex-wrap gap-3 items-center justify-start'>
-                  <SelettoreAllergeni setAllergens={setAllergens} allergens={allergens}/>
-                  {Object.entries(allergens).map(([nome,value])=>{
-                    return(
+                  <SelettoreAllergeni setAllergens={setAllergens} allergens={allergens} />
+                  {Object.entries(allergens).map(([nome, value]) => {
+                    return (
                       allergens[nome] ? <ButtonAllergen statoIniziale={true} type={nome} /> : null
                     );
-                    })
+                  })
                   }
                 </div>
               </div>
-              <div className="flex flex-col flex-wrap">
+              <div className="flex flex-col flex-wrap gap-2">
                 <Label htmlFor="Ingredienti" value="Ingredienti:" />
                 <div className='flex flex-rows flex-wrap gap-2 items-center justify-start'>
-                  {Array.from({length: elementsRowCounter}).map(() =>{
+                  {Array.from({ length: elementsRowCounter }).map(() => {
                     counter++;
-                    return(
-                      <React.Fragment key={"Ingrediente"+counter}>
+                    return (
+                      <React.Fragment key={"Ingrediente" + counter}>
                         <div className="flex flex-row gap-1 block">
                           <TextInput
-                          id={"input"+counter} 
-                          type="text"
-                          sizing="sm"
-                          value={ingredienti[{counter}]}
-                          name={counter}
-                          onChange={handleIngredienteInput}
-                          style={{ height:"3.2em" }} />
+                            id={"input" + counter}
+                            type="text"
+                            sizing="sm"
+                            value={ingredienti[{ counter }]}
+                            name={counter}
+                            onChange={handleIngredienteInput}
+                            style={{ height: "3.2em" }} />
                         </div>
                       </React.Fragment>
                     );
                   })}
-                  <Button theme={{pill: { 
-                    off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent", 
-                    on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}
-                  pill={false}
-                  onClick={removeIngredientClick}
-                  style={{width:"2.3em", height:"2.3em"}}><FaMinus className='text-lg'></FaMinus></Button>
-                  <Button theme={{pill: { 
-                    off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent", 
-                    on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"}}}
-                  pill={false}
-                  style={{width:"2.3em", height:"2.3em"}}
-                  onClick={addIngredientClick}><FaPlus className='text-xl'/></Button>
+                  <Button theme={{
+                    pill: {
+                      off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent",
+                      on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"
+                    }
+                  }}
+                    pill={false}
+                    onClick={removeIngredientClick}
+                    style={{ width: "2.3em", height: "2.3em" }}><FaMinus className='text-lg'></FaMinus></Button>
+                  <Button theme={{
+                    pill: {
+                      off: "rounded-full text-white bg-primary-icon border border-none enabled:hover:bg-gray-800 focus:bg-primary-icon focus:border-transparent focus:ring-transparent drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent",
+                      on: "rounded-full text-primary-icon bg-white enabled:hover:bg-gray-200 border border-[3px] border-primary-icon focus:bg-white drop-shadow-[0_3px_3px_rgba(0,0,0,0.2)] text-lg body-font font-quicksand tracking-widest focus:ring-transparent"
+                    }
+                  }}
+                    pill={false}
+                    style={{ width: "2.3em", height: "2.3em" }}
+                    onClick={addIngredientClick}><FaPlus className='text-xl' /></Button>
                 </div>
               </div>
             </div>

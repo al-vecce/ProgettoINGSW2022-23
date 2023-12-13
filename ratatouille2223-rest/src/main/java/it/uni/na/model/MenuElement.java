@@ -219,14 +219,26 @@ public class MenuElement extends PanacheEntityBase {
     }
     @Transactional
     public static List<MenuElement> findAllElementsOrderedBy(MenuCategory category, Integer page, String order) {
-        List<MenuElement> list1 = MenuElement.findAll(Sort.by(order)).page(Page.of(page,PAGES)).list();
+        int min, max, i = 0;
+        List<MenuElement> list1 = MenuElement.findAll(Sort.by(order)).list();
         List<MenuElement> list2 = new ArrayList<>();
         for(MenuElement e: list1) {
-            if(e.getMenuCategory().getName().equals(category.getName())) {
+            if(e.getMenuCategory().getId().equals(category.getId())) {
                 list2.add(e);
             }
         }
-        return list2;
+        list1 = new ArrayList<>();
+        min = PAGES*page;
+        max = min + 9;
+        for (MenuElement e : list2) {
+            if(i < min){
+                i++;
+            } else if (i >= min && i <= max) {
+                list1.add(e);
+                i++;
+            } else { break; }
+        }
+        return list1;
     }
     @Transactional
     public static Integer findElementPages(Long categoryid) {
