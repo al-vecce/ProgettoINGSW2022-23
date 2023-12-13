@@ -77,7 +77,7 @@ export default function TabelleCategorie() {
         <Table theme={customTableTheme} hoverable>
           <Table.Head>
             <Table.HeadCell onClick={()=>{setOrdinamento("BYPRIORITY"); useUpdateData();}}>
-              <Button>P</Button>
+            <div className='flex'>Priorità<FaSortDown /></div>
             </Table.HeadCell>
             <Table.HeadCell onClick={()=>{setOrdinamento("BYNAME"); useUpdateData();}}>
               <div className='flex'>Nome<FaSortDown /></div>

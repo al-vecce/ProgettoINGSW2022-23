@@ -43,12 +43,12 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
         <React.Fragment>
         {data.categories ? 
         data.categories.map(({
-            name, last_modified, average_cost, element_number,
+            priority, name, last_modified, average_cost, element_number,
         }) => (
             <React.Fragment key={name}>
             <Table.Row key={name} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell><p>TODO PRIORITA</p></Table.Cell>
-                    <Table.Cell >{name}</Table.Cell>
+                    <Table.Cell>{priority}</Table.Cell>
+                    <Table.Cell>{name}</Table.Cell>
                     <Table.Cell>{element_number}</Table.Cell>
                     <Table.Cell>{average_cost}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>

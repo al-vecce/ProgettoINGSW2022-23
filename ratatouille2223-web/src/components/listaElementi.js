@@ -28,6 +28,13 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
             (res.result == "true" ? toast("Eliminazione avvenuta con successo!") : null);
         }
     }
+    {/*async function updatePriority({category, name, priority}){
+        const elementiServ = new elementiService();
+        const res = await elementiServ.postUpdatePriority([category, name, priority]);
+        if(res){
+            (res.result == "true" ? toast("Priorità modificata con successo!") : null);
+        }
+    }*/}
     if(isLoading) 
         return ( 
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -53,14 +60,14 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
             <React.Fragment key={name}>
                 <ToastContainer />
             <Table.Row key={name} className="text-[15px] bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell className='flex flex-row items-center justify-center'>
-                        <ButtonPriorita 
-                            onClickDecrease={()=>{}}
-                            onClickIncrease={()=>{}}/>
+                    <Table.Cell>
+                        {/*<ButtonPriorita 
+                            onClickDecrease={()=>{updatePriority(categoria, name, priority-1);}}
+        onClickIncrease={()=>{}}/>*/}
                         {priority}
                     </Table.Cell>
                     <Table.Cell >
-                        {secondaLingua[name] && (second_name != "null") ? second_name : name}
+                        {secondaLingua[name] && (second_name != "null" && second_name != "") ? second_name : name}
                     </Table.Cell>
                     <Table.Cell>{price}</Table.Cell>
                     <Table.Cell>{last_modified}</Table.Cell>
@@ -68,7 +75,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                         justify-end'>
                         <ButtonSecondaLingua onClickAction={() =>{setSecondaLingua({...secondaLingua, [name]: secondaLingua[name] ? !secondaLingua[name] : true})}}/>
-                        <ButtonMore onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
+                        <ButtonMore type={true} onClickAction={() =>{setElementoVisibility({...elementoDetailsVisibilities, [name]: elementoDetailsVisibilities[name] ? !elementoDetailsVisibilities[name] : true})}}/>
                         { openfoodfacts === "true" ? 
                         <ButtonModificaElementoOFF 
                             categoria={categoria}
@@ -93,7 +100,6 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             oldPriority={priority}
                         />
                         }
-                        <p>TODO MODIFICA</p>
                         <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>

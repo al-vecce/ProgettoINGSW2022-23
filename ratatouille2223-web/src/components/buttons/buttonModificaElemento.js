@@ -2,7 +2,7 @@
 import { Button, Label, Modal, Table, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import SelettoreAllergeni from '../selettoreAllergeni';
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaEdit } from "react-icons/fa";
 import ModificaElementoSecondaLingua from '../modificaElementoSecondaLingua';
 import { FaEgg } from "react-icons/fa";
 import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
@@ -116,9 +116,9 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
   return (
     <>
       <Button onClick={() => setOpenModal(true)} 
-      className='p-4 text-lg text-primary-icon body-font rounded-sm drop-shadow-[0_2px_2px_rgba(0,0,0,0.4)] font-quicksand tracking-widest bg-gray-300
-      border border-none enabled:hover:bg-gray-300 enabled:hover:text-primary-icon focus:bg-gray-300 focus:border-transparent focus:ring-transparent focus:text-primary-icon'
-      style={{width:"3em", height:"3em"}} ><FaPlus className='text-[24px]'/></Button>
+      className='text-lg body-font font-quicksand tracking-widest bg-primary-icon
+      border border-none enabled:hover:bg-gray-800 focus:bg-gray-800 focus:border-transparent focus:ring-transparent'
+      style={{width:"2.3em", height:"2.3em"}}><FaEdit className='pl-1 pb-0.5 text-[26px]'/></Button>
       <Modal dismissible show={openModal} size="xl" onClose={onCloseModal}>
         <Modal.Header>
           

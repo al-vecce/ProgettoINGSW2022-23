@@ -56,17 +56,24 @@ export default function TabelleConti() {
     const date = today.getDate();
     return `${year}-${month}-${date}`;
   };
+  const getYestedayDate = ()=>{
+    const yesterday = new Date();
+    const month = yesterday.getMonth() + 1;
+    const year = yesterday.getFullYear();
+    const date = yesterday.getDate()-1;
+    return `${year}-${month}-${date}`;
+  };
 
   const dud = "bread";
   const contiServ = new contiAttiviService();
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
                                 useSWR([ 
-                                `${getDate()+"T"+oreMin+":"+minMin+":00"}`, 
+                                `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 
                                 `${getDate()+"T"+oreMax+":"+minMax+":00"}`],
                                 contiServ.getNumberOfPagesContiAttiviFiltrati);
   const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) : 
                                useSWR([(contiCurrentPage-1).toString(), ordinamento, 
-                                `${getDate()+"T"+oreMin+":"+minMin+":00"}`, 
+                                `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 
                                 `${getDate()+"T"+oreMax+":"+minMax+":00"}`], 
                                 contiServ.getContiAttiviOrdinatiEFiltrati);
 
