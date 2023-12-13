@@ -4,9 +4,11 @@ import { Button, Label, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import loginService from '@/services/loginService';
-
-import { FaLock, FaUser } from "react-icons/fa";
 import { Flowbite } from 'flowbite-react';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+import { useCookies } from 'next-client-cookies';
+import useLogout from '@/hooks/useLogout';
+
 const customTheme = {
   base: "rounded-none",
   button: {
@@ -43,35 +45,54 @@ const customTextInputTheme = {
 
 export default function PrimoAccessoForm(){
 
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+  const [ errorCredenzialiErrate, setErrorCredenzialiErrate ] = useState(false);
+  const cookieStore = useCookies();
+  const { logout } = useLogout();
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordConfirmationChange = (e) => setPasswordConfirmation(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const router = useRouter();
 
-  async function tryLogin(e){
-    e.preventDefault();
-    const logger = new loginService();
-    const data = logger.postLogin(username,password);
-    console.log(JSON.stringify(data));
-    (data.JWTAuthenticationCode ? console.log("Login success!") : console.log("Error with login!"));
-    (data.JWTAuthenticationCode ? router.push('/Homepage') : router.push('/'));
-
+  async function onSubmit(){
+    if(password && confermaPassword){
+      const logger = new loginService();
+      const userData = useCurrentUserData();
+      if(userData.currentUser && userData.currentUserRole){
+        const data = await logger.postPrimoAccessoCambioPassword(userData.currentUser,password,passwordConfirmation);
+        if(data){
+          if(data.result === "true"){
+            logout();
+            router.push("/");
+          }
+          else{
+            setErrorCredenzialiErrate(true);
+          }
+        }
+        else{
+          alert("Errore con il server!");
+        }
+      }
+      else{
+        router.push("/");
+      }
+    }
   }
 
   return (
-    <form className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-      <div class="inline-flex gap-2" role="group">
-        <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handleUsernameChange} required />
+    <div className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+      {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Password non uguali!" /> : null}
+      <div className="inline-flex gap-2" role="group">
+        <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required />
       </div>
-      <div class="inline-flex gap-2" role="group">
-        <TextInput theme={customTextInputTheme} placeholder="Conferma" id="conferma" addon="" type="password" onChange={handlePasswordChange} required/>
+      <div className="inline-flex gap-2" role="group">
+        <TextInput theme={customTextInputTheme} placeholder="Conferma" id="conferma" addon="" type="password" onChange={handlePasswordConfirmationChange} required/>
       </div>
       <Flowbite theme={{ theme: customTheme }}>
-        <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={tryLogin}>Submit</Button>
+        <Button className="shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{width:'10em'}} color="confirm" type="submit" onClick={onSubmit}>Submit</Button>
       </Flowbite>
-    </form>
+    </div>
   );
 }

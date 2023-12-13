@@ -24,18 +24,20 @@ export default function ModificaElementoOFF({categoria, refreshAction, codiceEle
   }
 
   async function onSubmit(){
-    const elementiServ = new elementiService();
-    let ingredientiString = ingredienti;
-    let allergeniString = allergens;
-
-    allergeniString === "" ? allergeniString="," : null;
-    ingredientiString === "" ? ingredientiString="," : null;
-
-    const data = await elementiServ.postElementoInCategoriaConOFF([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElemento , ingredientiString, codiceElemento ]);
-    setPriority(priority);
-    setPrezzo(prezzo)
-    setOpenModal(false);
-    refreshAction();
+    if(priority && prezzo){
+      const elementiServ = new elementiService();
+      let ingredientiString = ingredienti;
+      let allergeniString = allergens;
+  
+      allergeniString === "" ? allergeniString="," : null;
+      ingredientiString === "" ? ingredientiString="," : null;
+  
+      const data = await elementiServ.postElementoInCategoriaConOFF([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElemento , ingredientiString, codiceElemento ]);
+      setPriority(priority);
+      setPrezzo(prezzo)
+      setOpenModal(false);
+      refreshAction();
+    }
   }
 
   return (

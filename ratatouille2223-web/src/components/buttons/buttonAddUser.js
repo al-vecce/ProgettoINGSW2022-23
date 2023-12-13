@@ -19,17 +19,19 @@ export default function buttonAddUser({alertsControl, refreshAction}) {
     setPassword('');
   }
   async function aggiungiUtente(){
-    const res = await utenzeServ.putUtentePerUsername(username,password,ruolo);
-    if(res){
-      (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
-    }else{
-        //errore
+    if(username != "" && password != ""){
+      const res = await utenzeServ.putUtentePerUsername(username,password,ruolo);
+      if(res){
+        (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+      }else{
+          //errore
+      }
+      refreshAction();
+      setUsername('');
+      setPassword('');
+      setRuolo('ADDETTOSALA');
+      setOpenModal(false);
     }
-    refreshAction();
-    setUsername('');
-    setPassword('');
-    setRuolo('ADDETTOSALA');
-    setOpenModal(false);
   }
 
   return (

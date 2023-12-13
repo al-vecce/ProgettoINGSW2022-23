@@ -16,12 +16,14 @@ export default function ModificaCategoria({nome, alertsControl, refreshAction}) 
     (nome ? setNomeCategoria(nome) : setNomeCategoria(''));
   }
   async function submitChange(event){
-    const res = await categorieServ.postCategoriaPerNome(nome, NomeCategoria);
-    if(res){
-      (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+    if(NomeCategoria != ""){
+      const res = await categorieServ.postCategoriaPerNome(nome, NomeCategoria);
+      if(res){
+        (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+      }
+      refreshAction();
+      setOpenModal(false);
     }
-    refreshAction();
-    setOpenModal(false);
   }
 
   return (

@@ -18,16 +18,18 @@ export default function buttonModificaUtente({alertsControl, refreshAction, old_
     setRuolo(old_ruolo);
   }
   async function modificaUtente(){
-    const res = await utenzeServ.postUtentePerUsername(old_username,username, ruolo);
-    if(res){
-      (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
-    }else{
-        //errore
+    if(username != ""){
+      const res = await utenzeServ.postUtentePerUsername(old_username,username, ruolo);
+      if(res){
+        (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+      }else{
+          //errore
+      }
+      refreshAction();
+      setUsername('');
+      setRuolo('ADDETTOSALA');
+      setOpenModal(false);
     }
-    refreshAction();
-    setUsername('');
-    setRuolo('ADDETTOSALA');
-    setOpenModal(false);
   }
 
   return (
