@@ -17,7 +17,7 @@ import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
   root: {
     base: "w-full text-left text-sm text-gray-500 dark:text-gray-400",
-    shadow: "absolute bg-white dark:bg-black w-full h-full top-0 left-0 rounded-lg drop-shadow-md -z-10",
+    shadow: "absolute bg-white dark:bg-black w-full h-full top-0 left-0 rounded-lg -z-10",
     wrapper: "relative"
   },
   body: {
@@ -56,8 +56,8 @@ export default function TabellaUtenze() {
 
   const useUpdateData = () =>{
     fetchPagineUtenti.mutate(dud, utenzeServ.getNumberOfPages);
-    if(currentPage > fetchPagineUtenti.data.pages){
-      setCategorieCurrentPage(1);
+    if(currentPage > (fetchPagineUtenti.data ? fetchPagineUtenti.data.pages : 0)){
+      setCurrentPage(1);
     }
     fetchUtenti.mutate(dud, utenzeServ.getUtentiOrdinatiPer);
   };

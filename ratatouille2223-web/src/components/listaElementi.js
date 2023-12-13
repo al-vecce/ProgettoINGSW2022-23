@@ -111,7 +111,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                     </Table.Cell>
             </Table.Row>
             {!elementoDetailsVisibilities[name] ? <Table.Cell colSpan={6}><TableHorizontalBar/></Table.Cell> : null }
-            {elementoDetailsVisibilities[name] ? <ListaDettagliElementi key={name} secondaLingua={secondaLingua[name]} ingredienti={ingredients} allergeni={allergens} secondi_ingredienti={second_ingredients}/> : null}
+            {elementoDetailsVisibilities[name] ? <ListaDettagliElementi key={name} secondaLingua={secondaLingua[name]} ingredienti={ingredients} allergeni={allergens} secondi_ingredienti={second_ingredients} openfoodfacts={openfoodfacts}/> : null}
             </React.Fragment>
         )) : 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">

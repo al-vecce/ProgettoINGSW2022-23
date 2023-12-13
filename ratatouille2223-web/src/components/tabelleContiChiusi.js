@@ -79,7 +79,7 @@ export default function TabelleContiChiusi() {
                 `${minData+"T"+oreMin+":"+minMin}`, 
                 `${maxData+"T"+oreMax+":"+minMax}`], 
                 contiServ.getNumberOfPagesFiltered);
-    if(contiCurrentPage > fetchPagina.data){
+    if(contiCurrentPage > (fetchPagina.data ? fetchPagina.data.pages : 0)){
       setContiCurrentPage(1);
     }
     !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], 

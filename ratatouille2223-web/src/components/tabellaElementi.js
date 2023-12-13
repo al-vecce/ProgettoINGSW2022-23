@@ -56,8 +56,8 @@ export default function TabellaElementi({name}) {
   
   const useUpdateData = () =>{
     fetchPagineElementi.mutate([name], elementiServ.getNumberOfPagesElementi);
-    if(page > fetchPagineElementi.data.pages){
-      setCategorieCurrentPage(1);
+    if(page > (fetchPagineElementi.data ? fetchPagineElementi.data.pages : 0)){
+      setPage(1);
     }
     fetchElementi.mutate({name , page}, elementiServ.getElementiCategoriaOrdinatiPerNome);
   }

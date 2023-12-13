@@ -22,8 +22,10 @@ export default function ModificaElementoSecondaLingua({ oldNomeElemento, oldIngr
     counter = 0;
   }
   const removeIngredientClick = ()=>{
-    if(elementsRowCounter-1 >= 0)
-    {setElemRowCounter(elementsRowCounter-1);}
+    if (elementsRowCounter - 1 >= 0) { 
+      setElemRowCounter(elementsRowCounter - 1);
+      delete ingredienti[counter]; 
+    }
   }
 
   const handleIngredienteInput = (e) => {
@@ -107,7 +109,7 @@ export default function ModificaElementoSecondaLingua({ oldNomeElemento, oldIngr
               </div>
             </div>
           </Modal.Body>
-          <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
+          <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center items-center justify-center">
             <div className="flex justify-center p-2">
               <Button onClick={onClickConferma} color='success'>Conferma</Button>
             </div>

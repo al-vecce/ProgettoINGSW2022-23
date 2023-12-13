@@ -5,7 +5,7 @@ import ButtonAllergen from './buttons/buttonAllergen';
 import TableHorizontalBar from './tableHorizontalBar';
 
 
-export default function ListaDettagliElementi({key, secondaLingua, ingredienti, allergeni, secondi_ingredienti, updateAction}) {
+export default function ListaDettagliElementi({key, secondaLingua, ingredienti, allergeni, secondi_ingredienti, openfoodfacts, updateAction}) {
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     const [ ingredientsNumber, setIngredientsNumber] = useState(0);
 
@@ -73,7 +73,8 @@ export default function ListaDettagliElementi({key, secondaLingua, ingredienti, 
                 </Table.Cell>
                 <Table.Cell colSpan={2}>
                     <div className='flex flex-wrap gap-2'>
-                        {splitAllergens(allergeni)}
+                        {openfoodfacts && splitAllergens(allergeni)}
+                        {!openfoodfacts && splitString(allergeni)}
                     </div>
                 </Table.Cell>
             </Table.Row>
