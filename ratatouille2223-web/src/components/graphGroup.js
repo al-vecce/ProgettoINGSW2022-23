@@ -229,7 +229,7 @@ export default function GraphGroup() {
     };
 
     const dud = "bread";
-    const statServ = new StatisticsService(userData.token);
+    const statServ = new StatisticsService(userData ? userData.token : "");
     const fetchConti = useSWR([searchScope, searchCategory,
         `${minData + "T00:00:00"}`,
         `${maxData + "T23:59:59"}`],
