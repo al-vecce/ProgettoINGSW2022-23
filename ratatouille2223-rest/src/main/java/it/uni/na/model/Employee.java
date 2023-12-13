@@ -2,6 +2,7 @@ package it.uni.na.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import it.uni.na.constats.AccountEnum;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,9 @@ import java.util.List;
 
 @Entity
 public class Employee extends PanacheEntityBase {
+
+    public static final int PAGES = 10;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Employee_SEQ")
     @SequenceGenerator(name = "Employee_SEQ")
@@ -122,11 +126,11 @@ public class Employee extends PanacheEntityBase {
     }
     @Transactional
     public static List<Employee> findAllEmployeesOrderedBy(Integer page, String order) {
-        return Employee.find("SELECT e FROM Employee e ORDER BY ?1", order).page(Page.of(page,10)).list();
+        return Employee.find("SELECT e FROM Employee e", Sort.by(order)).page(Page.of(page,PAGES)).list();
     }
     @Transactional
     public static Integer findEmployeesPages() {
-        return Employee.find("SELECT e FROM Employee e").page(Page.ofSize(10)).pageCount();
+        return Employee.find("SELECT e FROM Employee e").page(Page.ofSize(PAGES)).pageCount();
     }
     @Transactional
     public static Boolean isFirstLogin(String username) {

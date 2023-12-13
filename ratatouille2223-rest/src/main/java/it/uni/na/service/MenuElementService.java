@@ -38,7 +38,7 @@ public class MenuElementService {
             case ModeConstants.BYPRICE:
                 return_list = MenuElement.findAllElementsOrderedBy(c, page, "price");
                 break;
-            case ModeConstants.BYCLOSINGDATE:
+            case ModeConstants.BYLASTMODIFIED:
                 return_list = MenuElement.findAllElementsOrderedBy(c, page, "last_modified");
                 break;
             default:
