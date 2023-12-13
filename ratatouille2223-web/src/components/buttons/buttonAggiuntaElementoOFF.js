@@ -7,6 +7,8 @@ import React from 'react';
 import elementiService from '@/services/elementiService';
 import CurrencyInput from 'react-currency-input-field';
 import { openFoodFactsService } from '@/services/openFoodFactsService';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 export default function AggiungiElementoOFF({categoria, refreshAction}) {
   const [ openModal, setOpenModal ] = useState(false);
@@ -18,6 +20,9 @@ export default function AggiungiElementoOFF({categoria, refreshAction}) {
   const [ allergens, setAllergens ] = useState(",")
   const [ ingredienti, setIngrediente ] = useState(",");
   const [ errorProdottoNonRiconosciuto, setErrorProdottoNonRiconosciuto ] = useState(false);
+  const userData = useCurrentUserData();
+
+  const elementiServ = new elementiService(userData ? userData.token : "");
 
   function onCloseModal() {
     setOpenModal(false);
@@ -78,7 +83,6 @@ export default function AggiungiElementoOFF({categoria, refreshAction}) {
 
   async function onSubmit(){
     if(priority && prezzo){
-      const elementiServ = new elementiService();
       let ingredientiString = ingredienti;
       let allergeniString = allergens;
 

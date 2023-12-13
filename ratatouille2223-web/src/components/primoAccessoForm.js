@@ -48,18 +48,18 @@ export default function PrimoAccessoForm(){
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [ errorCredenzialiErrate, setErrorCredenzialiErrate ] = useState(false);
+  const [ errorCriterioCredenzialeSbagliato, setErrorCriterioCredenzialiSbagliato ] = useState(false);
   const cookieStore = useCookies();
   const { logout } = useLogout();
 
   const handlePasswordConfirmationChange = (e) => setPasswordConfirmation(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
-
+  const userData = useCurrentUserData();
   const router = useRouter();
 
   async function onSubmit(){
-    if(password && confermaPassword){
-      const logger = new loginService();
-      const userData = useCurrentUserData();
+    if(password != "" && passwordConfirmation != "" && !(password === passwordConfirmation)){
+      const logger = new loginService(userData.token);
       if(userData.currentUser && userData.currentUserRole){
         const data = await logger.postPrimoAccessoCambioPassword(userData.currentUser,password,passwordConfirmation);
         if(data){
@@ -68,7 +68,8 @@ export default function PrimoAccessoForm(){
             router.push("/");
           }
           else{
-            setErrorCredenzialiErrate(true);
+            setErrorCredenzialiErrate(false);
+            setErrorCriterioCredenzialiSbagliato(true);
           }
         }
         else{
@@ -79,11 +80,17 @@ export default function PrimoAccessoForm(){
         router.push("/");
       }
     }
+    else{
+      setErrorCredenzialiErrate(true);
+      setErrorCriterioCredenzialiSbagliato(false);
+
+    }
   }
 
   return (
     <div className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-      {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Password non uguali!" /> : null}
+      {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Password non uguali o vuote!" /> : null}
+      {errorCriterioCredenzialeSbagliato ? <Label htmlFor="error" color={"failure"} value="La nuova password deve contenere:\n-Un carattere speciale(esempio: '!' '$')\n-Una lettere maiuscola\n-Un numero" /> : null}
       <div className="inline-flex gap-2" role="group">
         <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required />
       </div>

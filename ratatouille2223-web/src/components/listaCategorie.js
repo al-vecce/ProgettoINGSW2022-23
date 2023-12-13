@@ -7,17 +7,21 @@ import ButtonModificaCategoria from './buttons/buttonModificaCategoria';
 import ButtonConfirmElimina from './buttons/buttonConferma';
 import { categorieService } from '@/services/categorieService';
 import { useRouter } from 'next/navigation';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 import { FaTrashAlt  } from "react-icons/fa";
 
 export default function listaCategorie({alertsControl, data, error, isLoading, updateAction}) {
     const router = useRouter();
+    const userData = useCurrentUserData();
+    const categorieServ = new categorieService(userData ? userData.token : "");
+
     function goToElement(){
         router
     }
     async function deleteCategoria(args){
         const nome = args;
-        const categorieServ = new categorieService();
         const res = await categorieServ.deleteCategoriaPerNome(nome);
         if(res){
             (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);

@@ -3,13 +3,14 @@ import React from 'react';
 import { useElementiConto } from '@/hooks/useElementiConto';
 import { Table } from 'flowbite-react';
 import useSWR from 'swr';
-
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import { FaSortDown } from "react-icons/fa";
 import { contiChiusiService } from '@/services/contiChiusiService';
 
 export default function TabellaElementiContoChiuso({conto}) {
 
-    const elementiContoServ = new contiChiusiService();
+    const userData = useCurrentUserData();
+    const elementiContoServ = new contiChiusiService(userData ? userData.token : "");
     let c;
     if(conto){
         c = conto;

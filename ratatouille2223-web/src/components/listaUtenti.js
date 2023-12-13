@@ -7,10 +7,13 @@ import ButtonConfirmElimina from './buttons/buttonConferma';
 import { useRouter } from 'next/navigation';
 import { utenzeService } from '@/services/utenzeService';
 import { FaUserTimes } from "react-icons/fa";
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 export default function ListaUtenti({alertsControl, data, error, isLoading, updateAction}) {
     const router = useRouter();
-    const utenzeServ = new utenzeService();
+    const userData = useCurrentUserData();
+    const utenzeServ = new utenzeService(userData ? userData.token : "");
     async function deleteUtente(args){
         const username = args;
         const res = await utenzeServ.deleteUtentePerUsername(username);

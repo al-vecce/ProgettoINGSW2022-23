@@ -1,8 +1,10 @@
 import { elementiContoService } from "@/services/elementiContoService";
 import useSWR from "swr";
+import useCurrentUserData from "./useCurrentUserData";
 
 export const useElementiConto = (conto) =>{
-    const elementiContoServ = new elementiContoService();
+    const userData = useCurrentUserData();
+    const elementiContoServ = new elementiContoService(userData ? userData.token : "");
     let c;
     if(conto){
         c = conto;

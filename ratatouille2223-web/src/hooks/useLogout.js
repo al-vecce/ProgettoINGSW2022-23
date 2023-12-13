@@ -8,6 +8,7 @@ export default function useLogout() {
         cookieStore.remove("currentUser");
         cookieStore.remove("currentUserRole");
         cookieStore.remove("token");
+        cookieStore.remove("firstaccess");
     }
 
     return { logout };

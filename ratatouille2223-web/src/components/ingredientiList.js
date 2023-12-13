@@ -9,13 +9,11 @@ import ButtonMore from './buttons/buttonMore';
 import Confirm from './buttons/buttonConferma';
 import {contiAttiviService, getContiAttiviOrdinatiPerTavolo} from '@/services/contiAttiviService';
 import { useState } from 'react';
-import TabellaElementi from './tabellaElementiConto';
-import { useElementiConto } from '@/hooks/useElementiConto';
-import { Accordion } from 'flowbite-react';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 export default function ListaIngredienti({elemNumber}) {
-
-    const contiServ = new contiAttiviService();
+    const userData = useCurrentUserData();
+    const contiServ = new contiAttiviService(userData ? userData.token : "");
     const [ contoDetailsVisibility, setContoDetailsVisibility] = useState(false);
 
     const changeContoDetailsVisibility = () =>{setContoDetailsVisibility(contoDetailsVisibility => !contoDetailsVisibility)}

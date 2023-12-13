@@ -5,13 +5,15 @@ import { FaPlus } from "react-icons/fa";
 import { useState } from 'react';
 import { utenzeService } from '@/services/utenzeService';
 import { Select } from 'flowbite-react';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 export default function buttonAddUser({alertsControl, refreshAction}) {
-  const utenzeServ = new utenzeService();
   const [openModal, setOpenModal] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [ruolo, setRuolo] = useState('ADDETTOSALA');
+  const userData = useCurrentUserData();
+  const utenzeServ = new utenzeService(userData ? userData.token : "");
   function onCloseModal() {
     setOpenModal(false);
     setUsername('');

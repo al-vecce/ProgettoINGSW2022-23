@@ -5,10 +5,13 @@ import { FaEdit  } from "react-icons/fa";
 import { useState } from 'react';
 import { categorieService } from '@/services/categorieService';
 import useSWR from 'swr';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 
 export default function ModificaCategoria({nome, alertsControl, refreshAction}) {
-  const categorieServ = new categorieService();
+  const userData = useCurrentUserData();
+  const categorieServ = new categorieService(userData ? userData.token : "");
   const [openModal, setOpenModal] = useState(false);
   const [NomeCategoria, setNomeCategoria] = (nome ? useState(nome) : useState(''));
   function onCloseModal() {

@@ -5,12 +5,15 @@ import { FaUserEdit } from "react-icons/fa";
 import { useState } from 'react';
 import { utenzeService } from '@/services/utenzeService';
 import { Select } from 'flowbite-react';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 export default function buttonModificaUtente({alertsControl, refreshAction, old_username, old_ruolo}) {
-  const utenzeServ = new utenzeService();
   const [openModal, setOpenModal] = useState(false);
+  const userData = useCurrentUserData();
   const [username, setUsername] = useState(old_username);
   const [ruolo, setRuolo] = useState(old_ruolo);
+  const utenzeServ = new utenzeService(userData ? userData.token : "");
 
   function onCloseModal() {
     setOpenModal(false);

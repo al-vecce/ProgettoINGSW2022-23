@@ -1,23 +1,31 @@
 
 export default class elementiService{
+
+    constructor(token){
+        this.token = token;
+    }
+
     getElementiCategoriaOrdinatiPerNome = ([nome, ordinamento, elementiCurrentPage]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ nome +"?mode="+ ordinamento +"&page=" + elementiCurrentPage, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         }
         ).then((res) => res.json());
     getNumberOfPagesElementi = ([nome]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+nome+"/pages", {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         }
         ).then((res) => res.json());
     deleteElementoPerNome = (nomeCategoria, nomeElemento) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/" + nomeCategoria + "/" + nomeElemento, {
         method: "DELETE",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
 
         },
         }
@@ -25,7 +33,8 @@ export default class elementiService{
     putElementoInCategoria = ([categoria, nomeNuovoElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ nomeNuovoElemento, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify({
             price: prezzo,
@@ -42,7 +51,8 @@ export default class elementiService{
     putElementoInCategoriaConOFF = ([categoria, nomeNuovoElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients, openfoodfacts_identifier]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ nomeNuovoElemento, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify({
             price: prezzo,
@@ -59,7 +69,8 @@ export default class elementiService{
     postElementoInCategoria = ([categoria, oldNomeElemento, nuovoNomeElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ oldNomeElemento, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify({
             name: nuovoNomeElemento,
@@ -77,7 +88,8 @@ export default class elementiService{
     postElementoInCategoriaConOFF = ([categoria, nomeNuovoElemento, prezzo, ingredienti, allergeni, priority, second_name, second_ingredients, openfoodfacts_identifier]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ categoria + "/"+ nomeNuovoElemento, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify({
             price: prezzo,

@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import elementiService from '@/services/elementiService';
 import ListaElementi from './listaElementi';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
@@ -46,7 +48,9 @@ export default function TabellaElementi({name}) {
   const [ ordinamento, setOrdinamento ] = useState("BYPRIORITY");
   const alertsControl = {setAlertSuccessState};
   const router = useRouter();
-  const elementiServ = new elementiService();
+  const userData = useCurrentUserData();
+
+  const elementiServ = new elementiService(userData ? userData.token : "");
   const fetchElementi = useSWR([name, ordinamento, (page-1).toString()], elementiServ.getElementiCategoriaOrdinatiPerNome);
   const fetchPagineElementi = useSWR([name], elementiServ.getNumberOfPagesElementi);
   

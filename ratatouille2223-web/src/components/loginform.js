@@ -7,6 +7,7 @@ import useLogin from '@/hooks/useLogin';
 
 import { FaLock, FaUser } from "react-icons/fa";
 import { Flowbite } from 'flowbite-react';
+import { useCookies } from 'next-client-cookies';
 const customButtonTheme = {
   base: "rounded-none",
   button: {
@@ -46,7 +47,7 @@ export default function LoginForm(){
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [ errorCredenzialiErrate, setErrorCredenzialiErrate ] = useState(false);
-
+  const cookieStore = useCookies();
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
@@ -61,8 +62,10 @@ export default function LoginForm(){
       login(username,password)
         .then((data)=>{
           if(data.result === true){
-            if(data.firstLogin === true)
+            cookieStore.set("firstaccess", data.firstLogin, "SameSite=Strict");
+            if(data.firstLogin === "true"){
               router.push("/PrimoAccesso");
+            }
             else
               router.push("/Homepage");
           }

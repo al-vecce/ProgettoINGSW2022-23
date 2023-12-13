@@ -10,6 +10,8 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { utenzeService } from '@/services/utenzeService';
 import Pager from './pager';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
@@ -42,7 +44,8 @@ export default function TabellaUtenze() {
   const [currentPage, setCurrentPage] = useState(1);
   const alertsControl = {setAlertSuccessState};
   const router = useRouter();
-  const utenzeServ = new utenzeService();
+  const userData = useCurrentUserData();
+  const utenzeServ = new utenzeService(userData ? userData.token : "");
   const dud = "Tf2Bread.jpg";
 
   const [ ordinamento, setOrdinamento ] = useState("BYUSERNAME");
@@ -50,7 +53,6 @@ export default function TabellaUtenze() {
   const fetchUtenti = useSWR([(currentPage-1).toString(), ordinamento], utenzeServ.getUtentiOrdinatiPer)
   const fetchPagineUtenti = useSWR(dud, utenzeServ.getNumberOfPages)
 
-  console.log(fetchPagineUtenti.data)
 
   const useUpdateData = () =>{
     fetchPagineUtenti.mutate(dud, utenzeServ.getNumberOfPages);
