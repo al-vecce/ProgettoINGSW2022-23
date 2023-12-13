@@ -6,15 +6,17 @@ import { FaPlus, FaEdit } from "react-icons/fa";
 import React from 'react';
 import elementiService from '@/services/elementiService';
 import CurrencyInput from 'react-currency-input-field';
-import ButtonAllergen from './buttonAllergen';
-import { openFoodFactsService } from '@/services/openFoodFactsService';
-import { toast, ToastContainer } from 'react-toastify';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 export default function ModificaElementoOFF({categoria, refreshAction, codiceElemento, oldPrice, ingredienti, allergens, nomeElemento, oldPriority}) {
   const [ openModal, setOpenModal ] = useState(false);
   const [ prezzo, setPrezzo ] = useState(0);
   const [ priority, setPriority ] = useState(1);
   const [ errorProdottoNonRiconosciuto, setErrorProdottoNonRiconosciuto ] = useState(false);
+  const userData = useCurrentUserData();
+
+  const elementiServ = new elementiService(userData ? userData.token : "");
 
   function onCloseModal() {
     setOpenModal(false);
@@ -25,7 +27,6 @@ export default function ModificaElementoOFF({categoria, refreshAction, codiceEle
 
   async function onSubmit(){
     if(priority && prezzo){
-      const elementiServ = new elementiService();
       let ingredientiString = ingredienti;
       let allergeniString = allergens;
   

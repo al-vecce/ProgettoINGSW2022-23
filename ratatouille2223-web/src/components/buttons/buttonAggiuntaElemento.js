@@ -4,9 +4,7 @@ import { useState } from 'react';
 import SelettoreAllergeni from '../selettoreAllergeni';
 import { FaPlus, FaMinus } from "react-icons/fa";
 import ModificaElementoSecondaLingua from '../modificaElementoSecondaLingua';
-import { FaEgg } from "react-icons/fa";
-import { FaCow, FaFishFins, FaShrimp, FaXmark   } from "react-icons/fa6";
-import { LuWheat } from "react-icons/lu";
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import React from 'react';
 import elementiService from '@/services/elementiService';
 import CurrencyInput from 'react-currency-input-field';
@@ -25,6 +23,8 @@ export default function AggiungiElemento({categoria, refreshAction}) {
   let counter = 0;
   const [ ingredientiSL, setIngredienteSL ] = useState({1:""});
   const [ nomeElementoSL, setNomeElementoSL ] = useState('');
+  const userData = useCurrentUserData();
+  const elementiServ = new elementiService(userData ? userData.token : "");
 
   function onCloseModal() {
     setOpenModal(false);
@@ -57,7 +57,6 @@ export default function AggiungiElemento({categoria, refreshAction}) {
 
   async function onSubmit(){
     if(nomeElemento != '' && prezzo && priority){
-      const elementiServ = new elementiService();
       let ingredientiString = "";
       let ingredientiSLString = "";
       let allergeniString = "";

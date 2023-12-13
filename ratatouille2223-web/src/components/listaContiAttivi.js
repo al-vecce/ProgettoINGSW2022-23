@@ -11,14 +11,16 @@ import TabellaElementi from './tabellaElementiConto';
 import { contiAttiviService } from '@/services/contiAttiviService';
 import useSWR from 'swr';
 import { ToastContainer, toast } from 'react-toastify';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ListaContiAttivi({data , error, isLoading, refreshAction}) {
 
     const [ contoDetailsVisibilities, setContoVisibility] = useState({});
+    const userData = useCurrentUserData();
+    const contoServ = new contiAttiviService(userData ? userData.token : "");
 
     async function chiudiConto(contoID){
-      const contoServ = new contiAttiviService();
       const data = await contoServ.postChiudiContoPerID(contoID);
       if(data && data.result === "true"){
         toast("Chiusura avvenuta con successo.");

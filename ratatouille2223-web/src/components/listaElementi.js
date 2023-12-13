@@ -12,6 +12,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import TableHorizontalBar from './tableHorizontalBar';
 import ButtonModificaElemento from './buttons/buttonModificaElemento';
 import ButtonModificaElementoOFF from './buttons/buttonModificaElementoOFF';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 import { FaTrashAlt  } from "react-icons/fa";
 
@@ -19,10 +21,12 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
     const [ secondaLingua, setSecondaLingua ] = useState({});
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
     const [ elementoPriority, setElementoPriority] = useState({});
-    
+    const userData = useCurrentUserData();
+
+    const elementiServ = new elementiService(userData ? userData.token : "");
+
     async function deleteElemento(args){
         const nomeElemento = args;
-        const elementiServ = new elementiService();
         const res = await elementiServ.deleteElementoPerNome(categoria,nomeElemento);
         if(res){
             (res.result == "true" ? toast("Eliminazione avvenuta con successo!") : null);

@@ -12,6 +12,8 @@ import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import ButtonAggiungiCategoria from './buttons/buttonAggiungiCategoria';
 import ListaCategorie from './listaCategorie';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
@@ -44,7 +46,8 @@ export default function TabelleCategorie() {
   const [alertSuccessState, setAlertSuccessState] = useState(false);
   const alertsControl = {setAlertSuccessState};
   const router = useRouter();
-  const categorieServ = new categorieService();
+  const userData = useCurrentUserData();
+  const categorieServ = new categorieService(userData ? userData.token : "");
   const dud = "Tf2Bread.jpg";
 
   const [ categorieCurrentPage, setCategorieCurrentPage ] = useState(1);

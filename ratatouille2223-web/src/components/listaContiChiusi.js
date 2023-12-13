@@ -8,19 +8,21 @@ import ButtonMore from './buttons/buttonMore';
 import Confirm from './buttons/buttonConferma';
 import { useState } from 'react';
 import TabellaElementi from './tabellaElementiContoChiuso';
-import { contiAttiviService } from '@/services/contiAttiviService';
 import { FaTrashAlt } from "react-icons/fa";
 import useSWR from 'swr';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { contiChiusiService } from '@/services/contiChiusiService';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+
 
 export default function ListaContiChiusi({data , error, isLoading, refreshAction}) {
 
     const [ contoDetailsVisibilities, setContoVisibility] = useState({});
+    const userData = useCurrentUserData();
+    const contoServ = new contiChiusiService(userData ? userData.token : "");
 
     async function eliminaConto(contoID){
-      const contoServ = new contiChiusiService();
       const data = await contoServ.deleteClosedCheckById(contoID);
       if(data && data.result === "true"){
         toast("Eliminazione avvenuta con successo");

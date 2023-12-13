@@ -4,9 +4,7 @@ import { useState } from 'react';
 import SelettoreAllergeni from '../selettoreAllergeni';
 import { FaPlus, FaEdit } from "react-icons/fa";
 import ModificaElementoSecondaLingua from '../modificaElementoSecondaLingua';
-import { FaEgg } from "react-icons/fa";
-import { FaCow, FaFishFins, FaShrimp  } from "react-icons/fa6";
-import { LuWheat } from "react-icons/lu";
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import React from 'react';
 import elementiService from '@/services/elementiService';
 import CurrencyInput from 'react-currency-input-field';
@@ -47,6 +45,9 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
   const [ ingredientiSL, setIngredienteSL ] = useState(parseIngredients(oldIngredientiSL));
   const [ nomeElementoSL, setNomeElementoSL ] = useState(oldNomeSL);
   let counter = 0;
+  const userData = useCurrentUserData();
+
+  const elementiServ = new elementiService(userData ? userData.token : "");
 
   function onCloseModal() {
     setAllergens(parseAllergens(oldAllergens));
@@ -72,7 +73,6 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
 
   async function onSubmit(){
     if(nomeElemento != '' && prezzo && priority){
-      const elementiServ = new elementiService();
       let ingredientiString = "";
       let ingredientiSLString = "";
       let allergeniString = "";

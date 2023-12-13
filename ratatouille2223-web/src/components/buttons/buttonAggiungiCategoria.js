@@ -5,10 +5,11 @@ import { FaPlus } from "react-icons/fa";
 import { useState } from 'react';
 import { categorieService } from '@/services/categorieService';
 import useSWR from 'swr';
-
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 export default function buttonAggiungiCategoria({alertsControl, refreshAction}) {
-  const categorieServ = new categorieService();
+  const userData = useCurrentUserData();
+  const categorieServ = new categorieService(userData ? userData.token : "");
   const [openModal, setOpenModal] = useState(false);
   const [NomeCategoria, setNomeCategoria] = useState('');
   function onCloseModal() {

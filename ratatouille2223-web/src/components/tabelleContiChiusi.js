@@ -3,15 +3,13 @@ import useSWR from 'swr'
 import React from 'react';
 import { Table } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import FilterConti from './filterConti';
-import { contiAttiviService } from '@/services/contiAttiviService';
 import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import { useState } from 'react';
 import ListaContiChiusi from './listaContiChiusi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { FaSortDown } from "react-icons/fa";
 import { contiChiusiService } from '@/services/contiChiusiService';
 import FilterContiChiusi from './filterContiChiusi';
@@ -62,7 +60,8 @@ export default function TabelleContiChiusi() {
   };
 
   const dud = "bread";
-  const contiServ = new contiChiusiService();
+  const userData = useCurrentUserData();
+  const contiServ = new contiChiusiService(userData ? userData.token : "");
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPages) : 
                                 useSWR([
                                 `${minData+"T"+oreMin+":"+minMin}`, 

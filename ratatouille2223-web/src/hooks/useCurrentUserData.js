@@ -11,9 +11,9 @@ export default function useCurrentUserData() {
         const token = cookieStore.get("token");
         if(currentUser && currentUserRole){
             setUserData({
-                currentUser: JSON.parse(currentUser),
-                currentUserRole: JSON.parse(currentUserRole),
-                token: JSON.parse(token)
+                currentUser: currentUser,
+                currentUserRole: currentUserRole,
+                token: token
             })
         }
     }, []);

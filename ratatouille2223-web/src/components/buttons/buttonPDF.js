@@ -5,10 +5,11 @@ import { FaRegFilePdf } from "react-icons/fa6";
 import { PDFDownloadLink, Document,View,Text,styles, Page } from '@react-pdf/renderer';
 import useSWR from 'swr';
 import { elementiContoService } from '@/services/elementiContoService';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 export default function ButtonPDF({checkID, table, dataAperturaConto, dataChisuraConto, totale}) {
-
-  const elemServ = new elementiContoService();
+  const userData = useCurrentUserData()
+  const elemServ = new elementiContoService(userData ? userData.token : "");
   const {data , isLoading, error} = useSWR(checkID, elemServ.getElementiContoOrdinatiPerID,);
   const today = new Date();
   const getDate = ()=>{

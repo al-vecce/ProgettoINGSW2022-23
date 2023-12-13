@@ -11,7 +11,7 @@ import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
   root: {
@@ -65,7 +65,8 @@ export default function TabelleConti() {
   };
 
   const dud = "bread";
-  const contiServ = new contiAttiviService();
+  const userData = useCurrentUserData();
+  const contiServ = new contiAttiviService(userData ? userData.token : "");
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
                                 useSWR([ 
                                 `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 

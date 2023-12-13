@@ -12,6 +12,7 @@ import { StatisticsService } from '@/services/statisticsService';
 import { FaSearch } from "react-icons/fa";
 
 import ReactApexChart from 'react-apexcharts';
+import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 const customTheme = {
     popup: {
@@ -61,6 +62,7 @@ export default function GraphGroup() {
     const [searchScope, setSearchScope] = useState("DAILY");
     const [selectorCategory, setSelectorCategory] = useState("Incasso Complessivo");
     const [selectorScope, setSelectorScope] = useState("Giornaliero");
+    const userData = useCurrentUserData();
 
     const refreshLowerBound = () => {
         let year = lowerBound.getFullYear().toString();
@@ -227,7 +229,7 @@ export default function GraphGroup() {
     };
 
     const dud = "bread";
-    const statServ = new StatisticsService();
+    const statServ = new StatisticsService(userData.token);
     const fetchConti = useSWR([searchScope, searchCategory,
         `${minData + "T00:00:00"}`,
         `${maxData + "T23:59:59"}`],

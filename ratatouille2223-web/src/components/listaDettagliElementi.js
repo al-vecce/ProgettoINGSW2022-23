@@ -1,19 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'flowbite-react';
-import { Button } from 'flowbite-react';
-import ButtonPDF from './buttons/buttonPDF';
-import ButtonMore from './buttons/buttonMore';
-import ButtonSecondaLingua from './buttons/buttonSecondaLingua';
-import ButtonModificaElemento from './buttons/buttonModificaElemento';
-import ButtonConfirmElimina from './buttons/buttonConferma';
-import { IoTrashOutline } from "react-icons/io5";
-import elementiService from '@/services/elementiService';
 import ButtonAllergen from './buttons/buttonAllergen';
-
 import TableHorizontalBar from './tableHorizontalBar';
 
-import { FaTrashAlt  } from "react-icons/fa";
 
 export default function ListaDettagliElementi({key, secondaLingua, ingredienti, allergeni, secondi_ingredienti, updateAction}) {
     const [ elementoDetailsVisibilities, setElementoVisibility] = useState({});
