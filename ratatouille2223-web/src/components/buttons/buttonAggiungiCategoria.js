@@ -16,15 +16,17 @@ export default function buttonAggiungiCategoria({alertsControl, refreshAction}) 
     setNomeCategoria('');
   }
   async function submitChange(event){
-    const res = await categorieServ.putCategoriaPerNome(NomeCategoria);
-    if(res){
-      (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
-    }else{
-        //errore
+    if(NomeCategoria != ''){
+      const res = await categorieServ.putCategoriaPerNome(NomeCategoria);
+      if(res){
+        (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
+      }else{
+          //errore
+      }
+      refreshAction();
+      setNomeCategoria('');
+      setOpenModal(false);
     }
-    refreshAction();
-    setNomeCategoria('');
-    setOpenModal(false);
   }
 
   return (

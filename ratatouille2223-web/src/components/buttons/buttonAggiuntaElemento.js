@@ -51,43 +51,45 @@ export default function AggiungiElemento({categoria, refreshAction}) {
   }
 
   async function onSubmit(){
-    const elementiServ = new elementiService();
-    let ingredientiString = "";
-    let ingredientiSLString = "";
-    let allergeniString = "";
-    allergeniString = allergeniString.concat(
-    (allergens.LATTE ? "LATTE,": ""),
-    (allergens.PESCE ? "PESCE,": ""),
-    (allergens.CROSTACEI ? "CROSTACEI," : ""),
-    (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
-    (allergens.LUPINI ? "LUPINI," : ""),
-    (allergens.GLUTINE ? "GLUTINE," : ""),
-    (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
-    (allergens.SEDANO ? "SEDANO," : ""),
-    (allergens.SOIA ? "SOIA," : ""),
-    (allergens.UOVA ? "UOVA," : "")
-    );
-    allergeniString === "" ? allergeniString="," : null;
+    if(nomeElemento != '' && prezzo && priority){
+      const elementiServ = new elementiService();
+      let ingredientiString = "";
+      let ingredientiSLString = "";
+      let allergeniString = "";
+      allergeniString = allergeniString.concat(
+      (allergens.LATTE ? "LATTE,": ""),
+      (allergens.PESCE ? "PESCE,": ""),
+      (allergens.CROSTACEI ? "CROSTACEI," : ""),
+      (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
+      (allergens.LUPINI ? "LUPINI," : ""),
+      (allergens.GLUTINE ? "GLUTINE," : ""),
+      (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
+      (allergens.SEDANO ? "SEDANO," : ""),
+      (allergens.SOIA ? "SOIA," : ""),
+      (allergens.UOVA ? "UOVA," : "")
+      );
+      allergeniString === "" ? allergeniString="," : null;
 
-    Object.keys(ingredienti).forEach(([key,index])=>{
-      ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
-    });
-    Object.keys(ingredientiSL).forEach(([key,index])=>{
-      ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
-    });
-    ingredientiString === "" ? ingredientiString="," : null;
-    ingredientiSLString === "" ? ingredientiSLString="," : null;
+      Object.keys(ingredienti).forEach(([key,index])=>{
+        ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
+      });
+      Object.keys(ingredientiSL).forEach(([key,index])=>{
+        ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
+      });
+      ingredientiString === "" ? ingredientiString="," : null;
+      ingredientiSLString === "" ? ingredientiSLString="," : null;
 
-    const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
-    setAllergens({
-      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
-    });
-    setIngrediente({});
-    setElemRowCounter(0);
-    setNomeElemento('');
-    counter = 0;
-    setOpenModal(false);
-    refreshAction();
+      const data = await elementiServ.putElementoInCategoria([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
+      setAllergens({
+        GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+      });
+      setIngrediente({});
+      setElemRowCounter(0);
+      setNomeElemento('');
+      counter = 0;
+      setOpenModal(false);
+      refreshAction();
+    }
   }
 
   return (
@@ -168,9 +170,7 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                 />
             </div>
           </div>
-        </Modal.Body>
-        <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
-            <div>
+          <div className='flex-wrap '>
             <Label htmlFor="Ingredienti" value="Ingredienti:" />
             <Button color='dark' size="xs" pill onClick={addIngredientClick}><FaPlus/></Button>
               {Array.from({length: elementsRowCounter}).map(() =>{
@@ -190,6 +190,8 @@ export default function AggiungiElemento({categoria, refreshAction}) {
                 );
               })}
             </div>
+        </Modal.Body>
+        <Modal.Footer className="font-medium text-gray-900 dark:text-white text-center">
         </Modal.Footer>
         <div className="flex justify-center p-2">
               <Button onClick={onSubmit} color='success'>Conferma</Button>

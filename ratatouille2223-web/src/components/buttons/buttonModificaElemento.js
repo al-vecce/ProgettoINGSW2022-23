@@ -71,46 +71,48 @@ export default function ModificaElemento({categoria, refreshAction, oldAllergens
   }
 
   async function onSubmit(){
-    const elementiServ = new elementiService();
-    let ingredientiString = "";
-    let ingredientiSLString = "";
-    let allergeniString = "";
-    allergeniString = allergeniString.concat(
-    (allergens.LATTE ? "LATTE,": ""),
-    (allergens.PESCE ? "PESCE,": ""),
-    (allergens.CROSTACEI ? "CROSTACEI," : ""),
-    (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
-    (allergens.LUPINI ? "LUPINI," : ""),
-    (allergens.GLUTINE ? "GLUTINE," : ""),
-    (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
-    (allergens.SEDANO ? "SEDANO," : ""),
-    (allergens.SOIA ? "SOIA," : ""),
-    (allergens.UOVA ? "UOVA," : "")
-    );
-    allergeniString === "" ? allergeniString="," : null;
+    if(nomeElemento != '' && prezzo && priority){
+      const elementiServ = new elementiService();
+      let ingredientiString = "";
+      let ingredientiSLString = "";
+      let allergeniString = "";
+      allergeniString = allergeniString.concat(
+      (allergens.LATTE ? "LATTE,": ""),
+      (allergens.PESCE ? "PESCE,": ""),
+      (allergens.CROSTACEI ? "CROSTACEI," : ""),
+      (allergens.FRUTTAGUSCIO ? "FRUTTAGUSCIO," : ""),
+      (allergens.LUPINI ? "LUPINI," : ""),
+      (allergens.GLUTINE ? "GLUTINE," : ""),
+      (allergens.MOLLUSCHI ? "MOLLUSCHI," : ""),
+      (allergens.SEDANO ? "SEDANO," : ""),
+      (allergens.SOIA ? "SOIA," : ""),
+      (allergens.UOVA ? "UOVA," : "")
+      );
+      allergeniString === "" ? allergeniString="," : null;
 
-    Object.keys(ingredienti).forEach(([key,index])=>{
-      ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
-    });
-    Object.keys(ingredientiSL).forEach(([key,index])=>{
-      ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
-    });
-    ingredientiString === "" ? ingredientiString="," : null;
-    ingredientiSLString === "" ? ingredientiSLString="," : null;
+      Object.keys(ingredienti).forEach(([key,index])=>{
+        ingredientiString = (`${ingredientiString}${ingredienti[key]},`);
+      });
+      Object.keys(ingredientiSL).forEach(([key,index])=>{
+        ingredientiSLString = (`${ingredientiSLString}${ingredientiSL[key]},`);
+      });
+      ingredientiString === "" ? ingredientiString="," : null;
+      ingredientiSLString === "" ? ingredientiSLString="," : null;
 
-    ingredientiString = ingredientiString.replace(",,", ",");
-    ingredientiSLString = ingredientiSLString.replace(",,", ",");
+      ingredientiString = ingredientiString.replace(",,", ",");
+      ingredientiSLString = ingredientiSLString.replace(",,", ",");
 
-    const data = await elementiServ.postElementoInCategoria([categoria, oldName, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
-    setAllergens({
-      GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
-    });
-    setIngrediente({});
-    setElemRowCounter(0);
-    setNomeElemento('');
-    counter = 0;
-    setOpenModal(false);
-    refreshAction();
+      const data = await elementiServ.postElementoInCategoria([categoria, oldName, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElementoSL , ingredientiSLString ]);
+      setAllergens({
+        GLUTINE: false, LATTE:false, SOIA:false, UOVA:false, FRUTTAGUSCIO:false, PESCE:false, MOLLUSCHI:false, CROSTACEI:false, SEDANO:false, LUPINI:false
+      });
+      setIngrediente({});
+      setElemRowCounter(0);
+      setNomeElemento('');
+      counter = 0;
+      setOpenModal(false);
+      refreshAction();
+    }
   }
 
   return (

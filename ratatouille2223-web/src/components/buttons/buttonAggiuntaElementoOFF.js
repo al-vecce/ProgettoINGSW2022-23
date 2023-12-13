@@ -77,26 +77,28 @@ export default function AggiungiElementoOFF({categoria, refreshAction}) {
   }
 
   async function onSubmit(){
-    const elementiServ = new elementiService();
-    let ingredientiString = ingredienti;
-    let allergeniString = allergens;
+    if(priority && prezzo){
+      const elementiServ = new elementiService();
+      let ingredientiString = ingredienti;
+      let allergeniString = allergens;
 
-    allergeniString === "" ? allergeniString="," : null;
-    ingredientiString === "" ? ingredientiString="," : null;
+      allergeniString === "" ? allergeniString="," : null;
+      ingredientiString === "" ? ingredientiString="," : null;
 
 
 
-    const data = await elementiServ.putElementoInCategoriaConOFF([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElemento , ingredientiString, codiceElemento ]);
-    setIngrediente(",");
-    setAllergens(",");
-    setNomeElemento("");
-    setPrezzo();
-    setPriority(1);
-    setCodiceElemento();
-    setErrorProdottoNonRiconosciuto(false);
-    setOpenModal(false);
-    setOpenFrontModal(false);
-    refreshAction();
+      const data = await elementiServ.putElementoInCategoriaConOFF([categoria, nomeElemento, prezzo, ingredientiString, allergeniString, priority, nomeElemento , ingredientiString, codiceElemento ]);
+      setIngrediente(",");
+      setAllergens(",");
+      setNomeElemento("");
+      setPrezzo();
+      setPriority(1);
+      setCodiceElemento();
+      setErrorProdottoNonRiconosciuto(false);
+      setOpenModal(false);
+      setOpenFrontModal(false);
+      refreshAction();
+    }
   }
 
   return (
