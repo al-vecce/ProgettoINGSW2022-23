@@ -12,7 +12,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 @Path("/login/first-login")
-@RolesAllowed({"AMMINISTRATORE", "SUPERVISORE", "ADDETTOSALA"})
+//TODO @RolesAllowed({"AMMINISTRATORE", "SUPERVISORE", "ADDETTOSALA"})
 public class ChangePasswordResource {
 
     @Inject

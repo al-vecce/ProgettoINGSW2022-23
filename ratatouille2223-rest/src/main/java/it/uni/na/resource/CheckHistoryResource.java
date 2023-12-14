@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/history")
-@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
+//TODO @RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class CheckHistoryResource {
 
     @Inject

@@ -46,7 +46,7 @@ export default function TabellaUtenze() {
   const router = useRouter();
   const userData = useCurrentUserData();
   const utenzeServ = new utenzeService(userData ? userData.token : "");
-  const dud = "Tf2Bread.jpg";
+  const dud = "1";
 
   const [ ordinamento, setOrdinamento ] = useState("BYUSERNAME");
 

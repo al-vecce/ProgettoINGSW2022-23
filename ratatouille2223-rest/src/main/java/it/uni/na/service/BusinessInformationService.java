@@ -17,6 +17,7 @@ public class BusinessInformationService {
         return null;
     }
 
+    @Transactional
     public static Boolean evaluateBusinessInformationFormService(String businessname, String businessphonenumber, String businessaddress, String businesslogoencoded, String businesslogotype, String businesslogoname) {
         String tempString1;
         tempString1 = FieldCheckService.checkBusinessnameValidityService(businessname);

@@ -59,7 +59,7 @@ export default function TabelleContiChiusi() {
     return `${year}-${month}-${date}`;
   };
 
-  const dud = "bread";
+  const dud = "1";
   const userData = useCurrentUserData();
   const contiServ = new contiChiusiService(userData ? userData.token : "");
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPages) : 

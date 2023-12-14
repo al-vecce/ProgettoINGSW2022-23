@@ -31,19 +31,20 @@ export default function ButtonPDF({checkID, table, dataAperturaConto, dataChisur
     <Document key={"PDF"+checkID} title={getDate() + today.getHours + ":" + today.getMinutes + checkID}>
       <Page> 
         <View >
+          <Text><h1>Ratatouille2223</h1></Text>
           <Text>{dataAperturaConto ? "Data di apertura del conto: " + dataAperturaConto : null}</Text>
           <Text>{dataChisuraConto ? "Data di chiusura del conto: " + dataChisuraConto : null}</Text>
-          <Text>{totale ? "Totale: " + totale : null}</Text>
-          <Text>Data di Stampa: {getDateForClosingTime() + today.getHours() + ":" + today.getMinutes()}</Text>
+          <Text>{totale ? "Totale: " + totale + "€ ": null}</Text>
+          <Text>Data di Stampa: {getDateForClosingTime() + " " + today.getHours() + ":" + today.getMinutes()}</Text>
             {data && data.orders && Array.isArray(data.orders) ? data.orders.map(({order_id, element_name, quantity, current_price, description, order_total})=>{
               
               return(
               <Text key={order_id}>
-                {order_id}
-                {element_name}
-                {quantity}
-                {current_price}
-                {order_total}
+                {order_id} {" "}
+                {element_name} {" x "}
+                {quantity} {" "}
+                {current_price} {"€ "}
+                {order_total} {"€ "}
                 {description}
               </Text>
               );

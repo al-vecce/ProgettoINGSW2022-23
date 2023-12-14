@@ -5,10 +5,10 @@ import Tabelleconti from '@/components/tabelleconti'
 export default function page() {
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
-      <div className='order-2 flex p-4'>
+      <Top style={{zIndex: '90'}}/>
+      <div className='flex p-4' style={{zIndex: '1'}}>
         <Tabelleconti/>
       </div>
-      <Top className='order-1'/>
     </div>
   )
 }

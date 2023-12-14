@@ -8,6 +8,7 @@ public class Base64ManagerService {
     private Base64ManagerService(){}
 
     public static final String NOTBASE64ENCODABLE = "NOTBASE64ENCODABLE";
+
     public static String encodeToStringService(byte[] imagebyte) {
         return Base64.getEncoder().encodeToString(imagebyte);
     }

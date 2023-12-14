@@ -21,11 +21,11 @@ export default function Home() {
     xl:bg-[url('/login-splash.svg')]
     2xl:bg-[url('/login-splash.svg')]"
     style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-      <div className='flex-col lg:xl:scale-150' style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+      <div className='flex-col lg:scale-150 xl:scale-150' style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       <img className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)]' style={{height:'15em'}} src='/logoicon.svg'/>
       <div className="container" style={{display:'flex', justifyContent:'center', alignItems:'center', height:'5em', 
                 fontFamily:'arial'}}>
-        <h1 className="body-font font-quicksand tracking-widest drop-shadow-[0_5px_5px_rgba(0,0,0,0.3)] font-semibold text-5xl">RATATOUILLE 23</h1>
+        <h1 className="body-font font-quicksand tracking-widest drop-shadow-[0_5px_5px_rgba(0,0,0,0.3)] font-semibold text-3xl lg:text-5xl xl:text-5xl 2xl:text-5xl">RATATOUILLE 23</h1>
       </div>
       <LoginForm/>
       </div>
