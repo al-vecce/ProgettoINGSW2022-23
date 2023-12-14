@@ -23,7 +23,6 @@ public class MenuCategoryService {
         switch (mode) {
             case ModeConstants.BYPRIORITY:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "priority");
-                return_list.sort(Comparator.comparing(MenuCategory::getPriority));
                 break;
             case ModeConstants.BYNAME:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "name");

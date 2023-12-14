@@ -20,7 +20,7 @@ public class MenuCategoryResource {
     @Inject
     ObjectMapper objectMapper;
 
-    @GET
+    /*@GET
     @Produces("application/json")
     public Response getAllCategories() {
         List<String> list = MenuCategoryService.findAllCategoriesOrderedByModeService("BYNAME", 0);
@@ -45,7 +45,7 @@ public class MenuCategoryResource {
             return Response.ok("JSON Parsing Error for MENU/CATEGORY/GETALL Encountered.").status(500).build();
         }
         return Response.ok(json_node.toPrettyString()).build();
-    }
+    }*/
 
     @GET
     @Produces("application/json")

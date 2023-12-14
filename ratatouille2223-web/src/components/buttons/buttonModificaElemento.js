@@ -225,18 +225,15 @@ export default function ModificaElemento({ categoria, refreshAction, oldAllergen
                 </div>
                 <div className="mb-2 block space-y-2">
                   <Label htmlFor="Allergeni" value="Allergeni:" />
-                  <div className='flex gap-4'>
-                    <>
-                      {Object.entries(allergens).map(([nome, value]) => {
-                        return (
-                          allergens[nome] ? <ButtonAllergen statoIniziale={true} type={nome} /> : null
-                        );
-                      })
-                      }
-                    </>
+                  <div className='flex flex-rows flex-wrap gap-3 items-center justify-start'>
+                    <SelettoreAllergeni setAllergens={setAllergens} allergens={allergens}/>
+                    {Object.entries(allergens).map(([nome, value]) => {
+                      return (
+                        allergens[nome] ? <ButtonAllergen statoIniziale={true} type={nome} /> : null
+                      );
+                    })
+                    }
                   </div>
-                  <SelettoreAllergeni setAllergens={setAllergens} allergens={allergens}>
-                  </SelettoreAllergeni>
                 </div>
               </div>
               <div className="flex flex-col flex-wrap gap-2">

@@ -25,7 +25,10 @@ export default function page() {
   const [ encodedQR, setEncodedQR ] = useState(null);
   const [ encodedImg, setEncodedImg ] = useState(null);
 
-  const [ menuaddr, setMenuAddr ] = useState("http://example.com");
+  const currentUrl = process.env.NEXT_PUBLIC_NEXTJSAPPHOSTNAME;
+  console.log(currentUrl);
+
+  const [ menuaddr, setMenuAddr ] = useState(currentUrl + "/Menu");
 
   const fetchData = useSWR(dud, qrCodeServ.getQRBusinessInformation);
   const fetchQR = useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
@@ -40,21 +43,6 @@ export default function page() {
   function goBackToHomepage(){
     router.push("/Homepage");
   }
-
-  /*function unpackData() {
-    let type;
-    if(fetchData.data){
-      type = fetchData.data.business_logo_type;
-      if(fetchData.data.business_logo_type) {
-      if(fetchData.data.business_logo_type == ".svg") {
-        setEncodedImg("data:image/svg+xml;base64," + fetchData.data.business_logo_encoded);
-      }
-      else if(fetchData.data.business_logo_type == ".png" || fetchData.data.business_logo_type == ".jpg" || fetchData.data.business_logo_type == ".jpeg") {
-        setEncodedImg("data:image/" + type.substring(1) + ";base64," + fetchData.data.business_logo_encoded);
-      }
-    }}
-  }*/
-
   return (
     <main>
       <div
