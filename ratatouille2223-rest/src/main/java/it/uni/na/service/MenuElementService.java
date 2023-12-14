@@ -41,6 +41,9 @@ public class MenuElementService {
             case ModeConstants.BYLASTMODIFIED:
                 return_list = MenuElement.findAllElementsOrderedBy(c, page, "last_modified");
                 break;
+            case ModeConstants.UNPAGED:
+                return_list = MenuElement.findAllElementsOrderedBy(c, page, ModeConstants.UNPAGED);
+                break;
             default:
                 return_list = new ArrayList<>();
         }

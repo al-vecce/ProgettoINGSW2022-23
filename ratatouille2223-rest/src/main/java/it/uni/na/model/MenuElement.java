@@ -3,6 +3,7 @@ package it.uni.na.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
+import it.uni.na.constats.ModeConstants;
 import jakarta.inject.Inject;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -220,12 +221,21 @@ public class MenuElement extends PanacheEntityBase {
     @Transactional
     public static List<MenuElement> findAllElementsOrderedBy(MenuCategory category, Integer page, String order) {
         int min, max, i = 0;
-        List<MenuElement> list1 = MenuElement.findAll(Sort.by(order)).list();
+        List<MenuElement> list1;
+        if(order.contains(ModeConstants.UNPAGED)) {
+            list1 = MenuElement.findAll(Sort.by("priority")).list();
+        }
+        else {
+            list1 = MenuElement.findAll(Sort.by(order)).list();
+        }
         List<MenuElement> list2 = new ArrayList<>();
         for(MenuElement e: list1) {
             if(e.getMenuCategory().getId().equals(category.getId())) {
                 list2.add(e);
             }
+        }
+        if(order.contains(ModeConstants.UNPAGED)) {
+            return list2;
         }
         list1 = new ArrayList<>();
         min = PAGES*page;

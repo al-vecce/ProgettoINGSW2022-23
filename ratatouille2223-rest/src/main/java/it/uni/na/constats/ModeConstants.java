@@ -3,6 +3,8 @@ package it.uni.na.constats;
 public class ModeConstants {
     private ModeConstants() { }  // Prevents instantiation
 
+    public static final String UNPAGED              = "UNPAGED";
+
     public static final String BYID                 = "BYID";
     public static final String BYEMPLOYEEROLE       = "BYEMPLOYEEROLE";
     public static final String BYUSERNAME           = "BYUSERNAME";

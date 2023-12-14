@@ -36,6 +36,9 @@ public class MenuCategoryService {
             case ModeConstants.BYLASTMODIFIED:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "last_modified");
                 break;
+            case ModeConstants.UNPAGED:
+                return_list = MenuCategory.findAllCategoriesOrderedBy(page, ModeConstants.UNPAGED);
+                break;
             default:
                 return_list = new ArrayList<>();
         }
