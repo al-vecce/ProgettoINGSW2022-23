@@ -77,6 +77,7 @@ export default  function InfoAttivitaForm(){
     const linkMenuQR = "";
     const [ errorUploadFallito, setErrorUpload ] = useState(false);
     const [ uploadSuccesso, setUploadSuccesso] = useState(false);
+    const [ errorNomeAttivitaAssente, setErrorNomeAttivitaAssente ] = useState(false);
     const [ fileName, setFileName] = useState("");
     const [ fileType, setFileType] = useState("");
     const [ fileBase64, setFileBase64 ] = useState("");
@@ -116,20 +117,28 @@ export default  function InfoAttivitaForm(){
     }
     async function Login(){
       const infoAttServ = new infoAttivitaService(currentUser ? currentUser.token : "");
-      
-      const data = await infoAttServ.postInfoAttivita(nomeAttivita, indirizzo, numeroDiTelefono, fileBase64, fileType, fileName);
-      if(data){
-        if(data.result === "true"){
-          setUploadSuccesso(true);
-          setErrorUpload(false);
+      if(nomeAttivita){
+        const data = await infoAttServ.postInfoAttivita(nomeAttivita, indirizzo, numeroDiTelefono, fileBase64, fileType, fileName);
+        if(data){
+          if(data.result === "true"){
+            setUploadSuccesso(true);
+            setErrorNomeAttivitaAssente(false);
+            setErrorUpload(false);
+          }else{
+            setUploadSuccesso(false);
+            setErrorNomeAttivitaAssente(false);
+            setErrorUpload(true);
+          }
         }else{
-          setUploadSuccesso(false);
           setErrorUpload(true);
+          setErrorNomeAttivitaAssente(false);
+          setUploadSuccesso(false);
         }
-      }else{
-        setErrorUpload(true);
-        setUploadSuccesso(false);
       }
+      else{
+        setErrorNomeAttivitaAssente(true);
+      }
+
     }
     if(isLoading){
         return(<div>loading...</div>);
@@ -141,6 +150,7 @@ export default  function InfoAttivitaForm(){
         <Image className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)]' width={300} height={400} alt={"Logo img"} style={{height:'15em'}} src={logoImage ? logoImage.includes("data:image") ? logoImage : "/uploadLogoPlaceholder.png" : "/uploadLogoPlaceholder.png"}/>
       {errorUploadFallito ? <Label htmlFor="error" color={"failure"} value="Errore con l'upload!" /> : null}
       {uploadSuccesso ? <Label htmlFor="success" color={"black"} value="Salvato!" /> : null}
+      {errorNomeAttivitaAssente ? <Label htmlFor="error" color={"failure"} value="Il nome attività non può essere nullo!" /> : null}
 
        <div>
       <div>
