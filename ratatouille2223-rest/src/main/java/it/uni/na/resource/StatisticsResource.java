@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/statistics")
-@RolesAllowed({"AMMINISTRATORE"})
+//TODO @RolesAllowed({"AMMINISTRATORE"})
 public class StatisticsResource {
 
     @Inject

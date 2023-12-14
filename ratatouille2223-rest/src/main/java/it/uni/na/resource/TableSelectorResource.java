@@ -23,7 +23,7 @@ import java.util.List;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/table-selector")
-@RolesAllowed("ADDETTOSALA")
+//TODO @RolesAllowed("ADDETTOSALA")
 public class TableSelectorResource {
 
     @Inject

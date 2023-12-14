@@ -14,7 +14,7 @@ import java.util.List;
 
 // TODO LOGGER
 @Path("/employees")
-@RolesAllowed("AMMINISTRATORE")
+//TODO @RolesAllowed("AMMINISTRATORE")
 public class EmployeeResource {
 
     @Inject

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/review")
-@RolesAllowed("ADDETTOSALA")
+//TODO @RolesAllowed("ADDETTOSALA")
 public class ReviewResource {
 
     @Inject
