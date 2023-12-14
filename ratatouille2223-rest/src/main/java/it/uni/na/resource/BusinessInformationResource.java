@@ -7,12 +7,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.uni.na.service.BusinessInformationService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 // TODO LOGGER
 @Path("/business-information")
-@RolesAllowed("AMMINISTRATORE")
+//TODO @RolesAllowed("AMMINISTRATORE")
 public class BusinessInformationResource {
 
     // TODO
@@ -37,6 +38,7 @@ public class BusinessInformationResource {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
+    @Transactional
     public Response postUpdateBusinessInformation(String json_request) {
         JsonNode json_node, temp_node;
         String newString, businessname, businessphonenumber, businessaddress, businesslogoencoded, businesslogotype, businesslogoname;

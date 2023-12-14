@@ -162,16 +162,35 @@ public class Business extends PanacheEntityBase {
                 "}";
     }
     public String toStringQR() {
-        return "{\n" +
+        String str = "{\n" +
                 "\t\"business_name\": \"" + business_name + "\",\n" +
                 "\t\"business_phone_number\": \"" + business_phone_number + "\",\n" +
-                "\t\"business_address\": \"" + business_address + "\",\n" +
-                "\t\"business_logo_encoded\": \"" + business_logo_encoded + "\",\n" +
-                "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
-                "\t\"business_logo_name\": \"" + business_logo_name + "\"\n" +
-                "\t\"business_qr_encoded\": \"" + business_qr_encoded + "\"\n" +
+                "\t\"business_address\": \"" + business_address + "\",\n";
+                if(business_logo_type != null) {
+                    if(business_logo_type.contains("svg")){
+                        str = str +
+                                "\t\"business_logo_encoded\": \"" + "data:image/" + business_logo_type.substring(1) + "+xml;base64," + business_logo_encoded + "\",\n" +
+                                "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
+                                "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
+                    }
+                    else {
+                        str = str +
+                                "\t\"business_logo_encoded\": \"" + "data:image/" + business_logo_type.substring(1) + ";base64," + business_logo_encoded + "\",\n" +
+                                "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
+                                "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
+                    }
+                }
+                else {
+                    str = str +
+                    "\t\"business_logo_encoded\": \"" + business_logo_encoded + "\",\n" +
+                            "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
+                            "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
+                }
+        str = str +
+                "\t\"business_qr_encoded\": \"" + business_qr_encoded + "\",\n" +
                 "\t\"business_qr_type\": \"" + business_qr_type + "\"\n" +
                 "}";
+        return str;
     }
 
     @Transactional

@@ -11,7 +11,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
 @Path("/business-information/qr-generation")
-@RolesAllowed("AMMINISTRATORE")
+//TODO@RolesAllowed({"SUPERVISORE", "AMMINISTRATORE"})
 public class QRGenerationResource {
 
     @Inject
