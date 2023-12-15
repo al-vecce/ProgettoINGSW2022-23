@@ -19,7 +19,9 @@ export default function Pager({setCurrentPage, currentPage, maxPages, isLoading,
       setCurrentPage(currentPage-1);
     }
   }
-  console.log(maxPages);
+  if(isNaN(maxPages)){
+    return (<div className='text-inherit'>loading...</div>)
+  }
   return (
     <div className="flex flew-col w-48 gap-2 items-center justify-center text-inherit
     bg-white rounded-lg">
@@ -30,7 +32,7 @@ export default function Pager({setCurrentPage, currentPage, maxPages, isLoading,
       </Button>
       { isLoading && <AiOutlineLoading className="h-6 w-6 animate-spin" />}
       { !isLoading && error && !maxPages && <p>Errore</p>}
-      { !isLoading && !error && maxPages && <p>{currentPage} di {maxPages.pages ? maxPages.pages : maxPages}</p>}
+      { !isLoading && !error && maxPages && <p>{currentPage} di {maxPages ? maxPages : 0}</p>}
       <Button onClick={clickIncrementPage} theme={{pill: "rounded-l-lg"}}className='text-inherit bg-trasparent enabled:hover:bg-transparent
       focus:border-transparent focus:ring-transparent'
       style={{width:"2.3em", height:"2.3em"}}>

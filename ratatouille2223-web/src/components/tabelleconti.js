@@ -46,9 +46,7 @@ export default function TabelleConti() {
   const [ oreMax, setOreMax] = useState(null);
   const [ minMax, setMinutesMax] = useState(null);
   const setterFiltroOrari = {setOreMax, setOreMin, setMinutesMax, setMinutesMin};
-  const [ isLoading, setisLoading ] = useState(true);
   const [ ordinamento, setOrdinamento ] = useState("BYID");
-  const [ fetchPagina, setFetchPagina ] = useState(null);
 
   const getDate = ()=>{
     const today = new Date();
@@ -69,13 +67,13 @@ export default function TabelleConti() {
   const userData = useCurrentUserData();
   
   const contiServ = new contiAttiviService(userData ? userData.token : "");
-  if(userData && isLoading){
-    !oreMin ? contiServ.getNumberOfPagesContiAttivi().then(res=>{setFetchPagina(res)}).then(setisLoading(false)) : 
+  
+  const fetchPagina= !oreMin ? useSWR(dud,contiServ.getNumberOfPagesContiAttivi) : 
               useSWR([ 
               `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 
               `${getDate()+"T"+oreMax+":"+minMax+":00"}`],
-              contiServ.getNumberOfPagesContiAttiviFiltrati).then(res=>{setFetchPagina(res)}).then(setisLoading(false));
-  }
+              contiServ.getNumberOfPagesContiAttiviFiltrati);
+  
   const fetchConti = !oreMin ? useSWR([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) : 
                                useSWR([(contiCurrentPage-1).toString(), ordinamento, 
                                 `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 
@@ -85,7 +83,10 @@ export default function TabelleConti() {
   console.log(fetchConti);
 
   const useUpdateData = ()=>{
-    if(contiCurrentPage > (fetchPagina ? fetchPagina : 0)){
+    !oreMin ? fetchPagina.mutate(dud,contiServ.getNumberOfPagesContiAttivi) : fetchPagina.mutate([ 
+      `${getYestedayDate()+"T"+oreMin+":"+minMin+":00"}`, 
+      `${getDate()+"T"+oreMax+":"+minMax+":00"}`],contiServ.getNumberOfPagesContiAttiviFiltrati)
+    if(contiCurrentPage > (fetchPagina ? fetchPagina.data : 0)){
       setContiCurrentPage(1);
     }
     !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) :
@@ -98,7 +99,7 @@ export default function TabelleConti() {
     setMinutesMax(null);
     useUpdateData();
   };
-  if(isLoading){
+  if(!userData || fetchPagina.isLoading || fetchConti.isLoading){
     return (<h1 className='text-primary-icon'>Loading...</h1>)
   }
 
@@ -114,7 +115,7 @@ export default function TabelleConti() {
           
           <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
-            <Pager maxPages={fetchPagina} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={isLoading} error={false} /> 
+            <Pager maxPages={fetchPagina.data} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} />
             <FilterConti oreMax={oreMax} oreMin={oreMin} minMax={minMax} minMin={minMin} setter={setterFiltroOrari}/>
             <ButtonRefresh onClickAction={refreshAction}/>
           </Button.Group>
