@@ -156,11 +156,11 @@ export default function gestoreOrdinazioni({tavolo, isContoAlreadyOpen}) {
             })
             console.log(ordinazioneCompleta);
             const ordinazioniServ = new ordinazioniService(userData ? userData.token : "");
-            if(isContoAlreadyOpen){
+            if(isContoAlreadyOpen ? isContoAlreadyOpen : true){
                 await ordinazioniServ.putNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
                                     .then(res=>{
                                         if(res){
-                                            if(res.includes("true")){
+                                            if(res.result.includes("true")){
                                                 alert("ordinazione completata con successo");
                                             }
                                             else
@@ -174,7 +174,7 @@ export default function gestoreOrdinazioni({tavolo, isContoAlreadyOpen}) {
                 await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
                                     .then(res=>{
                                         if(res){
-                                            if(res.includes("true")){
+                                            if(res.result.includes("true")){
                                                 alert("ordinazione completata con successo");
                                             }
                                             else
