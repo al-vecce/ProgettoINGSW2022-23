@@ -1,12 +1,16 @@
+'use client'
 import React from 'react'
-
+import GestoreOrdinazioni from '@/components/gestoreOrdinazioni'
 import TopReview from '@/components/topReview'
-
+import { useSearchParams } from 'next/navigation';
 export default function page() {
+  const searchParams = useSearchParams();
+  const tavolo = searchParams.get("tavolo")
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
-      <TopReview style={{zIndex: '2'}}/>
+        <TopReview style={{zIndex: '2'}}/>
       <div className='flex p-4' style={{zIndex: '1'}}>
+        <GestoreOrdinazioni tavolo={tavolo}/>
       </div>
     </div>
   )

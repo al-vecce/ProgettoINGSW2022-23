@@ -9,9 +9,9 @@ import Pager from './pager';
 import ButtonRefresh from './buttons/buttonRefresh';
 import { useState } from 'react';
 import ListaContiAttivi from './listaContiAttivi';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useCurrentUserData from '@/hooks/useCurrentUserData';
+import { useEffect } from 'react';
 import { FaSortDown } from "react-icons/fa";
 const customTableTheme = {
   root: {
@@ -46,7 +46,7 @@ export default function TabelleConti() {
   const [ oreMax, setOreMax] = useState(null);
   const [ minMax, setMinutesMax] = useState(null);
   const setterFiltroOrari = {setOreMax, setOreMin, setMinutesMax, setMinutesMin};
-
+  const [ isLoading, setisLoading ] = useState(true);
   const [ ordinamento, setOrdinamento ] = useState("BYID");
 
   const getDate = ()=>{
@@ -66,6 +66,7 @@ export default function TabelleConti() {
 
   const dud = "1";
   const userData = useCurrentUserData();
+  
   const contiServ = new contiAttiviService(userData ? userData.token : "");
   const fetchPagina = !oreMin ? useSWR(dud, contiServ.getNumberOfPagesContiAttivi) : 
                                 useSWR([ 
@@ -78,9 +79,11 @@ export default function TabelleConti() {
                                 `${getDate()+"T"+oreMax+":"+minMax+":00"}`], 
                                 contiServ.getContiAttiviOrdinatiEFiltrati);
 
+  console.log(fetchConti);
+
   const useUpdateData = ()=>{
     fetchPagina.mutate(dud, contiServ.getNumberOfPagesContiAttivi);
-    if(contiCurrentPage > (fetchPagina.data ? fetchPagina.data.pages : 0)){
+    if(contiCurrentPage > (fetchPagina.data ? fetchPagina.data : 0)){
       setContiCurrentPage(1);
     }
     !oreMin ? fetchConti.mutate([(contiCurrentPage-1).toString(), ordinamento], contiServ.getContiAttiviOrdinatiPer) :
@@ -106,7 +109,7 @@ export default function TabelleConti() {
           
           <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
-            <Pager maxPages={fetchPagina.data} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} /> 
+            <Pager maxPages={fetchPagina.data ? fetchPagina.data : null} setCurrentPage={setContiCurrentPage} currentPage={contiCurrentPage} isLoading={fetchPagina.isLoading} error={fetchPagina.error} /> 
             <FilterConti oreMax={oreMax} oreMin={oreMin} minMax={minMax} minMin={minMin} setter={setterFiltroOrari}/>
             <ButtonRefresh onClickAction={refreshAction}/>
           </Button.Group>

@@ -13,6 +13,14 @@ export default class elementiService{
         },
         }
         ).then((res) => res.json());
+    getElementiCategoriaUnpaged = (nome) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+ nome +"?mode=UNPAGED&page=0", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
+        },
+        }
+        ).then((res) => res.json());
     getNumberOfPagesElementi = ([nome]) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/"+nome+"/pages", {
         method: "GET",
         headers: {

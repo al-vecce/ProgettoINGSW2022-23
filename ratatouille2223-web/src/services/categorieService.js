@@ -14,6 +14,14 @@ export class categorieService{
         },
         }
         ).then((res) => res.json());
+    getCategorieUnpaged = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories?mode=UNPAGED&page=0", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${this.token}`
+        },
+        }
+        ).then((res) => res.json());    
     getNumberOfPagesCategorie = () => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/menu/editor/categories/pages", {
         method: "GET",
         headers: {

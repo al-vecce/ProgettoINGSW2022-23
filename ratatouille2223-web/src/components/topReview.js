@@ -4,8 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { FaArrowRightFromBracket, FaXmark } from "react-icons/fa6";
 import { Button, Label } from 'flowbite-react';
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import HpSidebar from './hpsidebar';
-import { useState } from 'react';
+import Link from "next/link";
 import useLogout from "@/hooks/useLogout";
 import { useRouter } from "next/navigation";
 const customTheme = {
@@ -36,11 +35,14 @@ export default function TopReview() {
       
       <div className='w-full flex justify-between' style={{alignItems:'center'}}>
         <div className='m-2 xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
+          <Link href={"/SelettoreTavolo"} passHref >
           <Button className="shadow-lg rounded-md bg-white border border-none enabled:hover:bg-gray-200 focus:border-transparent focus:ring-transparent"
                 style={{width:"2.5em", height:"2.5em"}}
                 >
+                
             <FaXmark className='flex text-xl text-bold text-primary-error'/>
           </Button>
+          </Link>
         </div>
         <img href="/" className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)]' style={{height:'3.6em'}} src='/logoicon.svg'/>
         <div className='m-2'>
