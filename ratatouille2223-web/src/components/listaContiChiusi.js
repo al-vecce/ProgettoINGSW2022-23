@@ -40,7 +40,7 @@ export default function ListaContiChiusi({data , error, isLoading, refreshAction
     if(error){
     return ( 
       <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <Table.Cell>Errore con il caricamento!</Table.Cell>
+      <Table.Cell>Caricamento...</Table.Cell>
       </Table.Row>
     )}
 

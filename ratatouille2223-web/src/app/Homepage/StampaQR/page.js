@@ -17,44 +17,37 @@ import ButtonPDFcodeQR from '@/components/buttons/buttonPDFcodeQR';
 
 import { PDFDownloadLink, Document,View,Text,styles, Page } from '@react-pdf/renderer';
 
+import getServerSideIP from '@/hooks/getServerSideIP';
+
+
 export default function page() {
   const userData = useCurrentUserData();
   const qrCodeServ = new qrCodeService(userData ? userData.token : "");
   const dud = '1';
 
+ 
+
   const [ encodedQR, setEncodedQR ] = useState(null);
   const [ encodedImg, setEncodedImg ] = useState(null);
 
-  const [ menuaddr, setMenuAddr ] = useState("http://example.com");
+  const [ currentUrl, setCurrentUrl ] = useState(getServerSideIP())
+  
+  console.log(currentUrl);
+
+  const [ menuaddr, setMenuAddr ] = useState(currentUrl + "/Menu");
 
   const fetchData = useSWR(dud, qrCodeServ.getQRBusinessInformation);
-  const fetchQR = useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
+  const fetchQR = null;//useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
   
   const useUpdateData = () =>{
-    fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
-    fetchQR.mutate(menuaddr, qrCodeServ.postGenerateQRCode);
-    //unpackData();
+    //fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
+    //fetchQR.mutate(menuaddr, qrCodeServ.postGenerateQRCode);
   };
 
   const router = useRouter();
   function goBackToHomepage(){
     router.push("/Homepage");
   }
-
-  /*function unpackData() {
-    let type;
-    if(fetchData.data){
-      type = fetchData.data.business_logo_type;
-      if(fetchData.data.business_logo_type) {
-      if(fetchData.data.business_logo_type == ".svg") {
-        setEncodedImg("data:image/svg+xml;base64," + fetchData.data.business_logo_encoded);
-      }
-      else if(fetchData.data.business_logo_type == ".png" || fetchData.data.business_logo_type == ".jpg" || fetchData.data.business_logo_type == ".jpeg") {
-        setEncodedImg("data:image/" + type.substring(1) + ";base64," + fetchData.data.business_logo_encoded);
-      }
-    }}
-  }*/
-
   return (
     <main>
       <div
@@ -78,7 +71,7 @@ export default function page() {
                     <span className="text-primary-accent1"> ONLINE</span>
                 </h1>
                 <React.Fragment>
-                {fetchData.data ? 
+                {fetchData.data != null ? 
                     <React.Fragment>
                       <div className='flex flex-col flex-wrap items-center justify-center'>
                         { fetchData.data.business_qr_encoded ? 
@@ -119,7 +112,7 @@ export default function page() {
                 </React.Fragment>
                 
                 <div>
-                  {fetchData.data ? 
+                  {fetchData.data != null ? 
                     <ButtonPDFcodeQR name={fetchData.data.business_name} address={fetchData.data.business_address} phone_number={fetchData.data.business_phone_number}
                     logo_encoded={fetchData.data.business_logo_encoded} qr_encoded={fetchData.data.business_qr_encoded}/>
                   : null
@@ -132,25 +125,3 @@ export default function page() {
     </main>
   )
 }
-
-/*
-<div className="flex min-h-screen flex-col items-center justify-between bg-cover bg-no-repeat bg-center bg-[url('/binfo-background.jpg')] blur-sm opacity-[0.7]" style={{zIndex: "0"}}>
-        <div className='t-0 pt-10 pl-10 blur-none' style={{zIndex: "50"}}>
-          <Button className="shadow-lg rounded-md bg-black border border-none enabled:hover:bg-black focus:border-transparent focus:ring-transparent opacity-[0.8] enabled:hover:opacity-[1]"
-                  style={{width:"5em", height:"5em"}}
-                  onClick={goBackToHomepage}>
-              <FaChevronLeft className='flex text-[50px] text-white'/>
-          </Button>
-          <div className='flex bg-black opacity-[0.8] items-center justify-center'>
-            <div></div>
-            <Button>ciao</Button>
-            <Button>ciao</Button>
-          </div>
-        </div>
-      </div>
-      <Button className="shadow-xl bg-primary-accent1 rounded-full border border-none enabled:hover:bg-primary-accent2
-                  focus:border-transparent focus:ring-transparent font-bold text-center items-center justify-center" 
-                  style={{width:'10em'}} disabled>
-                    STAMPA
-                  </Button>
-*/

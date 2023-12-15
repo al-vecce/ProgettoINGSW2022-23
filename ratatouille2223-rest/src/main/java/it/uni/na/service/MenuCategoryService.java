@@ -23,7 +23,6 @@ public class MenuCategoryService {
         switch (mode) {
             case ModeConstants.BYPRIORITY:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "priority");
-                return_list.sort(Comparator.comparing(MenuCategory::getPriority));
                 break;
             case ModeConstants.BYNAME:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "name");
@@ -36,6 +35,9 @@ public class MenuCategoryService {
                 break;
             case ModeConstants.BYLASTMODIFIED:
                 return_list = MenuCategory.findAllCategoriesOrderedBy(page, "last_modified");
+                break;
+            case ModeConstants.UNPAGED:
+                return_list = MenuCategory.findAllCategoriesOrderedBy(page, ModeConstants.UNPAGED);
                 break;
             default:
                 return_list = new ArrayList<>();

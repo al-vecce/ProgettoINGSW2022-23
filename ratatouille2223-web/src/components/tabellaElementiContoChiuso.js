@@ -23,7 +23,7 @@ export default function TabellaElementiContoChiuso({conto}) {
   const isLoading = listaElementi.isLoading;
   const error = listaElementi.error;
 
-  if(data && !Array.isArray(data.orders)){
+  if(data && data.orders && !Array.isArray(data.orders)){
     if(!Array.isArray(data.orders)){
       data.orders = null;
     }
@@ -45,10 +45,10 @@ export default function TabellaElementiContoChiuso({conto}) {
     <React.Fragment>
       {data.orders ? 
       <Table.Row className="bg-gray-200 hover:bg-gray-200 p-5">
-            <Table.Cell colSpan={2}><div className='flex'>Nome dell'elemento <FaSortDown /></div></Table.Cell>
-            <Table.Cell><div className='flex'>Quantità <FaSortDown /></div></Table.Cell>
-            <Table.Cell><div className='flex'>Costo Singolo <FaSortDown /></div></Table.Cell>
-            <Table.Cell><div className='flex'>Costo Complessivo <FaSortDown /></div></Table.Cell>
+            <Table.Cell colSpan={2}><div className='flex'>Nome dell'elemento</div></Table.Cell>
+            <Table.Cell><div className='flex'>Quantità</div></Table.Cell>
+            <Table.Cell><div className='flex'>Costo Singolo</div></Table.Cell>
+            <Table.Cell><div className='flex'>Costo Complessivo</div></Table.Cell>
             <Table.Cell></Table.Cell>
       </Table.Row> : <div/>}
       {data.orders ? 

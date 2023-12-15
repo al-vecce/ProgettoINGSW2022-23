@@ -144,8 +144,8 @@ export default function ModificaElementoOFF({ categoria, refreshAction, codiceEl
               </div>
               <div className="mb-2 block space-y-2">
                 <Label htmlFor="Allergeni" value="Allergeni" />
-                <div className='text-sm '>
-                {(allergens && allergens != ',') ? allergens : <Label htmlFor="allrgEmpty" className='text-sm text-gray-400' value="Questo elemento non possiede allergeni." />}
+                <div className='text-sm text-primary-icon'>
+                {(allergens && allergens != ',' && allergens != '') ? allergens : <Label htmlFor="allrgEmpty" className='text-sm text-gray-400' value="Questo elemento non possiede allergeni." />}
                 </div>
               </div>
               <div className="text-left text-gray-900 block items-center justify-start">

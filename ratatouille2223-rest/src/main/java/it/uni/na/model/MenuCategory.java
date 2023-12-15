@@ -3,6 +3,7 @@ package it.uni.na.model;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
+import it.uni.na.constats.ModeConstants;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
@@ -149,6 +150,9 @@ public class MenuCategory extends PanacheEntityBase {
     }
     @Transactional
     public static List<MenuCategory> findAllCategoriesOrderedBy(Integer page, String order) {
+        if(order.contains(ModeConstants.UNPAGED)) {
+            return MenuCategory.find("SELECT c FROM MenuCategory c", Sort.by("priority")).list();
+        }
         return MenuCategory.find("SELECT c FROM MenuCategory c", Sort.by(order)).page(Page.of(page,PAGES)).list();
     }
     @Transactional
