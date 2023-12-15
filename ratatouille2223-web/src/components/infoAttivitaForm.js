@@ -148,44 +148,47 @@ export default function InfoAttivitaForm() {
   }
 
   return (
-    <div className='block flex flex-col flex-wrap gap-4 items-center justify-center font-body font-quicksand tracking-widest rounded-lg items-center justify-center p-10'>
+    <div className='block flex flex-col flex-wrap gap-[55px] items-center justify-center font-body font-quicksand tracking-widest rounded-lg items-center justify-center p-10'>
       <img className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)] max-h-[400px] max-w-[400px]' alt={"Logo img"} style={{ height: '15em' }} src={logoImage ? logoImage.includes("data:image") ? logoImage : "/logo-placeholder.svg" : "/logo-placeholder.svg"} />
-      {errorUploadFallito ? <Label htmlFor="error" color={"failure"} value="Errore con l'upload!" /> : null}
-      {uploadSuccesso ? <Label htmlFor="success" color={"black"} value="Salvato!" /> : null}
-      {errorNomeAttivitaAssente ? <Label htmlFor="error" color={"failure"} value="Il nome attività non può essere nullo!" /> : null}
-
-      <div>
+      <div className='items-center justify-center text-center'>
         <div>
-          <Label htmlFor="file-upload-helper-text" value="Upload file" />
+          <Label htmlFor="file-upload-helper-text"/>
         </div>
-        <FileInput id="file-upload-helper-text" helperText="SVG, PNG, JPG (Suggerito. 400x400px)." onChange={handleImageInput} accept="image/*" />
+        {errorUploadFallito ? <Label htmlFor="error" color={"failure"} value="Errore con l'upload!" /> : null}
+        {uploadSuccesso ? <Label htmlFor="success" color={"black"} value="Salvato!" /> : null}
+        {errorNomeAttivitaAssente ? <Label htmlFor="error" color={"failure"} value="Il nome attività non può essere nullo!" /> : null}
+        <FileInput className='pt-5 scale-125' id="file-upload-helper-text" helperText="SVG, PNG, JPG (Suggerito. 400x400px)." onChange={handleImageInput} accept="image/*" />
       </div>
-      <div className="grid grid-rows-3 grid-cols-7 items-center justify-between flex-wrap gap-y-4">
-          <Label  className='col-span-2 text-[20px] text-end pr-2' htmlFor="nomeAttv" value="Nome attività:" />
+      <div className="grid scale-125 grid-rows-3 grid-cols-7 items-center justify-between flex-wrap gap-y-4">
+          <Label  className='col-span-2 text-[20px] text-end justify-self-end pr-2' htmlFor="nomeAttv" value="Nome attività:" />
           <TextInput className='col-span-4' theme={customTextInputTheme} value={nomeAttivita != "null" ? nomeAttivita : ""} placeholder="Nome attività" id="nomeattiv" onChange={handleNomeChange} required />
-          <div className="col-span-1"
+          <div className="col-span-1 justify-self-start pl-2"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className='text-white bg-primary-icon rounded-r-md p-2'>
                 <FaUser style={{ width:'1.2em', height:'1.2em' }} className='text-xl' />
               </div>
           </div>
-          <Label  className='col-span-2 text-[20px] text-end pr-2' htmlFor="indirizzoatt" value="Indirizzo attività:" />
+          <Label  className='col-span-2 text-[20px] text-end justify-self-end pr-2' htmlFor="indirizzoatt" value="Indirizzo attività:" />
           <TextInput className='col-span-4' theme={customTextInputTheme} value={indirizzo != "null" ? indirizzo : ""} placeholder="Indirizzo attività" id="indirizzoAttiv" onChange={handleIndirizzoChange} />
-          <div className="col-span-1"
+          <div className="col-span-1 justify-self-start pl-2"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className='text-white bg-primary-icon rounded-r-md p-2'>
                 <FaMapMarkerAlt style={{ width:'1.2em', height:'1.2em' }} className='text-xl' />
               </div>
           </div>
-          <Label className='col-span-2 text-[20px] text-end pr-2' htmlFor="numeroTelefAtt" value="Numero telefono attività:" />
+          <Label className='col-span-2 text-[20px] text-end justify-self-end pr-2' htmlFor="numeroTelefAtt" value="Numero telefono attività:" />
           <TextInput className='col-span-4' theme={customTextInputTheme} value={numeroDiTelefono != "null" ? numeroDiTelefono : ""} placeholder="Telefono Attività" id="telAttiv" onChange={handleNumeroDiTelefonoChange} />
-          <div className="col-span-1"
+          <div className="col-span-1 justify-self-start pl-2 justify-start"
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className='text-white bg-primary-icon rounded-r-md p-2'>
                 <FaPhone style={{ width:'1.2em', height:'1.2em' }} className='text-xl' />
               </div>
           </div>
       </div>
+      <Flowbite  theme={{ theme: customButtonTheme }}>
+          {submitButtonVisibility ? <Button className="scale-150 shadow-xl rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{ width: '10em' }} color="confirm" type="submit" onClick={Login}>Submit</Button> : 
+          <Button disabled className="scale-150 shadow-xl disabled:contrast-[1] disabled:saturate-[0.7] rounded-full border border-none focus:border-transparent focus:ring-transparent" style={{ width: '10em' }} color="confirm" type="submit" onClick={Login}>Submit</Button>}
+      </Flowbite>
     </div>
   );
 }

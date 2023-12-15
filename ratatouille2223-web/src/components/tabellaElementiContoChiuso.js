@@ -23,7 +23,7 @@ export default function TabellaElementiContoChiuso({conto}) {
   const isLoading = listaElementi.isLoading;
   const error = listaElementi.error;
 
-  if(data && !Array.isArray(data.orders)){
+  if(data && data.orders && !Array.isArray(data.orders)){
     if(!Array.isArray(data.orders)){
       data.orders = null;
     }

@@ -30,7 +30,7 @@ export default function ListaUtenti({alertsControl, data, error, isLoading, upda
     if(!data || error){
     return ( 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-        <Table.Cell>Errore con il caricamento!</Table.Cell>
+        <Table.Cell>Caricamento...</Table.Cell>
         </Table.Row>)
     }
     
@@ -61,7 +61,7 @@ export default function ListaUtenti({alertsControl, data, error, isLoading, upda
             </React.Fragment>
         )) : 
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell>Errore con il caricamento!</Table.Cell>
+            <Table.Cell>Nessun utente!</Table.Cell>
         </Table.Row>
         }
         </React.Fragment>

@@ -17,26 +17,31 @@ import ButtonPDFcodeQR from '@/components/buttons/buttonPDFcodeQR';
 
 import { PDFDownloadLink, Document,View,Text,styles, Page } from '@react-pdf/renderer';
 
+import getServerSideIP from '@/hooks/getServerSideIP';
+
+
 export default function page() {
   const userData = useCurrentUserData();
   const qrCodeServ = new qrCodeService(userData ? userData.token : "");
   const dud = '1';
 
+ 
+
   const [ encodedQR, setEncodedQR ] = useState(null);
   const [ encodedImg, setEncodedImg ] = useState(null);
 
-  const currentUrl = process.env.NEXT_PUBLIC_NEXTJSAPPHOSTNAME;
+  const [ currentUrl, setCurrentUrl ] = useState(getServerSideIP())
+  
   console.log(currentUrl);
 
   const [ menuaddr, setMenuAddr ] = useState(currentUrl + "/Menu");
 
   const fetchData = useSWR(dud, qrCodeServ.getQRBusinessInformation);
-  const fetchQR = useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
+  const fetchQR = null;//useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
   
   const useUpdateData = () =>{
-    fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
-    fetchQR.mutate(menuaddr, qrCodeServ.postGenerateQRCode);
-    //unpackData();
+    //fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
+    //fetchQR.mutate(menuaddr, qrCodeServ.postGenerateQRCode);
   };
 
   const router = useRouter();
