@@ -1,13 +1,12 @@
 'use client';
 
 import { Button, Dropdown, Label } from 'flowbite-react';
-import { Sidebar } from 'flowbite-react';
-import { HiChartPie, HiUser, HiBookOpen, HiClipboard, HiInformationCircle, HiPrinter } from 'react-icons/hi';
-import { CgDetailsMore } from 'react-icons/cg';
-import { Avatar } from 'flowbite-react';
 
 import { FaCalendarMinus, FaUserAlt, FaInfo } from "react-icons/fa";
 import { FaNoteSticky, FaQrcode, FaChartLine } from "react-icons/fa6";
+import useCurrentUserData from '@/hooks/useCurrentUserData';
+import { useEffect } from 'react';
+import { useState } from 'react';
 const sidebarButtonTheme = {
   base: "",
   inner: {
@@ -15,7 +14,31 @@ const sidebarButtonTheme = {
   }
 }
 
-export default function HpSidebar() {
+export default function HpSidebar({isAdmin}) {
+  function adminButtons(){
+    return(
+      <>
+        <div className='body-font font-quicksand text-center tracking-widest text-[18px]'>- Amministratore -</div>
+              
+              <Button theme={sidebarButtonTheme} href="/Homepage/Utenze" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
+                <FaUserAlt className='scale-150'/>
+                <p>Utenze</p>
+              </Button>
+              <Button theme={sidebarButtonTheme} href="/Homepage/InfoRistorante" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
+                <FaInfo  className='scale-150'/>
+                <p>Info Ristorante</p>
+              </Button>
+              <Button theme={sidebarButtonTheme} href="/Homepage/StampaQR" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
+                <FaQrcode className='scale-150'/>
+                <p>Stampa QR</p>
+              </Button>
+              <Button theme={sidebarButtonTheme} href="/Homepage/Statistiche" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
+                <FaChartLine  className='scale-150'/>
+                <p>Statistiche</p>
+              </Button>
+      </>
+    )
+  }
   return ( 
     //<div className="box w-screen h-screen backdrop backdrop-opacity-100 backdrop-brightness-[0.70] absolute top-0 left-0">
         <div className="box w-64 h-screen sticky-left-0  rounded-r-[50px] shadow-lg bg-cover
@@ -38,24 +61,7 @@ export default function HpSidebar() {
                 <p>Menù</p>
               </Button>
 
-              <div className='body-font font-quicksand text-center tracking-widest text-[18px]'>- Amministratore -</div>
-              
-              <Button theme={sidebarButtonTheme} href="/Homepage/Utenze" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
-                <FaUserAlt className='scale-150'/>
-                <p>Utenze</p>
-              </Button>
-              <Button theme={sidebarButtonTheme} href="/Homepage/InfoRistorante" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
-                <FaInfo  className='scale-150'/>
-                <p>Info Ristorante</p>
-              </Button>
-              <Button theme={sidebarButtonTheme} href="/Homepage/StampaQR" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
-                <FaQrcode className='scale-150'/>
-                <p>Stampa QR</p>
-              </Button>
-              <Button theme={sidebarButtonTheme} href="/Homepage/Statistiche" className='bg-transparent hover:bg-primary-1 hover:text-primary-2 focus:ring-transparent text-left'>
-                <FaChartLine  className='scale-150'/>
-                <p>Statistiche</p>
-              </Button>
+              {isAdmin ? adminButtons() : null}
             </div>
         </div>
     //</div>

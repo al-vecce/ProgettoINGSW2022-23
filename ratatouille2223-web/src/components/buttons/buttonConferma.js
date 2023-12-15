@@ -20,7 +20,7 @@ export default function Confirm({icona, colore, refreshAction, clickConfermaActi
 
   async function confermaAction(){
     await clickConfermaAction(argsConfermaAction); 
-    refreshAction(); 
+    refreshAction ? refreshAction() : null; 
     setOpenModal(false);
   }
   return (

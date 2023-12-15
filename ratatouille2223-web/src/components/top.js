@@ -6,9 +6,10 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { Button, Label } from 'flowbite-react';
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import HpSidebar from './hpsidebar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useLogout from "@/hooks/useLogout";
 import { useRouter } from "next/navigation";
+import useCurrentUserData from "@/hooks/useCurrentUserData";
 const customTheme = {
   root: {
     inner: {
@@ -27,6 +28,18 @@ export default function top() {
   const [showSidebar, setSidebarshow] = useState(false);
   const router = useRouter();
   const { logout } = useLogout();
+  const [isAdmin, setisAdmin] = useState(false);
+  const userData = useCurrentUserData()
+
+  const onClickShowSidebar = ()=>{
+    if(userData){
+      if(`${userData.currentUserRole}` === "AMMINISTRATORE"){
+        setisAdmin(true);
+      }
+      setSidebarshow(showSidebar => !showSidebar)
+    }
+  }
+
   const onClickLogout = () =>{
     logout();
     router.refresh();
@@ -40,7 +53,7 @@ export default function top() {
         <div className='m-2 xl:scale-150' style={{width:"2.5em", height:"2.5em"}}>
           {!showSidebar && <Button className="shadow-lg rounded-md bg-white border border-none enabled:hover:bg-gray-200 focus:border-transparent focus:ring-transparent"
                 style={{width:"2.5em", height:"2.5em"}}
-                onClick={() => setSidebarshow(showSidebar => !showSidebar)}>
+                onClick={onClickShowSidebar}>
             <FaBars className='flex text-lg text-primary-icon'/>
           </Button>}
         </div>
@@ -57,8 +70,8 @@ export default function top() {
           </Dropdown>
         </div>
       </div>
-      {showSidebar ? <div className="box w-screen h-screen backdrop backdrop-opacity-100 backdrop-brightness-[0.70] absolute top-0 left-0" onClick={() => setSidebarshow(showSidebar => !showSidebar)}/> : null}
-      {showSidebar ? <HpSidebar/> : null}
+      {showSidebar ? <div className="box w-screen h-screen backdrop backdrop-opacity-100 backdrop-brightness-[0.70] absolute top-0 left-0" onClick={onClickShowSidebar}/> : null}
+      {showSidebar ? <HpSidebar isAdmin={isAdmin}/> : null}
     </Navbar>
   );
 }

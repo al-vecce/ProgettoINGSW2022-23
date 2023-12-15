@@ -5,6 +5,10 @@ import { categorieService } from '@/services/categorieService';
 import { useState } from 'react';
 import Link from 'next/link';
 import elementiService from '@/services/elementiService';
+import ordinazioniService from '@/services/ordinazioniService';
+import ButtonConferma from '@/components/buttons/buttonConferma'
+import { useRouter } from 'next/navigation';
+
 import { Flowbite } from 'flowbite-react';
 import { FaChevronLeft } from "react-icons/fa";
 import { Footer } from 'flowbite-react';
@@ -58,10 +62,11 @@ import { Footer } from 'flowbite-react';
     }
   }
 
-export default function gestoreOrdinazioni({tavolo}) {
+export default function gestoreOrdinazioni({tavolo, isContoAlreadyOpen}) {
 
     const [ ordinazione, setOrdinazione] = useState({});
     const [ descrizioni, setDescrizioni ] = useState({});
+    const [ prezzi, setPrezzi ] = useState({});
     const [ isLoading, setisLoading ] = useState(true);
     const [ showCategories, setShowCategories ] = useState(true);
     const [ categories, setCategories ] = useState(null);
@@ -70,6 +75,7 @@ export default function gestoreOrdinazioni({tavolo}) {
     const [ elements, setElements ] = useState(null);
     const [ totaleOrdinazione, setTotaleOrdinazione] = useState(0);
     const userData = useCurrentUserData();
+    const router = useRouter();
 
     if(userData && isLoading){
         const categorieServ = new categorieService(userData ? userData.token : "");
@@ -91,13 +97,20 @@ export default function gestoreOrdinazioni({tavolo}) {
         }).then(()=>setisLoading(false));
 
     }
-    function onPlusClick(name,){
+    function onPlusClick(name, prezzo){
         setOrdinazione({...ordinazione, [name]: ordinazione[name] ? ordinazione[name]+1 : 1 })
+        setPrezzi({...prezzi, [name]: prezzo})
     }
     function onMinusClick(name){
         if(ordinazione[name]){
-            if(ordinazione[name] > 0 )
+            if(ordinazione[name] === 1){
+                delete ordinazione[name];
+                setOrdinazione({...ordinazione});
+                return;
+            }
+            if(ordinazione[name] > 0 ){
                 setOrdinazione({...ordinazione, [name]: ordinazione[name]-1});
+            }
         }
     }
     function onClickBackToCategorie(){
@@ -162,12 +175,12 @@ export default function gestoreOrdinazioni({tavolo}) {
                         </div>
                         <Label className='col-span-2 text-[10px] text-end justify-self-end pr-2' value={ingredients}/>
                         <div className="flex justify-center scale-100 rounded-none border border-none" style={{ width: '23em' }} >
-                        <Button size='sm' color="gray" onClick={()=>{onPlusClick(name)}}><h1>+</h1></Button>
+                        <Button size='sm' color="gray" onClick={()=>{onPlusClick(name, price)}}><h1>+</h1></Button>
                         <Label className='col-span-2 text-[20px] text-end justify-self-end pr-2 pl-2' value={ ordinazione[name] ? ordinazione[name]: 0}/>
                         <Button size='sm' color="gray" onClick={()=>{onMinusClick(name)}}><h1>-</h1></Button>
                         </div>
-                        <div>
-                            {ingredients}
+                        <div className='text-primary-icon'>
+                            prezzo: {price} ingredienti : {ingredients} allergeni : {allergens}
                         </div>
                         
                     </div>)) 
@@ -186,9 +199,54 @@ export default function gestoreOrdinazioni({tavolo}) {
         return result;
     }
     function reviewTable(){
-
-        const sendOrder = ()=>{
-
+        const getTotale = ()=>{
+            let totale = 0;
+            Object.keys(ordinazione).forEach(key=>{
+                totale += ordinazione[key]*prezzi[key];
+            })
+            return totale;
+        }
+        const sendOrder = async ()=>{
+            let ordinazioneCompleta = [];
+            Object.keys(ordinazione).forEach(key=>{
+                ordinazioneCompleta.push({
+                    "element_name": key,
+                    "quantity": ordinazione[key] ? ordinazione[key] : 0,
+                    "current_price": prezzi[key] ? prezzi[key] : 0,
+                    "description": descrizioni[key] ? (descrizioni[key] === "" ? " " : descrizioni[key]) : " "
+                });
+            })
+            console.log(ordinazioneCompleta);
+            const ordinazioniServ = new ordinazioniService(userData ? userData.token : "");
+            if(isContoAlreadyOpen ? isContoAlreadyOpen : true){
+                await ordinazioniServ.putNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
+                                    .then(res=>{
+                                        if(res){
+                                            if(res.result.includes("true")){
+                                                alert("ordinazione completata con successo");
+                                            }
+                                            else
+                                                alert("ordinazione fallita");
+                                        }else
+                                            alert("ordinazione fallita");
+                                    })
+                                    .catch(e=>{alert(e);})
+            }
+            else{
+                await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
+                                    .then(res=>{
+                                        if(res){
+                                            if(res.result.includes("true")){
+                                                alert("ordinazione completata con successo");
+                                            }
+                                            else
+                                                alert("ordinazione fallita");
+                                        }else
+                                            alert("ordinazione fallita");
+                                    })
+                                    .catch(e=>{alert(e);})
+            }
+            
         }
         console.log(Object.keys(ordinazione));
         return(
@@ -203,22 +261,28 @@ export default function gestoreOrdinazioni({tavolo}) {
                         return(
                         <div>
                             <h1 className='text-primary-icon'>
-                                {key}:{ordinazione[key]}
+                                {key}:{ordinazione[key]} prezzo: {prezzi[key]}
                             </h1>
+                            <div>
+                                <Button color="gray" onClick={()=>{onPlusClick(key, prezzi[key])}}><h1>+</h1></Button>
+                                <Label value={ordinazione[key] ? ordinazione[key] : 0}/>
+                                <Button color="gray" onClick={()=>{onMinusClick(key)}}><h1>-</h1></Button>
+                            </div>
+                            <TextInput value={descrizioni[key] ? descrizioni[key]: "" } 
+                                    id="Descriz"
+                                    placeholder="Descrizione"
+                                    onChange={(event) => setDescrizioni({...descrizioni, [key]: event.target.value})} />
                             <Button onClick={()=>{onClickRemoveOrdinazione(key)}} >X</Button>
                         </div>
                         );
                     })}
                 </div>
                 <div className='text-primary-icon'>
-                    totale:
+                    totale: {getTotale()}
                 </div>
-                <Footer container theme={customTableTheme}>
-                <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-                <Button color='success' onClick={sendOrder} disabled={orderisEmpty()} >Conferma</Button>
-                <Link href={"/SelettoreTavolo"} passHref>
-                <Button color={"failure"}>Annulla</Button>
-                </Link>
+                <div className='flex column'>
+                <Button onClick={sendOrder} disabled={orderisEmpty()} >Conferma</Button>
+                <ButtonConferma icona={"Annulla"} clickConfermaAction={()=>{router.push("/SelettoreTavolo")}} >Annullare l'ordine?</ButtonConferma>
                 </div>
                 </Footer>
             </div>
