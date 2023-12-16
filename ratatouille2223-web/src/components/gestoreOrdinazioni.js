@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Flowbite } from 'flowbite-react';
 import { FaChevronLeft } from "react-icons/fa";
 import { Footer } from 'flowbite-react';
+import { tableSelectorService } from '@/services/tableSelectorService';
 
 
 const customTheme = {
@@ -39,13 +40,40 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
     const userData = useCurrentUserData();
     const router = useRouter();
 
-    if (userData && isLoading) {
+    async function getData(){
         const categorieServ = new categorieService(userData ? userData.token : "");
-        categorieServ.getCategorieUnpaged().then(
+        const selettoreTavServ = new tableSelectorService(userData ? userData.token : "");
+        await categorieServ.getCategorieUnpaged().then(
             (data) => {
                 setCategories(data.categories);
             }
         ).then(() => setisLoading(false));
+        if(tavolo){
+            setisLoading(true);
+            const ordini = {};
+            const descrizioni = {};
+            const prezzi = {};
+            await selettoreTavServ.postTavoloToGetStatus(tavolo).then(res=>{
+                if(res){
+                    if(!res.table){
+                        if(Array.isArray(res.orders)){
+                            res.orders.forEach(elem=>{
+                                ordini[elem.element_name]= elem.quantity
+                                descrizioni[elem.element_name] = elem.description ? elem.description : " ";
+                                prezzi[elem.element_name] = elem.current_price;
+                            })
+                        }
+                        setOrdinazione(ordini);
+                        setPrezzi(prezzi);
+                        setDescrizioni(descrizioni);
+                    }
+                }
+            }).then(setisLoading(false));
+        }
+    }
+
+    if (userData && isLoading) {
+        getData()
     }
     async function onClickCategory(category) {
         setCurrentCategory(category);
@@ -181,7 +209,6 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                     "description": descrizioni[key] ? (descrizioni[key] === "" ? " " : descrizioni[key]) : " "
                 });
             })
-            console.log(ordinazioneCompleta);
             const ordinazioniServ = new ordinazioniService(userData ? userData.token : "");
             if (!checkID) {
                 await ordinazioniServ.putNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
@@ -213,8 +240,6 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
             }
 
         }
-        console.log(Object.keys(ordinazione));
-
         return (
             <div>
                 <div>
@@ -224,7 +249,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                 <div>
                     {Object.keys(ordinazione).map(key => {
                         return (
-                            <div className='scale-95 rounded-none border border-none shadow-sm'>
+                            <div key={ordinazione} className='scale-95 rounded-none border border-none shadow-sm'>
                                 <h1 className='text-primary-icon'>
                                     <Label className='col-span-2 text-[15px] text-end justify-self-end pr-2 pl-2'>{key}:{ordinazione[key]} {'Prezzo:' + prezzi[key] + '0€'} </Label>
                                 </h1>
