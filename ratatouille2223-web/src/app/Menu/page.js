@@ -10,7 +10,7 @@ export default function page() {
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
         <TopMenu style={{zIndex: '2'}}/>
-      <div className='flex p-4' style={{zIndex: '1'}}>
+      <div className='relative flex-1 p-[40px] overflow-hidden'>
         <MenuBody/>
       </div>
     </div>
