@@ -107,7 +107,6 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
     }
     function onClickBackToCategorie() {
         setShowCategories(true);
-        setisLoading(true);
     }
     function onClickRemoveOrdinazione(key) {
         delete ordinazione[key];
