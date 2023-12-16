@@ -24,7 +24,7 @@ const customTheme = {
     },
 };
 
-export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
+export default function gestoreOrdinazioni({ tavolo, checkID }) {
 
     const [ordinazione, setOrdinazione] = useState({});
     const [descrizioni, setDescrizioni] = useState({});
@@ -176,7 +176,7 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
             })
             console.log(ordinazioneCompleta);
             const ordinazioniServ = new ordinazioniService(userData ? userData.token : "");
-            if (isContoAlreadyOpen ? isContoAlreadyOpen : true) {
+            if (!checkID) {
                 await ordinazioniServ.putNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
                     .then(res => {
                         if (res) {
@@ -191,7 +191,7 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                     .catch(e => { alert(e); })
             }
             else {
-                await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
+                await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta, checkID)
                     .then(res => {
                         if (res) {
                             if (res.result.includes("true")) {
@@ -207,6 +207,7 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
 
         }
         console.log(Object.keys(ordinazione));
+
         return (
             <div>
                 <div>
@@ -214,7 +215,6 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                         style={{ width: "2.5em", height: "2.5em" }} onClick={() => { setShowReview(false) }} > <FaChevronLeft className='flex text-xl text-primary-icon' /> </Button>
                 </div>
                 <div>
-                    {console.log(ordinazione)}
                     {Object.keys(ordinazione).map(key => {
                         return (
                             <div className='scale-95 rounded-none border border-none shadow-sm'>
@@ -247,6 +247,17 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                 </div>
             </div>
         )
+    }
+    if(!tavolo){
+        return (
+        <div>
+            <div className='text-red-700 text-center'>
+                Nessun tavolo selezionato!
+            </div>
+            <Link href={"/SelettoreTavolo"} passHref>
+                <Button>Back to selettore tavolo</Button>
+            </Link>
+        </div>)
     }
     return (
         <div>
