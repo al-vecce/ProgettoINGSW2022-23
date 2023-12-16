@@ -30,7 +30,7 @@ export default function page() {
   const [ encodedQR, setEncodedQR ] = useState(null);
   const [ encodedImg, setEncodedImg ] = useState(null);
 
-  const [ currentUrl, setCurrentUrl ] = useState(getServerSideIP())
+  const [ currentUrl, setCurrentUrl ] = useState(process.env.PUBLIC_NEXTJSAPPHOSTNAME);
   
   console.log(currentUrl);
 
