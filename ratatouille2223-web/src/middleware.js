@@ -11,7 +11,8 @@ const protectedRoutes = [
 const amministratorRoutes = ["/Homepage/StoricoConti", "/Homepage/Menu"];
 const adminRoutes = [ "/Homepage/Utenze" , "/Homepage/InfoRistorante" , "/Homepage/StampaQR", "/Homepage/Statistiche" ];
 const addettoSalaRoutes = "/SelettoreTavolo";
-const firstAccessRoutes = "PrimoAccesso";
+const firstAccessRoutes = "/PrimoAccesso";
+const publicRoutes = "/Menu";
 const adminAndAmministratoreRoutes = "/Homepage";
 
 export default function middleware(request) {
@@ -44,15 +45,18 @@ export default function middleware(request) {
     return response;
   }
 
-  if (adminRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && currentUserisSet()) {
-    if(!(`${currentUserRole}` === "AMMINISTRATORE"))
-      return NextResponse.redirect(new URL("/", request.url));
-}
-  // if (!(request.nextUrl.pathname.includes(firstAccessRoutes)) && currentUserisSet() ) {
+  // if ((request.nextUrl.pathname != firstAccessRoutes) && currentUserisSet() ) {
   //   if(`${firstaccess}` === "true"){
   //     return NextResponse.redirect(new URL("/PrimoAccesso", request.url));
   //   }
   // }
+
+  if (adminRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && currentUserisSet()) {
+    if(!(`${currentUserRole}` === "AMMINISTRATORE"))
+      return NextResponse.redirect(new URL("/", request.url));
+  }
+  
+
   if(request.nextUrl.pathname.includes(adminAndAmministratoreRoutes) && currentUserisSet()){
     if(`${currentUserRole}` === "ADDETTOSALA"){
       return NextResponse.redirect(new URL("/SelettoreTavolo", request.url));
