@@ -50,7 +50,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
             (data) => {
                 setCategories(data.categories);
             }
-        ).then(setisLoading(false));
+        ).then(()=>{setisLoading(false)});
         if(tavolo && firstLoading){
             const ordini = {};
             const descrizioni = {};
