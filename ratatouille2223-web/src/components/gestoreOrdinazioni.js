@@ -183,7 +183,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                             </div>
                             <div key={"elemButton" + name} className='w-full grid grid-rows-3 grid-cols-3 bg-gray-200 rounded-md p-5 gap-4'>
                                 <div className='col-span-2 text-[15px] text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{name}</div>
-                                <div className='col-span-1 text-[15px] text-center justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{price + "0€"}</div>
+                                <div className='col-span-1 text-[15px] text-center justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2 align-middle'>{price + "0€"}</div>
                                 <div className='col-span-3 text-[12px] style-italics text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{ingredients}</div>
                                 <div className='col-span-2 text-[15px] text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>
                                     <div className="flex flex-rows flex-nowrap items-center justify-between">
@@ -199,7 +199,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                                         }} style={{width:"2.5em", height:"2.5em"}} onClick={() => { onPlusClick(name, price) }}><FaPlus className='text-2xl'/></Button> 
                                     </div>
                                 </div>
-                                <div className='col-span-1 text-[15px] text-center items-center justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{ordinazione[name] ? (price * ordinazione[name]) + "€" :  "0€"}</div>
+                                <div className='col-span-1 text-[15px] text-center items-center justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2 align-middle'>{ordinazione[name] ? (price * ordinazione[name]) + "€" :  "0€"}</div>
                                 
                             </div>
                             </div>))
@@ -322,10 +322,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                 </div>
                 <div className='fixed left-0 bottom-0 w-screen h-[120px]'>
                     <div className='p-8 flex items-center justify-evenly gap-4' style={{zIndex: "50"}}>
-                        <Button theme={{base: "shadow-xl w-[30%] h-[60px] rounded-md body-font font-quicksand tracking-wide text-[10px] bg-primary-2 text-white font-bold items-center justify-center",
-                            color: "",
-                            inner: {base:"flex flex-rows flex-nowrap justify-between"}}} 
-                            className="shadow-xl rounded-md border border-none focus:border-transparent focus:ring-transparent justify-stretch" onClick={sendOrder} disabled={orderisEmpty()} ><p>Conferma</p></Button>
+                        <Button  onClick={sendOrder} disabled={orderisEmpty()} ><p>Conferma</p></Button>
                         <ButtonConferma2 icona='Annulla' clickConfermaAction={() => { router.push("/SelettoreTavolo") }}> Annullare l'ordine? </ButtonConferma2>
                         <div className='w-[40%] h-[60px] text-primary-icon block bg-primary-accent1 rounded-md p-4 shadow-xl'>
                             <Label className=' text-[15px] text-white text-center'>Totale: {getTotale() + '€'}</Label>
