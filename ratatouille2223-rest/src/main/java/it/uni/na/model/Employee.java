@@ -144,6 +144,7 @@ public class Employee extends PanacheEntityBase {
         return "{\n" +
                 "\t\"username\": \"" + username + "\",\n" +
                 "\t\"employee_role\": \"" + employee_role + "\",\n" +
+                "\t\"password\": \"" + password + "\",\n" +
                 "\t\"last_modified\": \"" + last_modified + "\"\n" +
                 '}';
     }

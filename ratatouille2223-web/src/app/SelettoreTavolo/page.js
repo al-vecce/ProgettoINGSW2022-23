@@ -108,7 +108,7 @@ export default function page() {
               </div>
             </div>
           </div>
-          <div className='w-full p-10 items-center justify-center text-primary-icon'>
+          <div className='w-full items-center justify-center text-primary-icon'>
             <fieldset onChange={(e) => { setOpenConto(e.target.value); resetErrors(); }} className="flex max-w-md flex-col gap-4">
               <div className="flex items-center gap-4">
                 <Radio className='scale-[1.3] text-primary-2 focus:ring-2 focus:ring-primary-2' 

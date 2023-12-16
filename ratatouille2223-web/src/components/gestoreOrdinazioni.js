@@ -128,6 +128,10 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
         }
         return (
             <div>
+                <div className='w-full pb-[40px] text-primary-icon text-center body-font font-quicksand tracking-wide'>
+                    <h1 className='body-font font-quicksand tracking-wide font-bold text-2xl'>RATATOUILLE 23</h1>
+                    <h1 className='body-font font-quicksand tracking-wide text-2xl'>{tavolo ? "Tavolo num." + tavolo : null}</h1>
+                </div>
                 <div className="w-full flex-col items-center justify-stretch">
                     {
                         categories ? categories.map(({
@@ -145,6 +149,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                             : null
                     }
                 </div>
+                <div className='h-[60px]'/>
                 <div className='fixed left-0 bottom-0 w-screen h-[120px]'>
                     <div className='p-10 flex items-center justify-items-center'>
                         <Button theme={{base: "w-full h-[60px] rounded-md body-font font-quicksand tracking-wide text-[10px] bg-primary-accent1 text-white font-bold",
@@ -320,9 +325,14 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                         );
                     })}
                 </div>
+                <div className='h-[60px]'/>
                 <div className='fixed left-0 bottom-0 w-screen h-[120px]'>
                     <div className='p-8 flex items-center justify-evenly gap-4' style={{zIndex: "50"}}>
-                        <Button  onClick={sendOrder} disabled={orderisEmpty()} ><p>Conferma</p></Button>
+                        <Button theme={{base: "shadow-xl w-[30%] h-[60px] rounded-md body-font font-quicksand tracking-wide text-[10px] bg-primary-2 text-white items-center justify-center font-bold",
+                            color: "",
+                            inner: {base:"flex flex-rows flex-nowrap justify-between"}}} 
+                            className="shadow-xl rounded-md border border-none focus:border-transparent focus:ring-transparent justify-stretch"
+                            onClick={sendOrder} disabled={orderisEmpty()} ><p>Conferma</p></Button>
                         <ButtonConferma2 icona='Annulla' clickConfermaAction={() => { router.push("/SelettoreTavolo") }}> Annullare l'ordine? </ButtonConferma2>
                         <div className='w-[40%] h-[60px] text-primary-icon block bg-primary-accent1 rounded-md p-4 shadow-xl'>
                             <Label className=' text-[15px] text-white text-center'>Totale: {getTotale() + '€'}</Label>
