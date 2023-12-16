@@ -142,7 +142,7 @@ export default function MenuBody() {
                         </Label>
                         <Label className='flex flex-wrap gap-2'>
 
-                            {(allergens && allergens != "," || allergens != "") ? (openfoodfacts === "true" ? splitString(allergens) : splitAllergens(allergens)) : "Nessun ingrediente."}    
+                            {allergens && allergens != "," && allergens != "" ? (openfoodfacts === "true" ? splitString(allergens) : splitAllergens(allergens)) : "Nessun ingrediente."}    
                         </Label>   
                         <Label>
                             Prezzo: {price + '0€'}    
