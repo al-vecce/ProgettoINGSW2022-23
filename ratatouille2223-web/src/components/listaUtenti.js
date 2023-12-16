@@ -52,7 +52,7 @@ export default function ListaUtenti({alertsControl, data, error, isLoading, upda
                     <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
                         <ButtonModificaUtente old_username={username} old_ruolo={employee_role} refreshAction={updateAction} alertsControl={alertsControl} nome={username}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={username} clickConfermaAction={deleteUtente} icona={<FaUserTimes className='text-2xl'/>}>
+                        <ButtonConfirmElimina colore='delete' refreshAction={updateAction} argsConfermaAction={username} clickConfermaAction={deleteUtente} icona={<FaUserTimes className='text-2xl'/>}>
                             Vuoi eliminare il seguente utente?
                         </ButtonConfirmElimina>
                     </Button.Group>

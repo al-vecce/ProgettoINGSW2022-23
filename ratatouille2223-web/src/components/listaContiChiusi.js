@@ -62,7 +62,7 @@ export default function ListaContiChiusi({data , error, isLoading, refreshAction
                 <Button.Group className='flex flex-row items-center gap-2 drop-shadow-[0_1.5px_1.5px_rgba(0,0,0,0.4)]
                 justify-end'>
                   <ButtonPDF checkID={check_id} table={check_table} dataAperturaConto={opening_date_time} dataChisuraConto={closing_date_time} totale={check_total}/>
-                  <Confirm refreshAction={refreshAction} clickConfermaAction={eliminaConto} argsConfermaAction={check_id} icona={<FaTrashAlt className='text-xl'/>} >
+                  <Confirm colore='delete' refreshAction={refreshAction} clickConfermaAction={eliminaConto} argsConfermaAction={check_id} icona={<FaTrashAlt className='text-xl'/>} >
                     Vuoi eliminare il seguente conto chiuso, con annesse tutte le ordinazioni registrate?
                   </Confirm>
                   <ButtonMore onClickAction={() =>{setContoVisibility({...contoDetailsVisibilities, [check_id]: contoDetailsVisibilities[check_id] ? !contoDetailsVisibilities[check_id] : true})}} />
