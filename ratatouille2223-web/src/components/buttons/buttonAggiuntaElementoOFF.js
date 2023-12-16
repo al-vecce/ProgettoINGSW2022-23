@@ -50,7 +50,7 @@ export default function AggiungiElementoOFF({ categoria, refreshAction }) {
           if (data.product) {
             let allergeniString = data.product.allergens ? data.product.allergens : "";
             let ingredientiString = data.product.ingredients_text_with_allergens_it ? data.product.ingredients_text_with_allergens_it : ",";
-            let allergeniFromIngredients = ingredientiString.match(/"<span class=\."\.*"<\/span>"/g)
+            let allergeniFromIngredients = ingredientiString.match(/[A-B][A-B][A-B]*/g)
             if (allergeniFromIngredients === null)
               allergeniFromIngredients = "";
             allergeniString = allergeniString.concat(allergeniFromIngredients);

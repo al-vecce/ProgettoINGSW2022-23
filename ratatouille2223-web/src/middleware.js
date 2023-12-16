@@ -8,17 +8,30 @@ const protectedRoutes = [
   "/PrimoAccesso",
   "/SelettoreTavolo"
 ];
-const firstAccessRoutes = "/PrimoAccesso";
+const amministratorRoutes = ["/Homepage/StoricoConti", "/Homepage/Menu"];
+const adminRoutes = [ "/Homepage/Utenze" , "/Homepage/InfoRistorante" , "/Homepage/StampaQR", "/Homepage/Statistiche" ];
+const addettoSalaRoutes = "/SelettoreTavolo";
+const firstAccessRoutes = "PrimoAccesso";
 
 export default function middleware(request) {
   const currentUser = request.cookies.get("currentUser")?.value;
   const currentUserRole = request.cookies.get("currentUserRole")?.value;
   const token = request.cookies.get("token")?.value;
   const firstaccess = request.cookies.get("firstaccess")?.value;
+  const currentUserisSet = ()=>{
+    if(!currentUser)
+      return false;
+    if(!currentUserRole)
+      return false;
+    if(!token)
+      return false;
+    if(!firstaccess)
+      return false;
+    return true
+  }
   if (
-    protectedRoutes.some((element)=>request.nextUrl.pathname.includes(element)) &&
-    (!currentUser && !currentUserRole && !token  && !firstaccess)
-  ) {
+    protectedRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && !currentUserisSet()
+) {
     request.cookies.delete("currentUser");
     request.cookies.delete("currentUserRole");
     request.cookies.delete("token");
@@ -30,19 +43,41 @@ export default function middleware(request) {
     return response;
   }
 
-  // if (!(request.nextUrl.pathname.includes(firstAccessRoutes)) && currentUser && token && currentUserRole && firstaccess ) {
-  //   if(firstaccess === "true"){
+  if (adminRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && currentUserisSet()) {
+    if(!(`${currentUserRole}` === "AMMINISTRATORE"))
+      return NextResponse.redirect(new URL("/", request.url));
+}
+  // if (!(request.nextUrl.pathname.includes(firstAccessRoutes)) && currentUserisSet() ) {
+  //   if(`${firstaccess}` === "true"){
   //     return NextResponse.redirect(new URL("/PrimoAccesso", request.url));
   //   }
   // }
+  if(adminRoutes.some((element)=>request.nextUrl.pathname.includes(element)) || amministratorRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && currentUserisSet()){
+    if(`${currentUserRole}` === "ADDETTOSALA"){
+      return NextResponse.redirect(new URL("/SelettoreTavolo", request.url));
+    }
+  }
 
-  if (request.nextUrl.pathname === authRoutes && currentUser && token && currentUserRole && firstaccess) {
-    if(currentUserRole === "ADDETTOSALA"){
+  if (request.nextUrl.pathname === authRoutes && currentUserisSet()) {
+
+    if(`${firstaccess}` === "true"){
+      return NextResponse.redirect(new URL("/PrimoAccesso", request.url));
+    }
+    
+    if(`${currentUserRole}` === "ADDETTOSALA"){
       return NextResponse.redirect(new URL("/SelettoreTavolo", request.url));
     }
     else{
       return NextResponse.redirect(new URL("/Homepage", request.url));
     }
   }
+  
+  // if (request.nextUrl.pathname.includes(addettoSalaRoutes) && currentUserisSet()) {
+  
+  //   if(!(`${currentUserRole}` === "ADDETTOSALA")){
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+    
+  // }
 
 }

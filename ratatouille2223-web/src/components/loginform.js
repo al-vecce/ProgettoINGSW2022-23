@@ -66,8 +66,9 @@ export default function LoginForm(){
             if(data.firstLogin === "true"){
               router.push("/PrimoAccesso");
             }
-            else
+            else{
               router.push("/Homepage");
+            }
           }
           else{
             setErrorCredenzialiErrate(true);
