@@ -176,6 +176,11 @@ public class ReviewResource {
             }
 
             result = ReviewService.evaluateUpdateOpenCheck(checkid, orders_array);
+            if(result.contains("false")) {
+                result = "false";
+            } else {
+                result = "true";
+            }
 
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
@@ -246,6 +251,12 @@ public class ReviewResource {
             }
             Long checkid = ReviewService.persistOpenCheck(Integer.parseInt(table));
             result = ReviewService.evaluateCreateOpenCheck(checkid, table, orders_array);
+
+            if(result.contains("false")) {
+                result = "false";
+            } else {
+                result = "true";
+            }
 
             newString = "{\"result\": \"" + result + "\" }";
             request_tree = objectMapper.readTree(newString);
