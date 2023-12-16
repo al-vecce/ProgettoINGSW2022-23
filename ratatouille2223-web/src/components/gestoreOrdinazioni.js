@@ -49,9 +49,8 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
             (data) => {
                 setCategories(data.categories);
             }
-        ).then(() => setisLoading(false));
-        if(tavolo){
-            setisLoading(true);
+        );
+        if(tavolo && isLoading){
             const ordini = {};
             const descrizioni = {};
             const prezzi = {};
@@ -60,9 +59,9 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                     if(!res.table){
                         if(Array.isArray(res.orders)){
                             res.orders.forEach(elem=>{
-                                ordini[elem.element_name]= elem.quantity
+                                ordini[elem.element_name]= Number(elem.quantity)
                                 descrizioni[elem.element_name] = elem.description ? elem.description : " ";
-                                prezzi[elem.element_name] = elem.current_price;
+                                prezzi[elem.element_name] = Number(elem.current_price);
                             })
                         }
                         setOrdinazione(ordini);
