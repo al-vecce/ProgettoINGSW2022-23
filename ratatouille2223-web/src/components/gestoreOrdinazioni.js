@@ -39,6 +39,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
     const [elements, setElements] = useState(null);
     const [descriptionVisibility, setDescriptionVisibility] = useState(false);
     const [totaleOrdinazione, setTotaleOrdinazione] = useState(0);
+    const [firstLoading, setFirstLoading] = useState(true);
     const userData = useCurrentUserData();
     const router = useRouter();
 
@@ -50,7 +51,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                 setCategories(data.categories);
             }
         );
-        if(tavolo && isLoading){
+        if(tavolo && firstLoading){
             const ordini = {};
             const descrizioni = {};
             const prezzi = {};
@@ -69,7 +70,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                         setDescrizioni(descrizioni);
                     }
                 }
-            }).then(setisLoading(false));
+            }).then(()=>{setisLoading(false);setFirstLoading(false);});
         }
     }
 
