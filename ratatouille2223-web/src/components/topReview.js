@@ -54,10 +54,8 @@ export default function TopReview() {
               </h3>
               <div className="flex content-stretch items-stretch justify-center gap-4 drop-shadow-lg">
               <Link href={"/SelettoreTavolo"} passHref >
-                <Button color="failure">
+                <Button color="failure" className='border-4 border-transparent focus:ring-transparent'>
                   Conferma
-                  
-                 
                 </Button>
                 </Link>
                 <Button color="gray" className='border-4 border-primary-icon focus:ring-transparent' onClick={() => {setOpenModal(false)}}>
