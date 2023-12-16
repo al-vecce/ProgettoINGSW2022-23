@@ -41,7 +41,7 @@ public class BusinessInformationResource {
     @Transactional
     public Response postUpdateBusinessInformation(String json_request) {
         JsonNode json_node, temp_node;
-        String newString, businessname, businessphonenumber, businessaddress, businesslogoencoded, businesslogotype, businesslogoname;
+        String newString, businessname, businessphonenumber, businessaddress, businesslogoencoded, businesslogotype, businesslogoname, linkmenuqr;
         Boolean result;
         try {
             json_node = objectMapper.readTree(json_request);
@@ -63,8 +63,11 @@ public class BusinessInformationResource {
             temp_node = json_node.get("businesslogoname");
             if(temp_node == null) { return Response.ok("Inaccurate arguments in BUSINESS/POST encountered.").status(400).build(); }
             businesslogoname = temp_node.asText();
+            temp_node = json_node.get("linkmenuqr");
+            if(temp_node == null) { return Response.ok("Inaccurate arguments in BUSINESS/POST encountered.").status(400).build(); }
+            linkmenuqr = temp_node.asText();
 
-            result = BusinessInformationService.evaluateBusinessInformationFormService(businessname, businessphonenumber, businessaddress, businesslogoencoded,businesslogotype, businesslogoname);
+            result = BusinessInformationService.evaluateBusinessInformationFormService(businessname, businessphonenumber, businessaddress, businesslogoencoded,businesslogotype, businesslogoname, linkmenuqr);
             newString = "{\"result\": \"" + result + "\" }";
             json_node = objectMapper.readTree(newString);
             return Response.ok(json_node.toPrettyString()).build();

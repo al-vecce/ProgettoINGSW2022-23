@@ -54,6 +54,17 @@ public class Business extends PanacheEntityBase {
     @OneToMany(mappedBy = "business", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
 
+    @Column(name = "linkmenuqr")
+    private String linkmenuqr;
+
+    public String getLinkmenuqr() {
+        return linkmenuqr;
+    }
+
+    public void setLinkmenuqr(String linkmenuqr) {
+        this.linkmenuqr = linkmenuqr;
+    }
+
     public String getBusiness_qr_encoded() {
         return business_qr_encoded;
     }
@@ -161,22 +172,22 @@ public class Business extends PanacheEntityBase {
                 str = str +
                         "\t\"business_logo_encoded\": \"" + "data:image/" + business_logo_type.substring(1) + "+xml;base64," + business_logo_encoded + "\",\n" +
                         "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
-                        "\t\"business_logo_name\": \"" + business_logo_name + "\"\n";
+                        "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
             }
             else {
                 str = str +
                         "\t\"business_logo_encoded\": \"" + "data:image/" + business_logo_type.substring(1) + ";base64," + business_logo_encoded + "\",\n" +
                         "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
-                        "\t\"business_logo_name\": \"" + business_logo_name + "\"\n";
+                        "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
             }
         }
         else {
             str = str +
                     "\t\"business_logo_encoded\": \"" + business_logo_encoded + "\",\n" +
                     "\t\"business_logo_type\": \"" + business_logo_type + "\",\n" +
-                    "\t\"business_logo_name\": \"" + business_logo_name + "\"\n";
+                    "\t\"business_logo_name\": \"" + business_logo_name + "\",\n";
         }
-        str = str + "}";
+        str = str + "\t\"linkmenuqr\": \""+ linkmenuqr +"\"\n}";
         return str;
     }
     public String toStringQR() {
