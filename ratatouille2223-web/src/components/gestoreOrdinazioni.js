@@ -95,24 +95,31 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
         }
         return (
             <div>
-                <div className="">
+                <div className="w-full flex-col items-center justify-stretch">
                     {
                         categories ? categories.map(({
                             name,
                         }) => (
-                            <div key={"categoriaButt" + name} className=''>
+                            <div key={"categoriaButt" + name} 
+                            className='w-full pb-2 items-center justify-between'>
 
-                                <Button className="scale-100 shadow-xl rounded-none" style={{ width: '23em' }} color="gray" onClick={() => { onClickCategory(name) }}><h1>{name}</h1></Button>
+                                <Button theme={{base: "rounded-md body-font font-quicksand tracking-wide text-[60px] min-h-[80px] bg-gray-200 text-primary-icon font-bold border border-none focus:border-transparent focus:ring-transparent",
+                                    color: "",
+                                    inner: {base:"flex flex-rows flex-nowrap justify-between"}}}
+                                className="justify-stretch" fullSized onClick={() => { onClickCategory(name) }}><p>{name}</p><FaChevronLeft className='justify-self-end text-xl rotate-180'/></Button>
 
                             </div>))
                             : null
                     }
                 </div>
-                <div className='flex gap-2 y-2'>
-                    <Flowbite theme={{ theme: customTheme }}>
-                        <Button className="gap-2 scale-100 shadow-xl rounded-none border border-none focus:border-transparent focus:ring-transparent" style={{ width: '23em' }} color="confirm" onClick={() => { setShowReview(true) }} >Review</Button>
-                    </Flowbite>
-                </div>
+                <div className='fixed left-0 bottom-0 w-screen h-[120px]'>
+                    <div className='p-10 flex items-center justify-items-center'>
+                        <Button theme={{base: "w-full h-[60px] rounded-md body-font font-quicksand tracking-wide text-[10px] bg-primary-accent1 text-white font-bold",
+                            color: "",
+                            inner: {base:"flex flex-rows flex-nowrap justify-between"}}} 
+                            className="shadow-xl rounded-md border border-none focus:border-transparent focus:ring-transparent justify-stretch" onClick={() => { setShowReview(true) }} ><p>Review</p><FaChevronLeft className='justify-self-end text-xl rotate-180'/></Button>
+                    </div>
+                    </div>
             </div>
         );
     }
@@ -121,7 +128,7 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
             return (<h1 className='text-primary-icon'>loading...</h1>);
         }
         return (
-            <div>
+            <div style={{zIndex: '0'}}>
                 <Button className="shadow-lg rounded-md bg-white border border-none enabled:hover:bg-gray-200 focus:border-transparent focus:ring-transparent"
                     style={{ width: "2.5em", height: "2.5em" }} onClick={onClickBackToCategorie} > <FaChevronLeft className='flex text-xl text-primary-icon' /> </Button>
                 <div className="flex items-stretch ... flex-col ">
