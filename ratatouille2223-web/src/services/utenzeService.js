@@ -21,7 +21,7 @@ export class utenzeService{
         },
         }
         ).then((res) => res.json());
-    postUtentePerUsername = (targetUsername, username, password, ruolo) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/employees", {
+    postUtentePerUsername = (targetUsername, username, password, confirmation, ruolo) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/employees", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -32,6 +32,7 @@ export class utenzeService{
             oldusername: targetUsername,
             employeerole: ruolo,
             password: password,
+            confirmation: confirmation,
         })
         }
         ).then((res) => res.json());
