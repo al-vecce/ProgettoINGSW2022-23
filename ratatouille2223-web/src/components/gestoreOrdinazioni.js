@@ -188,7 +188,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                             <div key={"elemButton" + name} className='w-full grid grid-rows-3 grid-cols-3 bg-gray-200 rounded-md p-5 gap-4'>
                                 <div className='col-span-2 text-[15px] text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{name}</div>
                                 <div className='col-span-1 text-[15px] text-center justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2 align-middle'>{price + "0€"}</div>
-                                <div className='col-span-3 text-[12px] style-italics text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{ingredients && (ingredients === "," || ingredients === "") ? ingredients : "Nessun ingrediente."}</div>
+                                <div className='col-span-3 text-[12px] style-italics text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>{ingredients && ingredients != "," && ingredients != "" ? ingredients : "Nessun ingrediente."}</div>
                                 <div className='col-span-2 text-[15px] text-start justify-self-stretch bg-white rounded-md pr-2 items-center justify-center text-primary-icon p-2'>
                                     <div className="flex flex-rows flex-nowrap items-center justify-between">
                                     <Button theme={{ base: "rounded-l-md bg-primary-icon justify-self-start text-white",
