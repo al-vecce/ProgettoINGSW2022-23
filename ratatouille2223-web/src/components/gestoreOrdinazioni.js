@@ -242,6 +242,7 @@ export default function gestoreOrdinazioni({ tavolo, checkID }) {
                         if (res) {
                             if (res.result.includes("true")) {
                                 alert("ordinazione completata con successo");
+                                router.push("/SelettoreTavolo");
                             }
                             else
                                 alert("ordinazione fallita");
