@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Flowbite } from 'flowbite-react';
 import { infoAttivitaService } from '@/services/infoAttivitaService';
 
-import { FaUser, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
+import { FaUser, FaMapMarkerAlt, FaPhone, FaLink  } from "react-icons/fa";
 
 import Image from 'next/image';
 import useCurrentUserData from '@/hooks/useCurrentUserData';
@@ -69,6 +69,7 @@ export default function InfoAttivitaForm() {
         setFileName(data.business_logo_name);
         setFileType(data.business_logo_type);
         setLogoImage(data.business_logo_encoded);
+        setLinkMenuQR(data.linkmenuqr);
       }).then(() => { setisLoading(false) });
 
   }
@@ -77,13 +78,13 @@ export default function InfoAttivitaForm() {
   const [indirizzo, setIndirizzo] = useState("");
   const [numeroDiTelefono, setNumeroDiTelefono] = useState("");
   const [submitButtonVisibility, setSubmitButtonVisibility] = useState(false);
-  const linkMenuQR = "";
   const [errorUploadFallito, setErrorUpload] = useState(false);
   const [uploadSuccesso, setUploadSuccesso] = useState(false);
   const [errorNomeAttivitaAssente, setErrorNomeAttivitaAssente] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const [fileType, setFileType] = useState("");
-  const [fileBase64, setFileBase64] = useState("");
+  const [fileName, setFileName] = useState(" ");
+  const [fileType, setFileType] = useState(" ");
+  const [fileBase64, setFileBase64] = useState(" ");
+  const [linkMenuQR, setLinkMenuQR] = useState("");
 
   const toBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -104,6 +105,7 @@ export default function InfoAttivitaForm() {
   const handleIndirizzoChange = (e) => { setIndirizzo(e.target.value); setSubmitButtonVisibility(true); };
   const handleNumeroDiTelefonoChange = (e) => { setNumeroDiTelefono(e.target.value); setSubmitButtonVisibility(true); };
   const handleNomeChange = (e) => { setNomeAttivita(e.target.value); setSubmitButtonVisibility(true); };
+  const handleLinkMenuChange = (e) => { setLinkMenuQR(e.target.value); setSubmitButtonVisibility(true); };
   const handleImageInput = async (e) => {
     setSubmitButtonVisibility(true);
     const file = e.target.files[0];
@@ -121,7 +123,7 @@ export default function InfoAttivitaForm() {
   async function Login() {
     const infoAttServ = new infoAttivitaService(currentUser ? currentUser.token : "");
     if (nomeAttivita) {
-      const data = await infoAttServ.postInfoAttivita(nomeAttivita, indirizzo, numeroDiTelefono, fileBase64, fileType, fileName);
+      const data = await infoAttServ.postInfoAttivita(nomeAttivita, indirizzo, numeroDiTelefono, fileBase64, fileType, fileName, linkMenuQR);
       if (data) {
         if (data.result === "true") {
           setUploadSuccesso(true);
@@ -182,6 +184,14 @@ export default function InfoAttivitaForm() {
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <div className='text-white bg-primary-icon rounded-r-md p-2'>
                 <FaPhone style={{ width:'1.2em', height:'1.2em' }} className='text-xl' />
+              </div>
+          </div>
+          <Label className='col-span-2 text-[20px] text-end justify-self-end pr-2' htmlFor="numeroTelefAtt" value="Link Menù:" />
+          <TextInput className='col-span-4' theme={customTextInputTheme} value={linkMenuQR != "null" ? linkMenuQR : ""} placeholder="Link Menù" id="menuAttiv" onChange={handleLinkMenuChange} />
+          <div className="col-span-1 justify-self-start pl-2 justify-start"
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <div className='text-white bg-primary-icon rounded-r-md p-2'>
+                <FaLink style={{ width:'1.2em', height:'1.2em' }} className='text-xl' />
               </div>
           </div>
       </div>

@@ -45,11 +45,11 @@ public class QRGenerationService {
             if(b.getBusiness_logo() != null) {
                 b.setBusiness_logo_encoded(Base64ManagerService.encodeToStringService(b.getBusiness_logo()));
             }
-            /*if(b.getBusiness_qr() != null) {
-                b.setBusiness_qr_encoded(Base64ManagerService.encodeToStringService(b.getBusiness_qr()));
-            }*/
-            //else {
-                String qrCodeText = menuaddress;
+            if(b.getLinkmenuqr() == null || b.getLinkmenuqr().isBlank()) {
+                return false;
+            }
+            else {
+                String qrCodeText = b.getLinkmenuqr();
                 String filePath = "src\\main\\resources\\static\\output-qr-code.png";
                 int size = 125;
                 String fileType = "png";
@@ -68,7 +68,7 @@ public class QRGenerationService {
                 } catch(IOException e) {
                     throw new WebApplicationException("IOException for BUSINESS-INFORMATION/QR-GENERATION/POST/SERVICE encountered.",500);
                 }
-            //}
+            }
             return true;
         } else { return false; }
     }

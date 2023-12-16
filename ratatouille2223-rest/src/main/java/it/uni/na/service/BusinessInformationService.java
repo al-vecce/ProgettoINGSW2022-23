@@ -18,7 +18,7 @@ public class BusinessInformationService {
     }
 
     @Transactional
-    public static Boolean evaluateBusinessInformationFormService(String businessname, String businessphonenumber, String businessaddress, String businesslogoencoded, String businesslogotype, String businesslogoname) {
+    public static Boolean evaluateBusinessInformationFormService(String businessname, String businessphonenumber, String businessaddress, String businesslogoencoded, String businesslogotype, String businesslogoname, String linkmenuqr) {
         String tempString1;
         tempString1 = FieldCheckService.checkBusinessnameValidityService(businessname);
         if(!tempString1.contains(FieldCheckService.CORRECT)) {
@@ -50,6 +50,7 @@ public class BusinessInformationService {
             business.setBusiness_logo_type(businesslogotype);
             business.setBusiness_logo_name(businesslogoname);
         }
+        business.setLinkmenuqr(linkmenuqr);
         business.persist();
         return true;
     }

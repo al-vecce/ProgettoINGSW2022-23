@@ -13,7 +13,7 @@ export class infoAttivitaService{
         },
         }
         ).then((res) => res.json().catch((e)=>{alert(e)}));
-    postInfoAttivita = (nomeAttivita, indirizzo, numeroDiTelefono, imageBase64, imageType, imageName) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/business-information" , {
+    postInfoAttivita = (nomeAttivita, indirizzo, numeroDiTelefono, imageBase64, imageType, imageName, linkMenuQR) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/business-information" , {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -26,6 +26,7 @@ export class infoAttivitaService{
             businesslogoencoded: imageBase64,
             businesslogotype: imageType,
             businesslogoname: imageName,
+            linkmenuqr: linkMenuQR,
         }),
         }
         ).then((res) => res.json().catch((e)=>{alert(e)}));

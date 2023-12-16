@@ -17,8 +17,6 @@ import ButtonPDFcodeQR from '@/components/buttons/buttonPDFcodeQR';
 
 import { PDFDownloadLink, Document,View,Text,styles, Page } from '@react-pdf/renderer';
 
-import getServerSideIP from '@/hooks/getServerSideIP';
-
 
 export default function page() {
   const userData = useCurrentUserData();
@@ -30,17 +28,11 @@ export default function page() {
   const [ encodedQR, setEncodedQR ] = useState(null);
   const [ encodedImg, setEncodedImg ] = useState(null);
 
-  const [ currentUrl, setCurrentUrl ] = useState(process.env.PUBLIC_NEXTJSAPPHOSTNAME);
-  
-  console.log(currentUrl);
-
-  const [ menuaddr, setMenuAddr ] = useState(currentUrl + "/Menu");
-
   const fetchData = useSWR(dud, qrCodeServ.getQRBusinessInformation);
-  const fetchQR = null;//useSWR(menuaddr, qrCodeServ.postGenerateQRCode);
+  const fetchQR = useSWR("placeholder", qrCodeServ.postGenerateQRCode);
   
   const useUpdateData = () =>{
-    //fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
+    fetchData.mutate(dud, qrCodeServ.getQRBusinessInformation);
     //fetchQR.mutate(menuaddr, qrCodeServ.postGenerateQRCode);
   };
 
@@ -114,7 +106,7 @@ export default function page() {
                 <div>
                   {fetchData.data != null ? 
                     <ButtonPDFcodeQR name={fetchData.data.business_name} address={fetchData.data.business_address} phone_number={fetchData.data.business_phone_number}
-                    logo_encoded={fetchData.data.business_logo_encoded} qr_encoded={fetchData.data.business_qr_encoded}/>
+                    logo_encoded={fetchData.data.business_logo_encoded} logotype={fetchData.business_logo_type} qr_encoded={fetchData.data.business_qr_encoded}/>
                   : null
                   }
                 </div>

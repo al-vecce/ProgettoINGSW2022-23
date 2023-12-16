@@ -9,7 +9,7 @@ import useSWR from 'swr';
 import { elementiContoService } from '@/services/elementiContoService';
 import useCurrentUserData from '@/hooks/useCurrentUserData';
 
-export default function ButtonPDFcodeQR({ name, address, phone_number, logo_encoded, qr_encoded }) {
+export default function ButtonPDFcodeQR({ name, address, phone_number, logo_encoded, logotype, qr_encoded }) {
     const myStyles = StyleSheet.create({
         page: {
             flexDirection: 'col',
@@ -27,6 +27,11 @@ export default function ButtonPDFcodeQR({ name, address, phone_number, logo_enco
             borderTopRightRadius: '20pt',
             borderBottomLeftRadius: '20pt',
             borderBottomRightRadius: '20pt',
+        },
+        image2: {
+            margin: 10,
+            maxHeight: '20%',
+            maxWidth: '40%',
         },
         header: {
             margin: 8,
@@ -56,11 +61,25 @@ export default function ButtonPDFcodeQR({ name, address, phone_number, logo_enco
         }
       });
 
+      function encodeLogo() {
+        if(logotype && logo_encoded) {
+            if(logotype == ".png") {
+                return <Image src={`data:image/png;base64, '${logo_encoded}'`}
+                        style={myStyles.image2}/>
+            }
+            else if(logotype == ".jpg") {
+                return <Image src={`data:image/jpg;base64, '${logo_encoded}'`}
+                        style={myStyles.image2}/>
+            }
+        }
+      }
+
     const MyDoc = () => {
         return (
             <Document title={name + "-business-information"} author={name} >
                 <Page size="A4" style={myStyles.page}>
                     <View style={myStyles.section}>
+                        {encodeLogo}
                         <Text style={myStyles.header}>
                             {name}
                         </Text>
