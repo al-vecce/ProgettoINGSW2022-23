@@ -9,7 +9,7 @@ export default function page() {
   return (
     <div className='flex flex-col min-h-screen min-w-screen bg-white'>
         <TopReview style={{zIndex: '2'}}/>
-      <div className='flex p-4' style={{zIndex: '1'}}>
+      <div className='flex-1 p-[60px]' style={{zIndex: '1'}}>
         <GestoreOrdinazioni tavolo={tavolo}/>
       </div>
     </div>

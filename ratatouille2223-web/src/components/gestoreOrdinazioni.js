@@ -6,6 +6,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import elementiService from '@/services/elementiService';
 
+const cutstomTheme = {
+
+}
+
 export default function gestoreOrdinazioni({tavolo}) {
 
     const [ ordinazione, setOrdinazione] = useState({});
@@ -68,13 +72,13 @@ export default function gestoreOrdinazioni({tavolo}) {
         }
         return(
             <div>
-                <div className="flex items-stretch ... flex-col ">
+                <div className="flex-1 flex-col items-center justify-center">
                     {
                     categories ? categories.map(({
                         name,
                     }) => (
-                    <div key={"categoriaButt"+name} className=''>
-                        <Button color="gray" onClick={()=>{onClickCategory(name)}}><h1>{name}</h1></Button>
+                    <div key={"categoriaButt"+name} className='flex-1 pb-5 items-center justify-center'>
+                        <Button color='category' fullSized onClick={()=>{onClickCategory(name)}}><h1>{name}</h1></Button>
                     </div>)) 
                     : null
                     }
@@ -90,7 +94,7 @@ export default function gestoreOrdinazioni({tavolo}) {
             return (<h1 className='text-primary-icon'>loading...</h1>);
         }
         return(
-            <div>
+            <div className='flex flex-col items-center justify-center'>
                 <Button onClick={onClickBackToCategorie} > Go back</Button>
                 <div className="flex items-stretch ... flex-col ">
                     {
@@ -160,7 +164,7 @@ export default function gestoreOrdinazioni({tavolo}) {
         )
     }
   return (
-    <div>
+    <div className='flex-1 flex-col items-center justify-center bg-black'>
         { !showReview ? (showCategories ? categoriesTable() : elementsTable()) : reviewTable() }
     </div>
   )
