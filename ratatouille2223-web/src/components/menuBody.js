@@ -135,14 +135,14 @@ export default function MenuBody() {
                         <div className='text-primary-icon pb-6'>
                         
                         <Label className='flex flex-wrap gap-2'>
-                            Ingredienti: {ingredients && (ingredients === "," || ingredients === "") ? ingredients : "Nessun ingrediente."}    
+                            Ingredienti: {(ingredients && (ingredients != "," || ingredients != "")) ? ingredients : "Nessun ingrediente."}    
                         </Label>
                         <Label className='flex flex-wrap gap-2'>
                             Allergeni:    
                         </Label>
                         <Label className='flex flex-wrap gap-2'>
 
-                            {allergens && (allergens === "," || allergens === "") ? (openfoodfacts === "true" ? splitString(allergens) : splitAllergens(allergens)) : "Nessun ingrediente."}    
+                            {(allergens && allergens != "," || allergens != "") ? (openfoodfacts === "true" ? splitString(allergens) : splitAllergens(allergens)) : "Nessun ingrediente."}    
                         </Label>   
                         <Label>
                             Prezzo: {price + '0€'}    
