@@ -1,9 +1,7 @@
 'use client'
 import Image from 'next/image'
 import PrimoAccessoForm from '@/components/primoAccessoForm';
-import { Container } from 'postcss'
 
-import { Flowbite } from 'flowbite-react';
 const customTheme = {
   container: {
     padding: '2rem',
