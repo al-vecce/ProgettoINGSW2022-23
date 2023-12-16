@@ -8,7 +8,7 @@ import { Select } from 'flowbite-react';
 import useCurrentUserData from '@/hooks/useCurrentUserData';
 
 
-export default function buttonModificaUtente({alertsControl, refreshAction, old_username, old_ruolo}) {
+export default function buttonModificaUtente({alertsControl, refreshAction, old_username, old_ruolo, password}) {
   const [openModal, setOpenModal] = useState(false);
   const userData = useCurrentUserData();
   const [username, setUsername] = useState(old_username);
@@ -22,7 +22,7 @@ export default function buttonModificaUtente({alertsControl, refreshAction, old_
   }
   async function modificaUtente(){
     if(username != ""){
-      const res = await utenzeServ.postUtentePerUsername(old_username,username, ruolo);
+      const res = await utenzeServ.postUtentePerUsername(old_username,username,password, password,ruolo);
       if(res){
         (res.result == "true" ? alertsControl.setAlertSuccessState(true) : null);
       }else{
