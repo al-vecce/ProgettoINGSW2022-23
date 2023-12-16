@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/menu")
-@PermitAll
+//@PermitAll
 public class OnlineMenuResource {
 
     @Inject

@@ -104,7 +104,7 @@ export default function ListaElementi({alertsControl, data, error, isLoading, up
                             oldPriority={priority}
                         />
                         }
-                        <ButtonConfirmElimina refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
+                        <ButtonConfirmElimina colore='delete' refreshAction={updateAction}  argsConfermaAction={name} clickConfermaAction={deleteElemento} icona={<FaTrashAlt className='text-xl'/>}>
                             Eliminare l'elemento selezionato?
                         </ButtonConfirmElimina>
                     </Button.Group>

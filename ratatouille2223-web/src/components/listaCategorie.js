@@ -59,7 +59,7 @@ export default function listaCategorie({alertsControl, data, error, isLoading, u
                         justify-end'>
                         <ButtonCategoryMore onClickAction={()=>{router.push("/Homepage/Menu/Categoria?name=" + name);}} />
                         <ButtonModificaCategoria oldPriority={priority}refreshAction={updateAction} alertsControl={alertsControl} nome={name}/>
-                        <ButtonConfirmElimina refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<FaTrashAlt className='text-xl'/>}>
+                        <ButtonConfirmElimina colore="delete" refreshAction={updateAction} argsConfermaAction={name} clickConfermaAction={deleteCategoria} icona={<FaTrashAlt className='text-xl'/>}>
                             Vuoi eliminare la seguente categoria e tutti gli elementi all'interno?
                         </ButtonConfirmElimina>
                     </Button.Group>
