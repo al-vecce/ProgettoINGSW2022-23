@@ -68,7 +68,7 @@ export default function page() {
                       <div className='flex flex-col flex-wrap items-center justify-center'>
                         { fetchData.data.business_qr_encoded ? 
                         <Image className='drop-shadow-[0_10px_10px_rgba(0,0,0,0.2)]' 
-                        width={100} height={100} alt="Uploaded Image" style={{height:"10em", width:"10em"}} src={"data:image/png;base64," + fetchData.data.business_qr_encoded}/> 
+                        width={100} height={100} alt=" Link Menu non Inserito" style={{height:"10em", width:"10em"}} src={"data:image/png;base64," + fetchData.data.business_qr_encoded}/> 
                         : null}
                       </div>
                       <div className='flex flex-col flex-wrap items-center justify-center'>
