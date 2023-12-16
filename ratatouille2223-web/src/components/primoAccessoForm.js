@@ -90,7 +90,7 @@ export default function PrimoAccessoForm(){
   return (
     <div className="flex gap-7 flex-col" style={{display:'flex', justifyContent:'center', alignItems:'center'}}>
       {errorCredenzialiErrate ? <Label htmlFor="error" color={"failure"} value="Password non uguali o vuote!" /> : null}
-      {errorCriterioCredenzialeSbagliato ? <Label htmlFor="error" color={"failure"} value="La nuova password deve contenere:Un carattere speciale(esempio: '!' '$') Una lettere maiuscola Un numero Non deve essere uguale a quella precedente e deve essere lunga almeno 8 caratteri " /> : null}
+      {errorCriterioCredenzialeSbagliato ? <div htmlFor="error" className='text-red-700' >La nuova password deve contenere:<br/>Un carattere speciale(esempio: '!' '$')<br/> Una lettere maiuscola<br/> Un numero<br/> Non deve essere uguale a quella precedente e deve essere lunga almeno 8 caratteri </div> : null}
       <div className="inline-flex gap-2" role="group">
         <TextInput theme={customTextInputTheme} placeholder="Password" id="password" addon="" type="password" onChange={handlePasswordChange} required />
       </div>

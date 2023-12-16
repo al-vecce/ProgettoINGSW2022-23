@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { Flowbite } from 'flowbite-react';
 import { FaChevronLeft, FaMinus, FaPlus } from "react-icons/fa";
 import { Footer } from 'flowbite-react';
+import { tableSelectorService } from '@/services/tableSelectorService';
 
 import { FaFilePen } from "react-icons/fa6";
 
@@ -25,7 +26,7 @@ const customTheme = {
     },
 };
 
-export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
+export default function gestoreOrdinazioni({ tavolo, checkID }) {
 
     const [ordinazione, setOrdinazione] = useState({});
     const [descrizioni, setDescrizioni] = useState({});
@@ -41,13 +42,40 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
     const userData = useCurrentUserData();
     const router = useRouter();
 
-    if (userData && isLoading) {
+    async function getData(){
         const categorieServ = new categorieService(userData ? userData.token : "");
-        categorieServ.getCategorieUnpaged().then(
+        const selettoreTavServ = new tableSelectorService(userData ? userData.token : "");
+        await categorieServ.getCategorieUnpaged().then(
             (data) => {
                 setCategories(data.categories);
             }
         ).then(() => setisLoading(false));
+        if(tavolo){
+            setisLoading(true);
+            const ordini = {};
+            const descrizioni = {};
+            const prezzi = {};
+            await selettoreTavServ.postTavoloToGetStatus(tavolo).then(res=>{
+                if(res){
+                    if(!res.table){
+                        if(Array.isArray(res.orders)){
+                            res.orders.forEach(elem=>{
+                                ordini[elem.element_name]= elem.quantity
+                                descrizioni[elem.element_name] = elem.description ? elem.description : " ";
+                                prezzi[elem.element_name] = elem.current_price;
+                            })
+                        }
+                        setOrdinazione(ordini);
+                        setPrezzi(prezzi);
+                        setDescrizioni(descrizioni);
+                    }
+                }
+            }).then(setisLoading(false));
+        }
+    }
+
+    if (userData && isLoading) {
+        getData()
     }
     async function onClickCategory(category) {
         setCurrentCategory(category);
@@ -207,9 +235,8 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                     "description": descrizioni[key] ? (descrizioni[key] === "" ? " " : descrizioni[key]) : " "
                 });
             })
-            console.log(ordinazioneCompleta);
             const ordinazioniServ = new ordinazioniService(userData ? userData.token : "");
-            if (isContoAlreadyOpen ? isContoAlreadyOpen : true) {
+            if (!checkID) {
                 await ordinazioniServ.putNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
                     .then(res => {
                         if (res) {
@@ -224,7 +251,7 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                     .catch(e => { alert(e); })
             }
             else {
-                await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta)
+                await ordinazioniServ.postNuovaOrdinazione(tavolo ? tavolo : -1, ordinazioneCompleta, checkID)
                     .then(res => {
                         if (res) {
                             if (res.result.includes("true")) {
@@ -239,7 +266,6 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
             }
 
         }
-        console.log(Object.keys(ordinazione));
         return (
             <div className='w-full h-full flex-col items-center justify-stretch gap-5'>
                 <div className='pb-5'>
@@ -247,7 +273,6 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                         style={{ width: "2.5em", height: "2.5em" }} onClick={() => { setShowReview(false) }} > <FaChevronLeft className='flex text-xl text-primary-icon' /> </Button>
                 </div>
                 <div>
-                    {console.log(ordinazione)}
                     {Object.keys(ordinazione).map(key => {
                         return (
                             <div className='w-full gap-5'>
@@ -309,6 +334,17 @@ export default function gestoreOrdinazioni({ tavolo, isContoAlreadyOpen }) {
                 </div>
             </div>
         )
+    }
+    if(!tavolo){
+        return (
+        <div>
+            <div className='text-red-700 text-center'>
+                Nessun tavolo selezionato!
+            </div>
+            <Link href={"/SelettoreTavolo"} passHref>
+                <Button>Back to selettore tavolo</Button>
+            </Link>
+        </div>)
     }
     return (
         <div>

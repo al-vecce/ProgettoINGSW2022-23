@@ -12,6 +12,7 @@ const amministratorRoutes = ["/Homepage/StoricoConti", "/Homepage/Menu"];
 const adminRoutes = [ "/Homepage/Utenze" , "/Homepage/InfoRistorante" , "/Homepage/StampaQR", "/Homepage/Statistiche" ];
 const addettoSalaRoutes = "/SelettoreTavolo";
 const firstAccessRoutes = "PrimoAccesso";
+const adminAndAmministratoreRoutes = "/Homepage";
 
 export default function middleware(request) {
   const currentUser = request.cookies.get("currentUser")?.value;
@@ -52,7 +53,7 @@ export default function middleware(request) {
   //     return NextResponse.redirect(new URL("/PrimoAccesso", request.url));
   //   }
   // }
-  if(adminRoutes.some((element)=>request.nextUrl.pathname.includes(element)) || amministratorRoutes.some((element)=>request.nextUrl.pathname.includes(element)) && currentUserisSet()){
+  if(request.nextUrl.pathname.includes(adminAndAmministratoreRoutes) && currentUserisSet()){
     if(`${currentUserRole}` === "ADDETTOSALA"){
       return NextResponse.redirect(new URL("/SelettoreTavolo", request.url));
     }
@@ -72,12 +73,12 @@ export default function middleware(request) {
     }
   }
   
-  // if (request.nextUrl.pathname.includes(addettoSalaRoutes) && currentUserisSet()) {
+  if (request.nextUrl.pathname.includes(addettoSalaRoutes) && currentUserisSet()) {
   
-  //   if(!(`${currentUserRole}` === "ADDETTOSALA")){
-  //     return NextResponse.redirect(new URL("/", request.url));
-  //   }
+    if(!(`${currentUserRole}` === "ADDETTOSALA")){
+      return NextResponse.redirect(new URL("/", request.url));
+    }
     
-  // }
+  }
 
 }

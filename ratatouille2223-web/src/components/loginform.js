@@ -48,8 +48,8 @@ export default function LoginForm(){
   const [password, setPassword] = useState("");
   const [ errorCredenzialiErrate, setErrorCredenzialiErrate ] = useState(false);
   const cookieStore = useCookies();
-  const handleUsernameChange = (e) => setUsername(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleUsernameChange = (e) => { setUsername(e.target.value); setErrorCredenzialiErrate(false);}
+  const handlePasswordChange = (e) => {setPassword(e.target.value); setErrorCredenzialiErrate(false);}
 
   const router = useRouter();
   const { login } = useLogin();

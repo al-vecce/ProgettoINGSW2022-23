@@ -1,5 +1,5 @@
 
-export default class qrCodeService{
+export default class ordinazioniService{
 
     constructor(token){
         this.token = token;
@@ -17,7 +17,7 @@ export default class qrCodeService{
         }),
         }
         ).then((res) => res.json());
-    postNuovaOrdinazione = (tavolo,ordinazioni) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/review/checks/" + tavolo, {
+    postNuovaOrdinazione = (tavolo,ordinazioni, checkID) => fetch(process.env.NEXT_PUBLIC_APIHOSTNAME + "/review/checks/" + checkID, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
