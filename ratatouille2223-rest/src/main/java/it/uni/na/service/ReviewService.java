@@ -48,9 +48,9 @@ public class ReviewService {
             prepared_order = prepareOrderPersistence(checkid, order_fields_list.get(0), order_fields_list.get(1), order_fields_list.get(2), order_fields_list.get(3));
             if (prepared_order == null) {
                 error_flag = true;
-                return_string.append("Ordinal[").append(counter).append("] doesn't have an element name. ");
+                return_string.append("Ordinal[").append(counter).append("] is false. ");
             } else {
-                return_string.append("Ordinal[").append(counter).append("] is correct. ");
+                return_string.append("Ordinal[").append(counter).append("] is true. ");
                 orders.add(prepared_order);
             }
         }
@@ -84,9 +84,9 @@ public class ReviewService {
             prepared_order = prepareOrderPersistence(checkid, order_fields_list.get(0), order_fields_list.get(1), order_fields_list.get(2), order_fields_list.get(3));
             if (prepared_order == null) {
                 error_flag = true;
-                return_string.append("Ordinal[").append(counter).append("] doesn't have an element name. ");
+                return_string.append("Ordinal[").append(counter).append("] is false. ");
             } else {
-                return_string.append("Ordinal[").append(counter).append("] is correct. ");
+                return_string.append("Ordinal[").append(counter).append("] is true. ");
                 orders.add(prepared_order);
             }
         }
